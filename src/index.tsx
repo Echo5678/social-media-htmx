@@ -2,6 +2,7 @@ import { Elysia, t } from "elysia";
 import { html } from "@elysiajs/html";
 import { swagger } from "@elysiajs/swagger";
 import { cookie } from "@elysiajs/cookie";
+import { jwt } from "@elysiajs/jwt";
 
 import { db } from "./db/client";
 import { users, SelectUser, InsertUser } from "./db/schema";
@@ -14,6 +15,8 @@ import HomePage from "./pages/homepage";
 import SignUpPage from "./pages/signinpage";
 import SocialPage from "./pages/socialpage";
 
+const WEEK = 60 * 60 * 24 * 7;
+
 const app = new Elysia()
   .use(
     swagger({
@@ -23,6 +26,12 @@ const app = new Elysia()
           version: "1.0.0",
         },
       },
+    })
+  )
+  .use(
+    jwt({
+      name: "jwt",
+      secret: process.env.JWT_SECRET as string,
     })
   )
   .use(cookie())
@@ -58,7 +67,7 @@ const app = new Elysia()
   )
   .post(
     "/sign-up",
-    async ({ body: { username, email, password }, setCookie, set }) => {
+    async ({ body: { username, email, password }, setCookie, set, jwt }) => {
       if (!validator.isEmail(email)) {
         set.status = 400;
         return (
@@ -78,21 +87,30 @@ const app = new Elysia()
       if (!validator.isStrongPassword(password)) {
         set.status = 400;
         return (
-          <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+          <div class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
             Password must be:
             <ul>
               <li>Minimum 8 characters</li>
               <li>Minimum 1 uppercase and lowercase letter</li>
               <li>Minimum 1 number and symbol.</li>
             </ul>
-          </p>
+          </div>
         );
       }
       const hashedPassword = await Bun.password.hash(password);
-      const user = await db
+      const user: SelectUser[] = await db
         .insert(users)
         .values({ username, email, password: hashedPassword })
         .returning();
+
+      if (user) {
+        set.status = 201;
+        setCookie("user", await jwt.sign({}), {
+          httpOnly: true,
+          maxAge: WEEK,
+          sameSite: "strict",
+        });
+      }
 
       return (
         <BaseHtml>
