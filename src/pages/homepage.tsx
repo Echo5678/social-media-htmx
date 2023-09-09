@@ -41,7 +41,7 @@ export default function HomePage() {
           Try for free
         </a>
       </div>
-      <p class="text-center text-[#444444] dark:text-[#B1B1B1]">
+      <p class="text-center text-[#444444] dark:text-[#B1B1B1] mb-8 mt-6">
         Co-Dev allows developers to collaborate on projects in a more social
         environment.
       </p>
@@ -98,7 +98,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      <div class="xl:px-48">
+      <div class="xl:px-48 mt-8">
         <h3 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-center mb-10">
           Bring your dreams to life
         </h3>

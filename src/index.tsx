@@ -5,6 +5,7 @@ import { cookie } from "@elysiajs/cookie";
 
 import { db } from "./db/client";
 import { users, SelectUser, InsertUser } from "./db/schema";
+import validator from "validator";
 
 import * as elements from "typed-html";
 
@@ -58,7 +59,7 @@ const app = new Elysia()
   .post(
     "/sign-up",
     async ({ body: { username, email, password }, setCookie, set }) => {
-      if (email.length < 3) {
+      if (!validator.isEmail(email)) {
         set.status = 400;
         return (
           <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
@@ -66,26 +67,32 @@ const app = new Elysia()
           </p>
         );
       }
-      if (username.length < 1) {
+      if (!validator.isAlphanumeric(username)) {
         set.status = 400;
         return (
           <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
-            Please provide username.
+            Username can only contain letters and numbers.
           </p>
         );
       }
-      if (password.length < 8) {
+      if (!validator.isStrongPassword(password)) {
         set.status = 400;
         return (
           <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
-            Password must be atleast 8 characters.
+            Password must be:
+            <ul>
+              <li>Minimum 8 characters</li>
+              <li>Minimum 1 uppercase and lowercase letter</li>
+              <li>Minimum 1 number and symbol.</li>
+            </ul>
           </p>
         );
       }
       const hashedPassword = await Bun.password.hash(password);
       const user = await db
         .insert(users)
-        .values({ username, email, password: hashedPassword });
+        .values({ username, email, password: hashedPassword })
+        .returning();
 
       return (
         <BaseHtml>
