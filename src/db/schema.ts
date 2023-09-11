@@ -5,6 +5,7 @@ import {
   varchar,
   timestamp,
   boolean,
+  text,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -14,6 +15,7 @@ export const users = pgTable("users", {
   emailverified: boolean("emailverified").default(false),
   password: varchar("password", { length: 60 }).notNull(),
   joined: timestamp("joined").defaultNow(),
+  jwt: text("jwt"),
 });
 
 export type SelectUser = InferSelectModel<typeof users>;

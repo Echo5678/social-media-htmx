@@ -14,6 +14,7 @@ import { BaseHtml } from "./pages/basehtml";
 import HomePage from "./pages/homepage";
 import SignUpPage from "./pages/signinpage";
 import SocialPage from "./pages/socialpage";
+import { sql } from "drizzle-orm";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -36,14 +37,36 @@ const app = new Elysia()
   )
   .use(cookie())
   .use(html())
+  .derive(async ({ jwt, cookie: { user } }) => {
+    const userJWT: any = await jwt.verify(user);
+    const [User] = await db
+      .select({
+        username: users.username,
+        email: users.email,
+      })
+      .from(users)
+      .where(sql`${users.email} = ${userJWT.email} and ${user} = ${users.jwt}`)
+      .limit(1);
+    return {
+      userAuthorized: User,
+    };
+  })
   .get(
     "/",
-    ({ html }) =>
-      html(
+    ({ html, userAuthorized, set }) => {
+      const User = userAuthorized;
+      if (User) {
+        set.status = 301;
+        set.redirect = "/home";
+        return;
+      }
+
+      return html(
         <BaseHtml>
           <HomePage />
         </BaseHtml>
-      ),
+      );
+    },
     {
       detail: {
         summary: "Home Page",
@@ -53,11 +76,20 @@ const app = new Elysia()
   )
   .get(
     "/sign-up",
-    ({ html }) => (
-      <BaseHtml>
-        <SignUpPage />
-      </BaseHtml>
-    ),
+    ({ userAuthorized, set }) => {
+      const User = userAuthorized;
+      if (User) {
+        set.status = 301;
+        set.redirect = "/home";
+        return;
+      }
+
+      return (
+        <BaseHtml>
+          <SignUpPage />
+        </BaseHtml>
+      );
+    },
     {
       detail: {
         summary: "Sign Up Page",
@@ -98,25 +130,27 @@ const app = new Elysia()
         );
       }
       const hashedPassword = await Bun.password.hash(password);
+      const JWT = await jwt.sign({ username, email });
+
       const user: SelectUser[] = await db
         .insert(users)
-        .values({ username, email, password: hashedPassword })
+        .values({
+          username,
+          email,
+          password: hashedPassword,
+          jwt: JWT,
+        })
         .returning();
 
       if (user) {
-        set.status = 201;
-        setCookie("user", await jwt.sign({}), {
+        setCookie("user", JWT, {
           httpOnly: true,
           maxAge: WEEK,
           sameSite: "strict",
         });
+        set.status = 307;
+        set.redirect = "/home";
       }
-
-      return (
-        <BaseHtml>
-          <SocialPage />
-        </BaseHtml>
-      );
     },
     {
       body: t.Object({
@@ -137,6 +171,19 @@ const app = new Elysia()
       },
     }
   )
+  .get("/home", async ({ userAuthorized, set }) => {
+    const user = userAuthorized;
+    if (!user) {
+      set.status = 307;
+      set.redirect = "/sign-in";
+    }
+
+    return (
+      <BaseHtml>
+        <SocialPage />
+      </BaseHtml>
+    );
+  })
   .onError(({ code, error, set }) => {
     if (code === "NOT_FOUND") {
       set.status = 404;
