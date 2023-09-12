@@ -9,7 +9,7 @@ bun install
 To run:
 
 ```bash
-bun run ./src/index.ts
+bun run ./src/index.tsx
 ```
 
 Elysia is the Bun Framework being used.
