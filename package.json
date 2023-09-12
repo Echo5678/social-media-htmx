@@ -2,6 +2,9 @@
   "name": "codev",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun run --hot ./src/index.tsx"
+  },
   "devDependencies": {
     "@types/validator": "^13.11.1",
     "bun-types": "latest"
@@ -14,10 +17,10 @@
     "@elysiajs/html": "^0.6.4",
     "@elysiajs/jwt": "^0.6.3",
     "@elysiajs/swagger": "^0.6.1",
+    "@kitajs/html": "^2.1.2",
     "drizzle-orm": "^0.28.6",
     "elysia": "^0.6.19",
     "postgres": "^3.3.5",
-    "typed-html": "^3.0.1",
     "validator": "^13.11.0"
   }
 }

@@ -1,4 +1,4 @@
-export default function SignInPage() {
+export default function SignUpPage() {
   return (
     <form
       class="flex justify-center items-center flex-col space-y-4 min-h-screen px-4"
@@ -8,6 +8,12 @@ export default function SignInPage() {
     >
       <h1 class="text-3xl font-medium">Log in with Co-Dev</h1>
       <div id="error-message"></div>
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        class="outline-none bg-transparent border dark:border-zinc-900 text-lg px-3 py-3.5 rounded-md w-full sm:w-1/2 md:w-1/3 xl:w-1/4"
+      />
       <input
         type="email"
         name="email"
@@ -27,8 +33,8 @@ export default function SignInPage() {
         Sign In
       </button>
       <span>
-        Never used CoDev?{" "}
-        <a href="/sign-up" class="text-blue-500 hover:underline" preload>
+        Already have an account?{" "}
+        <a href="/sign-in" class="text-blue-500 hover:underline" preload>
           Sign up
         </a>
       </span>

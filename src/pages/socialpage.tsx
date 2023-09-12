@@ -1,5 +1,15 @@
-import * as elements from "typed-html";
-
 export default function SocialPage() {
-  return <div></div>;
+  return (
+    <div hx-ext="ws" ws-connect="/message">
+      <form id="form" ws-send>
+        <input
+          name="chat_message"
+          class="bg-transparent outline-none text-black dark:text-white border-white border"
+        />
+      </form>
+      <div id="chat_message" hx-swap-oob="beforeend">
+        ...
+      </div>
+    </div>
+  );
 }

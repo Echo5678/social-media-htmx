@@ -1,4 +1,4 @@
-import { Elysia, t } from "elysia";
+import { Elysia, t, ws } from "elysia";
 import { html } from "@elysiajs/html";
 import { swagger } from "@elysiajs/swagger";
 import { cookie } from "@elysiajs/cookie";
@@ -8,13 +8,12 @@ import { db } from "./db/client";
 import { users, SelectUser, InsertUser } from "./db/schema";
 import validator from "validator";
 
-import * as elements from "typed-html";
-
 import { BaseHtml } from "./pages/basehtml";
 import HomePage from "./pages/homepage";
-import SignUpPage from "./pages/signinpage";
+import SignUpPage from "./pages/signuppage";
 import SocialPage from "./pages/socialpage";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
+import Signinpage from "./pages/signinpage";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -35,11 +34,26 @@ const app = new Elysia()
       secret: process.env.JWT_SECRET as string,
     })
   )
-  .use(cookie())
+  .use(
+    cookie({
+      httpOnly: true,
+      maxAge: WEEK,
+      sameSite: "strict",
+      signed: true,
+      secret: process.env.COOKIE_SECRET as string,
+    })
+  )
   .use(html())
+  .use(ws())
   .derive(async ({ jwt, cookie: { user } }) => {
+    let userAuthorized;
+
+    if (!user) {
+      return userAuthorized;
+    }
+
     const userJWT: any = await jwt.verify(user);
-    const [User] = await db
+    const User: any = await db
       .select({
         username: users.username,
         email: users.email,
@@ -47,21 +61,24 @@ const app = new Elysia()
       .from(users)
       .where(sql`${users.email} = ${userJWT.email} and ${user} = ${users.jwt}`)
       .limit(1);
+
+    if (User) {
+      userAuthorized = User[0];
+    }
     return {
-      userAuthorized: User,
+      userAuthorized,
     };
   })
   .get(
     "/",
-    ({ html, userAuthorized, set }) => {
-      const User = userAuthorized;
-      if (User) {
+    ({ userAuthorized, set }) => {
+      if (userAuthorized) {
         set.status = 301;
         set.redirect = "/home";
         return;
       }
 
-      return html(
+      return (
         <BaseHtml>
           <HomePage />
         </BaseHtml>
@@ -143,11 +160,7 @@ const app = new Elysia()
         .returning();
 
       if (user) {
-        setCookie("user", JWT, {
-          httpOnly: true,
-          maxAge: WEEK,
-          sameSite: "strict",
-        });
+        setCookie("user", JWT);
         set.status = 307;
         set.redirect = "/home";
       }
@@ -155,6 +168,109 @@ const app = new Elysia()
     {
       body: t.Object({
         username: t.String(),
+        email: t.String(),
+        password: t.String(),
+      }),
+      detail: {
+        summary: "Sign Up Route",
+        tags: ["Auth, Sign Up"],
+      },
+      error({ code, error }) {
+        if (code === "VALIDATION") {
+          console.log(error.all);
+          const name = error.all.find((x) => x.path === "/name");
+          if (name) console.log(name);
+        }
+      },
+    }
+  )
+  .get(
+    "/sign-in",
+    ({ userAuthorized, set }) => {
+      const User = userAuthorized;
+      if (User) {
+        set.status = 301;
+        set.redirect = "/home";
+        return;
+      }
+
+      return (
+        <BaseHtml>
+          <Signinpage />
+        </BaseHtml>
+      );
+    },
+    {
+      detail: {
+        summary: "Sign Up Page",
+        tags: ["Auth, Sign Up"],
+      },
+    }
+  )
+  .post(
+    "/sign-in",
+    async ({ body: { email, password }, setCookie, set, jwt }) => {
+      if (!validator.isEmail(email)) {
+        set.status = 400;
+        return (
+          <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+            Please provide valid email.
+          </p>
+        );
+      }
+      if (!validator.isStrongPassword(password)) {
+        set.status = 400;
+        return (
+          <div class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+            Password must be:
+            <ul>
+              <li>Minimum 8 characters</li>
+              <li>Minimum 1 uppercase and lowercase letter</li>
+              <li>Minimum 1 number and symbol.</li>
+            </ul>
+          </div>
+        );
+      }
+
+      const user = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1);
+
+      if (!user) {
+        set.status = 400;
+        return (
+          <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+            Error Authenticating
+          </p>
+        );
+      }
+
+      const isMatch = await Bun.password.verify(password, user[0].password);
+
+      if (!isMatch) {
+        set.status = 400;
+        return (
+          <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+            Error Authenticating
+          </p>
+        );
+      }
+
+      const JWT = await jwt.sign({
+        username: user[0].username as string,
+        email,
+      });
+
+      if (user) {
+        setCookie("user", JWT);
+        set.status = 307;
+        set.redirect = "/home";
+      }
+    },
+    {
+      body: t.Object({
         email: t.String(),
         password: t.String(),
       }),
@@ -183,6 +299,15 @@ const app = new Elysia()
         <SocialPage />
       </BaseHtml>
     );
+  })
+  .ws("/message", {
+    open(ws) {
+      console.log("CONNECTED");
+    },
+    message(ws, message) {
+      console.log(message);
+      ws.send(<p>Message Sent</p>);
+    },
   })
   .onError(({ code, error, set }) => {
     if (code === "NOT_FOUND") {
