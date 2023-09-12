@@ -302,11 +302,13 @@ const app = new Elysia()
   })
   .ws("/message", {
     open(ws) {
-      console.log("CONNECTED");
+      console.log("Connected");
     },
-    message(ws, message) {
-      console.log(message);
-      ws.send(<p>Message Sent</p>);
+    message(ws, message: any) {
+      ws.send(`
+        <div id="chat-message" class="dark:text-white text-black">
+          ${message.chat_message}
+        </div>`);
     },
   })
   .onError(({ code, error, set }) => {
@@ -314,9 +316,9 @@ const app = new Elysia()
       set.status = 404;
       return (
         <BaseHtml>
-          <p class="text-4xl md:text-5xl font-bold text-center my-auto">
+          <div class="text-4xl md:text-5xl font-bold text-center my-auto">
             Error 404: Page not found
-          </p>
+          </div>
         </BaseHtml>
       );
     }

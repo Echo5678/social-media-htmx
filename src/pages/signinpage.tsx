@@ -2,6 +2,7 @@ export default function SignInPage() {
   return (
     <form
       class="flex justify-center items-center flex-col space-y-4 min-h-screen px-4"
+      hx-boost="true"
       hx-post="/sign-in"
       hx-trigger="submit"
       hx-target-400="#error-message"
@@ -28,7 +29,12 @@ export default function SignInPage() {
       </button>
       <span>
         Never used CoDev?{" "}
-        <a href="/sign-up" class="text-blue-500 hover:underline" preload>
+        <a
+          href="/sign-up"
+          hx-push-url="true"
+          class="text-blue-500 hover:underline"
+          preload="mouseover"
+        >
           Sign up
         </a>
       </span>

@@ -2,7 +2,8 @@ export default function SignUpPage() {
   return (
     <form
       class="flex justify-center items-center flex-col space-y-4 min-h-screen px-4"
-      hx-post="/sign-in"
+      hx-post="/sign-up"
+      hx-boost="true"
       hx-trigger="submit"
       hx-target-400="#error-message"
     >
@@ -34,7 +35,12 @@ export default function SignUpPage() {
       </button>
       <span>
         Already have an account?{" "}
-        <a href="/sign-in" class="text-blue-500 hover:underline" preload>
+        <a
+          href="/sign-in"
+          hx-push-url="true"
+          class="text-blue-500 hover:underline"
+          preload="mouseover"
+        >
           Sign up
         </a>
       </span>

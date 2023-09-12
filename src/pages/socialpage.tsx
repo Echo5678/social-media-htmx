@@ -7,7 +7,7 @@ export default function SocialPage() {
           class="bg-transparent outline-none text-black dark:text-white border-white border"
         />
       </form>
-      <div id="chat_message" hx-swap-oob="beforeend">
+      <div id="chat-message" hx-swap-oob="beforeend">
         ...
       </div>
     </div>
