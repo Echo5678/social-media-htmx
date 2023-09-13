@@ -4,10 +4,20 @@ export default function LandingPage() {
       <header hx-boost="true" class="pt-4 flex justify-between items-center">
         <a class="text-2xl font-semibold hover:cursor-pointer">Co-Dev</a>
         <nav class="flex space-x-6 font-semibold items-center text-[#444444] dark:text-[#B1B1B1]">
-          <a href="/pricing" preload="mouseover" class="hover:text-white">
+          <a
+            href="/pricing"
+            hx-push-url="true"
+            preload="mouseover"
+            class="hover:text-white"
+          >
             Pricing
           </a>
-          <a href="/sign-in" preload="mouseover" class="hover:text-white">
+          <a
+            href="/sign-in"
+            hx-push-url="true"
+            preload="mouseover"
+            class="hover:text-white"
+          >
             Log in
           </a>
           <a
@@ -33,6 +43,7 @@ export default function LandingPage() {
         <a
           href="/login"
           preload="mouseover"
+          hx-push-url="true"
           class="dark:text-[#1e1e1e] bg-black text-white dark:bg-white py-1.5 px-4 rounded-md hover:dark:bg-zinc-100 hover:bg-zinc-900 active:shadow-inner"
         >
           Start Collaborating
@@ -40,6 +51,7 @@ export default function LandingPage() {
         <a
           href="/pricing"
           preload="mouseover"
+          hx-push-url="true"
           class="text-[#444444] dark:text-[#B1B1B1] border border-[#444444] dark:border-[#B1B1B1] py-1.5 px-4 rounded-md hover:bg-zinc-100 hover:dark:bg-zinc-900 active:shadow-inner"
         >
           Try for free
