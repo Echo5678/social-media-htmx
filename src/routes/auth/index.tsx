@@ -41,6 +41,10 @@ export const auth = (app: Elysia) =>
       }
 
       const userJWT: any = await jwt.verify(user);
+      if (!userJWT || !user) {
+        return userAuthorized;
+      }
+
       const User: any = await db
         .select({
           username: users.username,
@@ -48,7 +52,7 @@ export const auth = (app: Elysia) =>
         })
         .from(users)
         .where(
-          sql`${users.email} = ${userJWT.email} and ${user} = ${users.jwt}`
+          sql`${users.email} = ${userJWT.email} and ${users.jwt} = ${user}`
         )
         .limit(1);
 

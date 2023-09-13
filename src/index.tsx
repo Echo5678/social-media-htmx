@@ -23,8 +23,7 @@ const app = new Elysia()
   .ws("/message", {
     open(ws) {
       console.log("Connected");
-      ws.subscribe("group-chat");
-      ws.publish("group-chat", "<p>User connect</p>");
+      ws.subscribe("group-chat").publish("group-chat", "lolworking now");
     },
     message(ws, message: any) {
       ws.publish(
