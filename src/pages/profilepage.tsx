@@ -28,7 +28,7 @@ export default function ProfilePage() {
           </h2>
         </div>
       </div>
-      <article class="text-sm text-[#444444] dark:text-[#B1B1B1] border-x border-[#444444] dark:border-[#222222] pt-6 xl:mt-8  pl-2.5 items-center">
+      <article class="text-sm text-[#444444] dark:text-[#B1B1B1] border-x border-[#444444] dark:border-[#222222] pt-6 xl:pt-8  pl-2.5 items-center">
         <section class="pr-2 py-1 w-full xl:w-[75%]">
           I'm a 16 year old Software Developer from Washington. I like Fried
           chicken and Eggs. I've worked on a couple projects a simple NextJS
