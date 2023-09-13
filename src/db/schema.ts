@@ -18,5 +18,16 @@ export const users = pgTable("users", {
   jwt: text("jwt"),
 });
 
+export const projects = pgTable("projects", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 30 }),
+  description: varchar("description", { length: 2000 }),
+  username: text("username"),
+  likes: text("likes").array(),
+});
+
+export type SelectProject = InferSelectModel<typeof projects>;
+export type InsertProject = InferSelectModel<typeof projects>;
+
 export type SelectUser = InferSelectModel<typeof users>;
 export type InsertUser = InferSelectModel<typeof users>;

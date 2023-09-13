@@ -7,6 +7,7 @@ export const BaseHtml = ({ children }: PropsWithChildren) => `
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CoDev</title>
+  <meta name="description" content="Social Media platform for finding developers interested in the same technologies as you">
   <script src="https://unpkg.com/htmx.org@1.9.5"></script>
   <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
   <script src="https://cdn.tailwindcss.com"></script>
