@@ -10,6 +10,7 @@ import { sql } from "drizzle-orm";
 import { BaseHtml } from "../../pages/basehtml";
 import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
+import ProfilePage from "../../pages/profilepage";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -89,6 +90,19 @@ export const home = (app: Elysia) =>
       return (
         <BaseHtml>
           <HomePage />
+        </BaseHtml>
+      );
+    })
+    .get("/profile", async ({ userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+
+      return (
+        <BaseHtml>
+          <ProfilePage />
         </BaseHtml>
       );
     });
