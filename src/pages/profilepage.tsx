@@ -20,7 +20,7 @@ export default function ProfilePage() {
           alt="Profile Picture"
         />
         <div class="absolute left-28 bottom-2">
-          <h1 class="text-2xl font-semibold [text-shadow:_2px_3px_3px_rgb(0_0_0_/_40%)]">
+          <h1 class="text-2xl  md:text-3xl font-semibold [text-shadow:_2px_3px_3px_rgb(0_0_0_/_40%)]">
             Echo Evader
           </h1>
           <h2 class="text-sm [text-shadow:_1px_2px_2px_rgb(0_0_0_/_40%)]">

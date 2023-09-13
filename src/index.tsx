@@ -22,15 +22,16 @@ const app = new Elysia()
   .use(home)
   .ws("/message", {
     open(ws) {
+      console.log("Connected");
       ws.subscribe("group-chat");
-      console.log("CONNECTED");
-      ws.publish("group-chat", <p>User connect</p>);
+      ws.publish("group-chat", "<p>User connect</p>");
     },
     message(ws, message: any) {
       ws.publish(
-        <div id="chat-message" class="dark:text-white text-black">
-          {message.chat_message}
-        </div>
+        "group-chat",
+        `<div id="chat-message" class="dark:text-white text-black">
+          ${message.chat_message}
+        </div>`
       );
     },
   })
