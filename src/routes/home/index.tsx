@@ -8,8 +8,8 @@ import { users } from "../../db/schema";
 import { sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/basehtml";
+import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
-import SocialPage from "../../pages/socialpage";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -68,7 +68,7 @@ export const home = (app: Elysia) =>
 
         return (
           <BaseHtml>
-            <HomePage />
+            <LandingPage />
           </BaseHtml>
         );
       },
@@ -88,7 +88,7 @@ export const home = (app: Elysia) =>
 
       return (
         <BaseHtml>
-          <SocialPage />
+          <HomePage />
         </BaseHtml>
       );
     });

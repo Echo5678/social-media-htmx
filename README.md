@@ -16,8 +16,6 @@ Elysia is the Bun Framework being used.
 
 Database is PostgreSQL uses Drizzle ORM.
 
-Typed HTML is used for React like syntax.
-
 API Docs:
 
 ```
