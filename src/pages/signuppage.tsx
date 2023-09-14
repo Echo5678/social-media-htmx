@@ -7,7 +7,7 @@ export default function SignUpPage() {
       hx-trigger="submit"
       hx-target-400="#error-message"
     >
-      <h1 class="text-3xl font-medium">Log in with Co-Dev</h1>
+      <h1 class="text-3xl font-medium">Sign up with Co-Dev</h1>
       <div id="error-message"></div>
       <input
         type="text"

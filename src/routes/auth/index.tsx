@@ -41,7 +41,8 @@ export const auth = (app: Elysia) =>
       }
 
       const userJWT: any = await jwt.verify(user);
-      if (!userJWT || !user) {
+
+      if (!userJWT) {
         return userAuthorized;
       }
 

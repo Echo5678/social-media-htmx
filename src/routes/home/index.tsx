@@ -41,6 +41,11 @@ export const home = (app: Elysia) =>
       }
 
       const userJWT: any = await jwt.verify(user);
+
+      if (!userJWT) {
+        return userAuthorized;
+      }
+
       const User: any = await db
         .select({
           username: users.username,
