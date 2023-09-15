@@ -1,9 +1,9 @@
-import Elysia from "elysia";
+import { Elysia, t } from "elysia";
 import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
-import { users } from "../../db/schema";
+import { InsertProject, projects, users } from "../../db/schema";
 import { sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/basehtml";
@@ -61,25 +61,6 @@ export const project = (app: Elysia) =>
         userAuthorized,
       };
     })
-    .get("/languages", () => {
-      const languages = [
-        "Rust",
-        "Go",
-        "C/C++",
-        "Python",
-        "JavaScript",
-        "Java",
-        "Zig",
-        "Mojo",
-        "Haskell",
-        "Ruby",
-      ];
-      console.log(
-        languages.map((language) => (
-          <option value={language}>{language}</option>
-        ))
-      );
-    })
     .get("/project/form", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
@@ -93,12 +74,37 @@ export const project = (app: Elysia) =>
         </BaseHtml>
       );
     })
-    .post("/project", async ({ userAuthorized, set, body }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
+    .post(
+      "/project",
+      async ({
+        userAuthorized,
+        set,
+        body: { name, description, privacy, language },
+      }) => {
+        const user = userAuthorized;
+        if (!user) {
+          set.status = 307;
+          set.redirect = "/sign-in";
+        }
+        const project = await db
+          .insert(projects)
+          .values({
+            name,
+            description,
+            privacy,
+            languages: [language],
+            username: user.username,
+            likes: [],
+          })
+          .returning();
+        return <div></div>;
+      },
+      {
+        body: t.Object({
+          name: t.String(),
+          description: t.String(),
+          privacy: t.String(),
+          language: t.String(),
+        }),
       }
-      console.log(body);
-      return <div></div>;
-    });
+    );

@@ -82,11 +82,15 @@ export default function ProjectForm() {
             id="languages"
             class="appearance-none px-2 py-3 bg-transparent outline-none border border-zinc-200 dark:border-zinc-800  block text-[#444444] dark:text-[#B1B1B1]  rounded-md w-full text-center mt-3"
             name="language"
-            hx-get="/languages"
-            hx-swap="beforeend"
-            hx-trigger="load"
           >
             <option value="No Code">No Code</option>
+            <option value="C/C++">C/C++</option>
+            <option value="Rust">Rust</option>
+            <option value="Go">Go</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Python">Python</option>
+            <option value="Haskell">Haskell</option>
+            <option value="Mojo">Mojo</option>
           </select>
         </div>
       </div>
