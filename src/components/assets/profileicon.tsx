@@ -1,10 +1,11 @@
-const ProfileIcon = () => {
+const ProfileIcon = ({ className }: { className: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="32"
       height="32"
       viewBox="0 0 32 32"
+      class={className}
     >
       <path
         fill="currentColor"

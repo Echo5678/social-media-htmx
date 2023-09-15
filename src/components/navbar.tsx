@@ -1,61 +1,22 @@
 import SearchIcon from "../components/assets/searchicon";
 import HomeIcon from "../components/assets/homeicon";
 import NotificationIcon from "../components/assets/notificationicon";
-import ExploreIcon from "../components/assets/exploreicon";
 import MessageIcon from "../components/assets/messageicon";
-import BlogIcon from "../components/assets/blogicon";
-import ProfileIcon from "../components/assets/profileicon";
 
 const Navbar = () => {
   return (
-    <nav class=" flex flex-col w-1/5 justify-center">
-      <div class="h-[9%] justify-center text-[3vh]">CoDev</div>
-      <div class="h-[65%] justify-between flex flex-col">
-        <div class="flex flex-row items-center w-[40%]">
-          <div class="flex flex-1">
-            <HomeIcon />
-          </div>
-          <a class="text-[3vh] flex flex-3">Home</a>
-        </div>
-        <div class="flex flex-row items-center w-[45%]">
-          <div class="flex flex-1">
-            <SearchIcon />
-          </div>
-          <a class="text-[3vh]">Search</a>
-        </div>
-        <div class="flex flex-row items-center w-[47%]">
-          <div class="flex flex-1">
-            <ExploreIcon />
-          </div>
-          <a class="text-[3vh]">Explore</a>
-        </div>
-        <div class="flex flex-row items-center w-[35%]">
-          <div class="flex flex-1">
-            <BlogIcon />
-          </div>
-          <a class="text-[3vh]">Blog</a>
-        </div>
-        <div class="flex flex-row items-center w-[60%]">
-          <div class="flex flex-1">
-            <MessageIcon />
-          </div>
-          <a class="text-[3vh]">Messages</a>
-        </div>
-        <div class="flex flex-row items-center w-[48%]">
-          <div class="flex flex-1">
-            <NotificationIcon />
-          </div>
-          <a class="text-[3vh]">Activity</a>
-        </div>
-        <div class="flex flex-row items-center w-[42%]">
-          <div class="flex flex-1">
-            <ProfileIcon />
-          </div>
-          <a class="text-[3vh]">Profile</a>
-        </div>
-        <button class="bg-gradient-to-r from-purple-400 to-pink-600 w-[80%] text-[2vh] rounded-full p-[4%]">
-          Post
+    <nav class=" text-[#fafafa] bg-[#0e0e0e] fixed bottom-0 border-t-2 border-[#2f3336] w-[100%] md:invisible">
+      <div
+        id="icons"
+        class="flex flex-row justify-around w-[100%] h-[10vh] items-center"
+      >
+        <HomeIcon className="" />
+        <SearchIcon className="" />
+        <button class="bg-gradient-to-r from-purple-400 to-pink-600 rounded-full text-[3vh] w-[10%] justify-center items-center">
+          +
         </button>
+        <NotificationIcon className="" />
+        <MessageIcon className="" />
       </div>
     </nav>
   );
