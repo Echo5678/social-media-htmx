@@ -27,12 +27,8 @@ input[type="radio"] + label:hover span {
 }
 
 input[type="radio"]:checked + label span {
-  background-color: #3490dc;
+  background-color: #000000;
   box-shadow: 0px 0px 0px 2px white inset;
-}
-
-input[type="radio"]:checked + label {
-  color: #3490dc;
 }
 </style>
 <body 

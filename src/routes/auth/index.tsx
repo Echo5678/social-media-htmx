@@ -17,6 +17,8 @@ const WEEK = 60 * 60 * 24 * 7;
 
 export const auth = (app: Elysia) =>
   app
+
+    .use(html())
     .use(
       jwt({
         name: "jwt",
@@ -32,7 +34,6 @@ export const auth = (app: Elysia) =>
         secret: process.env.COOKIE_SECRET as string,
       })
     )
-    .use(html())
     .derive(async ({ jwt, cookie: { user } }) => {
       let userAuthorized;
 

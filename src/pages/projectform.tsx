@@ -1,22 +1,13 @@
 export default function ProjectForm() {
   return (
-    <form class=" md:w-3/4 xl:w-2/3  mx-auto p-6 ">
-      <div class="flex justify-between">
-        <div>
-          <h1 class="font-medium text-3xl">Create a Project</h1>
-          <span class="block text-[#444444] dark:text-[#B1B1B1] pt-2">
-            A Project is a description of your idea and the technologies that
-            will be used to create it.
-          </span>
-        </div>
-        <img
-          src="https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png"
-          width="75"
-          height="75"
-          class="bg-zinc-200 dark:bg-zinc-800 p-1 rounded-full md:ml-6"
-          alt="Profile Picture"
-        />
-      </div>
+    <form class=" md:w-3/4 xl:w-2/3  mx-auto p-6 " hx-post="/project">
+      <header>
+        <h1 class="font-medium text-3xl">Create a Project</h1>
+        <span class="block text-[#444444] dark:text-[#B1B1B1] pt-2 text-sm">
+          A Project is a description of your idea and the technologies that will
+          be used to create it.
+        </span>
+      </header>
       <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
       <div>
         <label class="font-medium" for="name">
@@ -71,7 +62,6 @@ export default function ProjectForm() {
               name="privacy"
               value="private"
               class="hidden"
-              checked
             />
             <label for="private" class="flex items-center cursor-pointer">
               <span class="w-4 h-4 inline-block mr-1 rounded-full border border-grey"></span>
@@ -91,15 +81,21 @@ export default function ProjectForm() {
           <select
             id="languages"
             class="appearance-none px-2 py-3 bg-transparent outline-none border border-zinc-200 dark:border-zinc-800  block text-[#444444] dark:text-[#B1B1B1]  rounded-md w-full text-center mt-3"
+            name="language"
+            hx-get="/languages"
+            hx-swap="beforeend"
+            hx-trigger="load"
           >
-            <option value="react">React</option>
-            <option value="angular">Angular</option>
+            <option value="No Code">No Code</option>
           </select>
         </div>
       </div>
       <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
       <div class="justify-end flex">
-        <button class="bg-black text-white dark:bg-white dark:text-black px-3 py-2 rounded-md  font-semibold mt-2">
+        <button
+          class="bg-black text-white dark:bg-white dark:text-black px-3 py-2 rounded-md  font-semibold mt-2"
+          type="submit"
+        >
           Create project
         </button>
       </div>
