@@ -12,6 +12,7 @@ import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
 import ProfilePage from "../../pages/profilepage";
 import BlogPost from "../../pages/blogpost";
+import ProjectForm from "../../pages/projectform";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -122,6 +123,19 @@ export const home = (app: Elysia) =>
       return (
         <BaseHtml>
           <BlogPost />
+        </BaseHtml>
+      );
+    })
+    .get("/project/form", async ({ userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+
+      return (
+        <BaseHtml>
+          <ProjectForm />
         </BaseHtml>
       );
     });

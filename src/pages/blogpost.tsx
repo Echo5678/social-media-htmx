@@ -1,10 +1,10 @@
 export default function BlogPost() {
   return (
     <main class=" md:w-3/4 xl:w-3/5 mx-auto px-2 md:px-0">
-      <h1 class="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-center pt-10 md:pt-14">
+      <h1 class="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-center pt-10 md:pt-14 tracking-wide">
         Why Tailwind is the worst CSS Library I've ever used (JK).
       </h1>
-      <div class="flex justify-between items-center pt-3">
+      <div class="flex justify-between items-center pt-6 xl:pt-10">
         <div class="flex items-center">
           <img
             src="https://yt3.ggpht.com/dR6qqf39NiziFmXdMlYnRhVsrM2Qb0b9eQPNhoMICKvZ40Zdxb5zXkqKxX84k_yv7jXojhI1PQ=s108-c-k-c0x00ffffff-no-rj"
@@ -13,7 +13,7 @@ export default function BlogPost() {
             class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 rounded-full"
             alt="Profile Picture"
           />
-          <h2>@echo</h2>
+          <h2 class="font-semibold">@echo</h2>
         </div>
         <div>
           <span class="font-medium pr-1 text-white">Views:</span>
