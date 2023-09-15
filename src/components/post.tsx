@@ -16,16 +16,10 @@ const Post = ({
   technologies,
 }: PostProps) => {
   return (
-    <div
-      id="post-container"
-      class="w-[90%] p-[5%] mr-auto ml-auto mt-[3%] border-[1px] rounded-lg md:border-r-2 md:border-l-2"
-    >
-      <div
-        id="post-top"
-        class=" flex flex-row items-center justify-center items-center w-[90%]"
-      >
-        <div id="post-info" class="flex flex-col w-[100%]">
-          <div id="post-creator" class="flex flex-row items-center ">
+    <div class="w-[90%] p-[5%] mr-auto ml-auto mt-[3%] border-[1px] rounded-lg md:border-r-2 md:border-l-2">
+      <div class=" flex flex-row items-center justify-center items-center w-[90%]">
+        <div class="flex flex-col w-[100%]">
+          <div class="flex flex-row items-center ">
             <div class="items-center w-[100%] flex flex-row md:w-[45%]">
               <img
                 src={profilePic}
@@ -51,7 +45,7 @@ const Post = ({
         </div>
       </div>
 
-      <div id="post-analytics"></div>
+      <div></div>
     </div>
   );
 };

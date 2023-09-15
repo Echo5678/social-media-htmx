@@ -5,7 +5,7 @@ import MessageIcon from "../components/assets/messageicon";
 
 const Navbar = () => {
   return (
-    <nav class=" text-[#fafafa] bg-[#0e0e0e] fixed bottom-0 border-t-2 border-[#2f3336] w-[100%] md:invisible">
+    <nav class=" text-[#fafafa] bg-[#0e0e0e] fixed bottom-0 border-t-2 border-[#2f3336] w-[100%] lg:invisible">
       <div
         id="icons"
         class="flex flex-row justify-around w-[100%] h-[10vh] items-center"
