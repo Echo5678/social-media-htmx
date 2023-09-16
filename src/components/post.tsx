@@ -16,7 +16,7 @@ const Post = ({
   technologies,
 }: PostProps) => {
   return (
-    <div class="w-[90%] p-[5%] mr-auto ml-auto mt-[3%] border-[1px] rounded-lg md:border-r-2 md:border-l-2">
+    <div class="w-[90%] p-[5%] mr-auto ml-auto mt-[3%] border-zinc-800  rounded-lg border-2">
       <div class=" flex flex-row items-center justify-center items-center w-[90%]">
         <div class="flex flex-col w-[100%]">
           <div class="flex flex-row items-center ">

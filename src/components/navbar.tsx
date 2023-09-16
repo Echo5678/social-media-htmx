@@ -6,7 +6,7 @@ import PlusIcon from "./assets/plusicon";
 
 const Navbar = () => {
   return (
-    <footer class=" bg-transparent fixed bottom-0 border-t-2 border-[#2f3336] w-full md:hidden">
+    <footer class=" bg-[#0e0e0e] opacity-90 fixed bottom-0 border-t-2 border-[#2f3336] w-full md:hidden">
       <nav class="relative">
         <a
           href="/project/form"
