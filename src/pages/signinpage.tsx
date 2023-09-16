@@ -4,6 +4,7 @@ export default function SignInPage() {
       class="flex justify-center items-center flex-col space-y-4 min-h-screen px-4"
       hx-boost="true"
       hx-post="/sign-in"
+      hx-replace-url="/home"
       hx-trigger="submit"
       hx-target-400="#error-message"
     >

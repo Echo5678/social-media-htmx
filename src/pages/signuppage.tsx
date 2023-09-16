@@ -4,6 +4,7 @@ export default function SignUpPage() {
       class="flex justify-center items-center flex-col space-y-4 min-h-screen px-4"
       hx-post="/sign-up"
       hx-boost="true"
+      hx-replace-url="/home"
       hx-trigger="submit"
       hx-target-400="#error-message"
     >
