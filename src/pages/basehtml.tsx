@@ -8,13 +8,22 @@ export const BaseHtml = ({ children }: PropsWithChildren) => `
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CoDev</title>
   <meta name="description" content="Social Media platform for finding developers interested in the same technologies as you">
-  <link  ref="stylesheet" type="text/css" href="../styles/project.css">
   <script src="https://unpkg.com/htmx.org@1.9.5"></script>
   <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/preload.js"></script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .nav-link::after{
+        @apply content-[''] bg-white h-[3px] w-[0%] left-0 -bottom-[5px] rounded-xl absolute duration-300;
+      }
+      .nav-link:hover::after{
+        @apply w-[100%];
+      }
+    }
+  </style>
 </head>
 <style>
 input[type="radio"] + label span {
