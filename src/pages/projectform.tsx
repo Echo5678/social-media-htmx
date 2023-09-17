@@ -17,7 +17,7 @@ export default function ProjectForm() {
           id="name"
           type="text"
           name="name"
-          class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1"
+          class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
         />
         <p class="pt-2 pb-3">
           Good Project names are simple and creative. Keep it simple.
@@ -30,7 +30,7 @@ export default function ProjectForm() {
           type="text"
           name="description"
           maxlength="1000"
-          class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full block mt-1.5 p-1"
+          class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full block mt-1.5 p-1 focus:border-blue-500"
         />
       </div>
       <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-6 mb-2"></div>

@@ -3,12 +3,13 @@ import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
-import { InsertProject, projects, users } from "../../db/schema";
-import { sql } from "drizzle-orm";
+import { projects, users } from "../../db/schema";
+import { eq, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/basehtml";
 import ProjectForm from "../../pages/projectform";
 import html from "@elysiajs/html";
+import ProjectPage from "../../pages/projectpage";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -108,4 +109,13 @@ export const project = (app: Elysia) =>
           language: t.String(),
         }),
       }
-    );
+    )
+    .get("/project/:id", async ({ params: { id } }) => {
+      const [project] = await db
+        .select()
+        .from(projects)
+        .where(eq(projects.id, Number(id)));
+      console.log(project);
+
+      return <ProjectPage project={project} />;
+    });
