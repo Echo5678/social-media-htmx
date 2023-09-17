@@ -86,6 +86,7 @@ export const project = (app: Elysia) =>
           set.status = 307;
           set.redirect = "/sign-in";
         }
+
         const project = await db
           .insert(projects)
           .values({

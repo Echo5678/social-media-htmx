@@ -4,7 +4,7 @@ import cookie from "@elysiajs/cookie";
 import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
-import { users } from "../../db/schema";
+import { users, projects } from "../../db/schema";
 import { sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/basehtml";
@@ -99,6 +99,7 @@ export const home = (app: Elysia) =>
         </BaseHtml>
       );
     })
+
     .get("/profile", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
