@@ -1,6 +1,7 @@
+import DownVoteRegular from "../components/assets/downvoteregular";
+import UpVoteRegular from "../components/assets/upvoteregular";
 import Navbar from "../components/navbar";
 import SideBar from "../components/sidebar";
-import Post from "../components/post";
 
 const post = [
   {
@@ -35,16 +36,6 @@ export default function HomePage() {
             </a>
           </nav>
           <ul class="flex px-3">
-<<<<<<< HEAD
-            {post.map((item) => (
-              <Post
-                handle={item.handle}
-                profilePic={item.profilePic}
-                title={item.title}
-                description={item.description}
-              />
-            ))}
-=======
             <li class="bg-[#010101] border border-zinc-800 p-5 rounded-lg w-full sm:w-[50vw] md:w-[40vw] hover:scale-105 transition duration-500 hover:cursor-pointer">
               <a
                 href="/project/3"
@@ -77,11 +68,15 @@ export default function HomePage() {
                   a free open source Game Engine.
                 </p>
               </a>
-              <button hx-patch="/like/3" hx-swap="innerHTML">
-                Not liked
-              </button>
+              <div class="flex flex-row">
+                <button hx-patch="/like/3" hx-swap="innerHTML">
+                  <UpVoteRegular />
+                </button>
+                <button hx-patch="/like/3" hx-swap="innerHTML">
+                  <DownVoteRegular />
+                </button>
+              </div>
             </li>
->>>>>>> b86f8de4013112af67ff16187b20247000604c2f
           </ul>
         </main>
       </div>

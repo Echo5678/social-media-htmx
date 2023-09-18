@@ -10,6 +10,8 @@ import { BaseHtml } from "../../pages/basehtml";
 import ProjectForm from "../../pages/projectform";
 import html from "@elysiajs/html";
 import ProjectPage from "../../pages/projectpage";
+import UpVoteFilled from "../../components/assets/upvotefilled";
+import DownVoteFilled from "../../components/assets/downvotefilled";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -119,7 +121,26 @@ export const project = (app: Elysia) =>
       const [project] = await db.execute(
         sql`update projects SET likes = array_append(likes, ${userAuthorized.username})  where ${projects.id} = ${id}`
       );
-      return <button>Liked</button>;
+      return (
+        <button>
+          <UpVoteFilled />
+        </button>
+      );
+    })
+    .patch("/dislike/:id", async ({ params: { id }, userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+      const [project] = await db.execute(
+        sql`update projects SET likes = array_append(likes, ${userAuthorized.username})  where ${projects.id} = ${id}`
+      );
+      return (
+        <button>
+          <DownVoteFilled />
+        </button>
+      );
     })
     .get("/project/:id", async ({ params: { id } }) => {
       const [project] = await db
