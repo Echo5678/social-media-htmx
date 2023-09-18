@@ -10,8 +10,7 @@ import { BaseHtml } from "../../pages/basehtml";
 import ProjectForm from "../../pages/projectform";
 import html from "@elysiajs/html";
 import ProjectPage from "../../pages/projectpage";
-import UpVoteFilled from "../../components/assets/upvotefilled";
-import DownVoteFilled from "../../components/assets/downvotefilled";
+import StarIconFilled from "../../components/assets/stariconfilled";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -98,7 +97,7 @@ export const project = (app: Elysia) =>
             privacy,
             languages: [language],
             username: user.username,
-            likes: [],
+            stars: [],
           })
           .returning();
         return <div></div>;
@@ -112,36 +111,22 @@ export const project = (app: Elysia) =>
         }),
       }
     )
-    .patch("/like/:id", async ({ params: { id }, userAuthorized, set }) => {
+    .patch("/star/:id", async ({ params: { id }, userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
         set.status = 307;
         set.redirect = "/sign-in";
       }
       const [project] = await db.execute(
-        sql`update projects SET likes = array_append(likes, ${userAuthorized.username})  where ${projects.id} = ${id}`
+        sql`update projects SET stars = array_append(stars, ${userAuthorized.username})  where ${projects.id} = ${id}`
       );
       return (
         <button>
-          <UpVoteFilled />
+          <StarIconFilled />
         </button>
       );
     })
-    .patch("/dislike/:id", async ({ params: { id }, userAuthorized, set }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
-      }
-      const [project] = await db.execute(
-        sql`update projects SET dislikes = array_append(dislikes, ${userAuthorized.username})  where ${projects.id} = ${id}`
-      );
-      return (
-        <button>
-          <DownVoteFilled />
-        </button>
-      );
-    })
+
     .get("/project/:id", async ({ params: { id } }) => {
       const [project] = await db
         .select()

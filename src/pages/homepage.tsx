@@ -1,5 +1,4 @@
-import DownVoteRegular from "../components/assets/downvoteregular";
-import UpVoteRegular from "../components/assets/upvoteregular";
+import StarIconRegular from "../components/assets/stariconregular";
 import Navbar from "../components/navbar";
 import SideBar from "../components/sidebar";
 
@@ -69,11 +68,8 @@ export default function HomePage() {
                 </p>
               </a>
               <div class="flex flex-row">
-                <button hx-patch="/like/3" hx-swap="innerHTML">
-                  <UpVoteRegular />
-                </button>
-                <button hx-patch="/dislike/3" hx-swap="innerHTML">
-                  <DownVoteRegular />
+                <button hx-patch="/star/1" hx-swap="innerHTML">
+                  <StarIconRegular />
                 </button>
               </div>
             </li>

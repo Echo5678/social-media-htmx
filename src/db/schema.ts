@@ -16,6 +16,7 @@ export const users = pgTable("users", {
   password: varchar("password", { length: 60 }).notNull(),
   joined: timestamp("joined").defaultNow(),
   jwt: text("jwt"),
+  badges: text("badges").array().default([])
 });
 
 export const projects = pgTable("projects", {
@@ -25,8 +26,7 @@ export const projects = pgTable("projects", {
   privacy: varchar("privacy", { length: 8 }).notNull(),
   languages: text("languages").array(),
   username: text("username"),
-  likes: text("likes").array().default([]),
-  dislikes: text("dislikes").array().default([]),
+  stars: text("likes").array().default([])
 });
 
 export type SelectProject = InferSelectModel<typeof projects>;
