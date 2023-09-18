@@ -26,6 +26,7 @@ export const projects = pgTable("projects", {
   languages: text("languages").array(),
   username: text("username"),
   likes: text("likes").array().default([]),
+  dislikes: text("dislikes").array().default([]),
 });
 
 export type SelectProject = InferSelectModel<typeof projects>;

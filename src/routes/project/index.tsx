@@ -125,7 +125,6 @@ export const project = (app: Elysia) =>
         .select()
         .from(projects)
         .where(eq(projects.id, Number(id)));
-      console.log(project);
 
       return <ProjectPage project={project} />;
     });
