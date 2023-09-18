@@ -77,6 +77,9 @@ export default function HomePage() {
                   a free open source Game Engine.
                 </p>
               </a>
+              <button hx-patch="/like/3" hx-swap="innerHTML">
+                Not liked
+              </button>
             </li>
 >>>>>>> b86f8de4013112af67ff16187b20247000604c2f
           </ul>

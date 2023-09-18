@@ -110,12 +110,22 @@ export const project = (app: Elysia) =>
         }),
       }
     )
+    .patch("/like/:id", async ({ params: { id }, userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+      const [project] = await db.execute(
+        sql`update projects SET likes = array_append(likes, ${userAuthorized.username})  where ${projects.id} = ${id}`
+      );
+      return <button>Liked</button>;
+    })
     .get("/project/:id", async ({ params: { id } }) => {
       const [project] = await db
         .select()
         .from(projects)
         .where(eq(projects.id, Number(id)));
-      console.log(project);
 
       return <ProjectPage project={project} />;
     });
