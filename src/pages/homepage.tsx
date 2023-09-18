@@ -1,5 +1,18 @@
+import DownVoteRegular from "../components/assets/downvoteregular";
+import UpVoteRegular from "../components/assets/upvoteregular";
 import Navbar from "../components/navbar";
 import SideBar from "../components/sidebar";
+
+const post = [
+  {
+    handle: "@echo",
+    profilePic:
+      "https://yt3.ggpht.com/dR6qqf39NiziFmXdMlYnRhVsrM2Qb0b9eQPNhoMICKvZ40Zdxb5zXkqKxX84k_yv7jXojhI1PQ=s108-c-k-c0x00ffffff-no-rj",
+    title: "The Game Engine Project",
+    description:
+      "The Game Engine project plans to create a replacement for Unity similar to the Godot Engine the Game Engine Project is a free open source Game Engine.",
+  },
+];
 
 export default function HomePage() {
   return (
@@ -55,9 +68,14 @@ export default function HomePage() {
                   a free open source Game Engine.
                 </p>
               </a>
-              <button hx-patch="/like/3" hx-swap="innerHTML">
-                Not liked
-              </button>
+              <div class="flex flex-row">
+                <button hx-patch="/like/3" hx-swap="innerHTML">
+                  <UpVoteRegular />
+                </button>
+                <button hx-patch="/like/3" hx-swap="innerHTML">
+                  <DownVoteRegular />
+                </button>
+              </div>
             </li>
           </ul>
         </main>
