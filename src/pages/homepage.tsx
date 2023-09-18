@@ -55,6 +55,9 @@ export default function HomePage() {
                   a free open source Game Engine.
                 </p>
               </a>
+              <button hx-patch="/like/3" hx-swap="innerHTML">
+                Not liked
+              </button>
             </li>
           </ul>
         </main>

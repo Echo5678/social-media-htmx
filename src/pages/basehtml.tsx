@@ -14,6 +14,8 @@ export const BaseHtml = ({ children }: PropsWithChildren) => `
   <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/preload.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <style type="text/tailwindcss">
     @layer utilities {
       .nav-link::after{
@@ -50,5 +52,11 @@ input[type="radio"]:checked + label span {
 >
 ${children}
 </body>
+<script>
+        var quill = new Quill("#editor", {
+          theme: 'snow',
+          placeholder: "Write a Blog Post."
+        })
+      </script>
 </html>
 `;
