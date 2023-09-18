@@ -72,7 +72,7 @@ export default function HomePage() {
                 <button hx-patch="/like/3" hx-swap="innerHTML">
                   <UpVoteRegular />
                 </button>
-                <button hx-patch="/like/3" hx-swap="innerHTML">
+                <button hx-patch="/dislike/3" hx-swap="innerHTML">
                   <DownVoteRegular />
                 </button>
               </div>
