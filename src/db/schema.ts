@@ -26,13 +26,17 @@ export const projects = pgTable("projects", {
   description: varchar("description", { length: 2000 }),
   privacy: varchar("privacy", { length: 8 }).notNull(),
   languages: text("languages").array(),
-  username: text("username"),
+  username: text("username")
+    .notNull()
+    .references(() => users.username),
   stars: text("likes").array().default([]),
 });
 
 export const blogs = pgTable("blogs", {
   id: serial("id").primaryKey(),
-  owner: text("owner").notNull(),
+  owner: text("owner")
+    .notNull()
+    .references(() => users.username),
   title: varchar("title", { length: 65 }).notNull(),
   blog: json("blog").notNull(),
   posted: timestamp("posted").defaultNow(),
