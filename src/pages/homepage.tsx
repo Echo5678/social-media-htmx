@@ -2,17 +2,6 @@ import StarIconRegular from "../components/assets/stariconregular";
 import Navbar from "../components/navbar";
 import SideBar from "../components/sidebar";
 
-const post = [
-  {
-    handle: "@echo",
-    profilePic:
-      "https://yt3.ggpht.com/dR6qqf39NiziFmXdMlYnRhVsrM2Qb0b9eQPNhoMICKvZ40Zdxb5zXkqKxX84k_yv7jXojhI1PQ=s108-c-k-c0x00ffffff-no-rj",
-    title: "The Game Engine Project",
-    description:
-      "The Game Engine project plans to create a replacement for Unity similar to the Godot Engine the Game Engine Project is a free open source Game Engine.",
-  },
-];
-
 export default function HomePage() {
   return (
     <>

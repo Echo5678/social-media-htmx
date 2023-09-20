@@ -1,7 +1,7 @@
 import Navbar from "../components/navbar";
 import SideBar from "../components/sidebar";
 import { SelectProject } from "../db/schema";
-import { BaseHtml } from "./basehtml";
+import { BaseHtml } from "./base/basehtml";
 
 const ProjectPage = ({ project }: { project: SelectProject }) => {
   return (

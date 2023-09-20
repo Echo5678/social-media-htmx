@@ -7,7 +7,7 @@ import { db } from "../../db/client";
 import { users, projects } from "../../db/schema";
 import { sql } from "drizzle-orm";
 
-import { BaseHtml } from "../../pages/basehtml";
+import { BaseHtml } from "../../pages/base/basehtml";
 import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
 import ProfilePage from "../../pages/profilepage";
@@ -111,32 +111,6 @@ export const home = (app: Elysia) =>
       return (
         <BaseHtml>
           <ProfilePage />
-        </BaseHtml>
-      );
-    })
-    .get("/blog", async ({ userAuthorized, set }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
-      }
-
-      return (
-        <BaseHtml>
-          <BlogPost />
-        </BaseHtml>
-      );
-    })
-    .get("/blog/editor", async ({ userAuthorized, set }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
-      }
-
-      return (
-        <BaseHtml>
-          <BlogEditor />
         </BaseHtml>
       );
     });

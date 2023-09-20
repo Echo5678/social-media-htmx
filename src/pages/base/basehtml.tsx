@@ -10,7 +10,7 @@ export const BaseHtml = ({ children }: PropsWithChildren) => `
   <meta name="description" content="Social Media platform for finding developers interested in the same technologies as you">
   <script src="https://unpkg.com/htmx.org@1.9.5"></script>
   <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/preload.js"></script>
@@ -52,11 +52,30 @@ input[type="radio"]:checked + label span {
 >
 ${children}
 </body>
-<script>
-        var quill = new Quill("#editor", {
-          theme: 'snow',
-          placeholder: "Write a Blog Post."
+  <script>
+        const toolbarOptions  = [
+          [{'header': [1, 2, 3, 4, 5, 6, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{'list': 'ordered'}, {'list': 'bullet'}],
+          [{ 'script': 'sub'}, { 'script': 'super'}],
+          [{ 'indent': '-1'}, { 'indent': '+1'}],
+          ['link', 'image', 'video'],
+        ]
+        const quill = new Quill("#editor", {
+          modules: {
+            toolbar: toolbarOptions
+          },
+          theme: 'bubble',
         })
-      </script>
+        quill.enable(false);
+        const stuff = document.querySelector("#blog");
+        quill.setContents(JSON.parse(stuff.value).ops);
+        stuff.value = ' ';
+
+        quill.on("text-change", function(delta, oldDelta, source) {
+          stuff.value = JSON.stringify(quill.getContents());
+        })
+  </script>
 </html>
 `;

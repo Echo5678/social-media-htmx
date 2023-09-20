@@ -6,6 +6,7 @@ import {
   timestamp,
   boolean,
   text,
+  json,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -16,7 +17,7 @@ export const users = pgTable("users", {
   password: varchar("password", { length: 60 }).notNull(),
   joined: timestamp("joined").defaultNow(),
   jwt: text("jwt"),
-  badges: text("badges").array().default([])
+  badges: text("badges").array().default([]),
 });
 
 export const projects = pgTable("projects", {
@@ -26,8 +27,19 @@ export const projects = pgTable("projects", {
   privacy: varchar("privacy", { length: 8 }).notNull(),
   languages: text("languages").array(),
   username: text("username"),
-  stars: text("likes").array().default([])
+  stars: text("likes").array().default([]),
 });
+
+export const blogs = pgTable("blogs", {
+  id: serial("id").primaryKey(),
+  owner: text("owner").notNull(),
+  title: varchar("title", { length: 65 }).notNull(),
+  blog: json("blog").notNull(),
+  posted: timestamp("posted").defaultNow(),
+});
+
+export type SelectBlog = InferSelectModel<typeof blogs>;
+export type InsetBlog = InferSelectModel<typeof blogs>;
 
 export type SelectProject = InferSelectModel<typeof projects>;
 export type InsertProject = InferSelectModel<typeof projects>;

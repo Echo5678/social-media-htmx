@@ -2,8 +2,8 @@ import { Elysia, t, ws } from "elysia";
 import { html } from "@elysiajs/html";
 import { swagger } from "@elysiajs/swagger";
 
-import { BaseHtml } from "./pages/basehtml";
-import { auth, home, project } from "./routes";
+import { BaseHtml } from "./pages/base/basehtml";
+import { auth, home, project, blog } from "./routes";
 
 const app = new Elysia()
   .use(
@@ -22,6 +22,7 @@ const app = new Elysia()
   .use(auth)
   .use(home)
   .use(project)
+  .use(blog)
   .ws("/message", {
     open(ws) {
       console.log("Connected");
