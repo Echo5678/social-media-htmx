@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from "@kitajs/html";
 
-export const BaseHtml = ({ children }: PropsWithChildren) => `
+export const MessageLayout = ({ children }: PropsWithChildren) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,9 +9,9 @@ export const BaseHtml = ({ children }: PropsWithChildren) => `
   <title>CoDev</title>
   <meta name="description" content="Social Media platform for finding developers interested in the same technologies as you">
   <script src="https://unpkg.com/htmx.org@1.9.5"></script>
-  <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
+  <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/preload.js"></script>
 </head>
 <body 

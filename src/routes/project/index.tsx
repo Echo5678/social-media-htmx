@@ -7,9 +7,9 @@ import { projects, users } from "../../db/schema";
 import { eq, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
-import ProjectForm from "../../pages/projectform";
+import ProjectForm from "../../pages/project/projectform";
 import html from "@elysiajs/html";
-import ProjectPage from "../../pages/projectpage";
+import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 
 const WEEK = 60 * 60 * 24 * 7;

@@ -11,8 +11,8 @@ import { BaseHtml } from "../../pages/base/basehtml";
 import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
 import ProfilePage from "../../pages/profilepage";
-import BlogPost from "../../pages/blogpost";
-import BlogEditor from "../../pages/blogeditor";
+import BlogPost from "../../pages/blog/blogpost";
+import BlogEditor from "../../pages/blog/blogeditor";
 
 const WEEK = 60 * 60 * 24 * 7;
 

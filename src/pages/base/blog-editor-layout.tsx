@@ -9,7 +9,7 @@ export const BlogEditorLayout = ({ children }: PropsWithChildren) => `
   <title>CoDev</title>
   <meta name="description" content="Social Media platform for finding developers interested in the same technologies as you">
   <script src="https://unpkg.com/htmx.org@1.9.5"></script>
-  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/preload.js"></script>
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">

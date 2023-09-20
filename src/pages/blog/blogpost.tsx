@@ -1,4 +1,4 @@
-import { SelectBlog } from "../db/schema";
+import { SelectBlog } from "../../db/schema";
 
 export default function BlogPost({ blog }: { blog: SelectBlog }) {
   return (

@@ -6,10 +6,12 @@ import jwt from "@elysiajs/jwt";
 import { db } from "../../db/client";
 import { users } from "../../db/schema";
 import { sql } from "drizzle-orm";
+import { MessageLayout } from "../../pages/base/messagelayout";
+import MessagePage from "../../pages/message";
 
 const WEEK = 60 * 60 * 24 * 7;
 
-export const auth = (app: Elysia) =>
+export const user = (app: Elysia) =>
   app
     .use(html())
     .use(
@@ -64,4 +66,17 @@ export const auth = (app: Elysia) =>
         set.status = 307;
         set.redirect = "/sign-in";
       }
+    })
+    .get("/messages", async ({ userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+
+      return (
+        <MessageLayout>
+          <MessagePage />
+        </MessageLayout>
+      );
     });

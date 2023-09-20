@@ -3,7 +3,7 @@ import { html } from "@elysiajs/html";
 import { swagger } from "@elysiajs/swagger";
 
 import { BaseHtml } from "./pages/base/basehtml";
-import { auth, home, project, blog } from "./routes";
+import { auth, home, project, blog, user } from "./routes";
 
 const app = new Elysia()
   .use(
@@ -23,17 +23,21 @@ const app = new Elysia()
   .use(home)
   .use(project)
   .use(blog)
-  .ws("/message", {
+  .use(user)
+  .ws("/messages-ws", {
     open(ws) {
       console.log("Connected");
-      ws.subscribe("group-chat").publish("group-chat", "lolworking now");
+      ws.subscribe("group-chat");
+      ws.publish("group-chat", JSON.stringify(<p>Working</p>));
     },
     message(ws, message: any) {
       ws.publish(
         "group-chat",
-        `<div id="chat-message" class="dark:text-white text-black">
-          ${message.chat_message}
-        </div>`
+        JSON.stringify(
+          <div id="chat-message" class="dark:text-white text-black">
+            ${message.chat_message}
+          </div>
+        )
       );
     },
   })
@@ -48,6 +52,12 @@ const app = new Elysia()
         </BaseHtml>
       );
     }
+    return (
+      <div class="text-4xl md:text-5xl font-bold text-center my-auto">
+        Smile if you like D#ck.
+        {`Error: ${code}`}
+      </div>
+    );
   })
   .listen(3000);
 

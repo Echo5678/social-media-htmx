@@ -12,22 +12,42 @@ const SideBar = () => (
         class="flex flex-col text-zinc-800  dark:text-[#fafafa] space-y-3"
       >
         <li class="transition hover:bg-zinc-800 p-2.5 rounded-full">
-          <a href="/home" hx-push-url preload="mouseover">
+          <a
+            href="/home"
+            aria-label="Home Page"
+            hx-push-url
+            preload="mouseover"
+          >
             <HomeIcon />
           </a>
         </li>
         <li class="transition hover:bg-zinc-800 p-2.5 rounded-full">
-          <a href="/search" hx-push-url preload="mouseover">
+          <a
+            href="/search"
+            aria-label="Search Page"
+            hx-push-url
+            preload="mouseover"
+          >
             <SearchIcon />
           </a>
         </li>
         <li class="transition hover:bg-zinc-800 p-2.5 rounded-full">
-          <a href="/notifications" hx-push-url preload="mouseover">
+          <a
+            href="/notifications"
+            aria-label="Notifications page"
+            hx-push-url
+            preload="mouseover"
+          >
             <NotificationIcon />
           </a>
         </li>
         <li class="transition hover:bg-zinc-800 p-2.5 rounded-full">
-          <a href="/messages" hx-push-url preload="mouseover">
+          <a
+            href="/messages"
+            aria-label="Message Page"
+            hx-push-url
+            preload="mouseover"
+          >
             <MessageIcon />
           </a>
         </li>

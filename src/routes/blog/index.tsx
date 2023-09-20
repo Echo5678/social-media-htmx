@@ -9,8 +9,8 @@ import { eq, sql } from "drizzle-orm";
 
 import { BlogLayout } from "../../pages/base/bloglayout";
 import { BlogEditorLayout } from "../../pages/base/blog-editor-layout";
-import BlogEditor from "../../pages/blogeditor";
-import BlogPost from "../../pages/blogpost";
+import BlogEditor from "../../pages/blog/blogeditor";
+import BlogPost from "../../pages/blog/blogpost";
 
 const WEEK = 60 * 60 * 24 * 7;
 
