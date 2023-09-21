@@ -111,13 +111,13 @@ export const project = (app: Elysia) =>
         }),
       }
     )
-    .patch("/star/:id", async ({ params: { id }, userAuthorized, set }) => {
+    .patch("/stars/:id", async ({ params: { id }, userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
         set.status = 307;
         set.redirect = "/sign-in";
       }
-      const [project] = await db.execute(
+      const [star] = await db.execute(
         sql`update projects SET stars = array_append(stars, ${userAuthorized.username})  where ${projects.id} = ${id}`
       );
       return (

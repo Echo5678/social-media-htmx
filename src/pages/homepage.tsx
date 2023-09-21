@@ -57,10 +57,13 @@ export default function HomePage() {
                 </p>
               </a>
               <div class="flex flex-row">
-                <button hx-patch="/star/1" hx-swap="innerHTML">
+                <button hx-patch="/stars/1" hx-swap="innerHTML">
                   <StarIconRegular />
                 </button>
               </div>
+              <p hx-patch="/badges/2" hx-swap="innerHTML">
+                add badge
+              </p>
             </li>
           </ul>
         </main>
