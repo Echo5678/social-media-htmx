@@ -97,6 +97,8 @@ export const project = (app: Elysia) =>
             privacy,
             languages: [language],
             username: user.username,
+            image: "",
+            collaborators: [],
             stars: [],
           })
           .returning();

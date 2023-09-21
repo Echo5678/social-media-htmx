@@ -29,6 +29,8 @@ export const projects = pgTable("projects", {
   username: text("username")
     .notNull()
     .references(() => users.username),
+    image: varchar("image").notNull(),
+    collaborators: text("collaborators").array().default([]),
   stars: text("stars").array().default([]),
 });
 
