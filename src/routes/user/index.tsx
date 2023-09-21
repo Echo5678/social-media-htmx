@@ -67,7 +67,7 @@ export const user = (app: Elysia) =>
         set.redirect = "/sign-in";
       }
       const [badges] = await db.execute(
-        sql`update users SET badges = array_append(badges, "badge")  where ${users.id} = ${id}`
+        sql`update users SET badges = array_append(badges, 'badge')  where ${users.id} = ${id}`
       );
       console.log(badges, "patch");
       return <p>{badges}</p>;
