@@ -26,7 +26,7 @@ export const projects = pgTable("projects", {
   privacy: varchar("privacy", { length: 8 }).notNull(),
   languages: text("languages").array(),
   username: text("username"),
-  stars: text("likes").array().default([])
+  stars: text("stars").array().default([])
 });
 
 export type SelectProject = InferSelectModel<typeof projects>;

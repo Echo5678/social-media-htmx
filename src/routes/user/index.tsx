@@ -5,11 +5,11 @@ import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
 import { users } from "../../db/schema";
-import { sql } from "drizzle-orm";
+import { sql, eq } from "drizzle-orm";
 
 const WEEK = 60 * 60 * 24 * 7;
 
-export const auth = (app: Elysia) =>
+export const user = (app: Elysia) =>
   app
     .use(html())
     .use(
@@ -58,10 +58,31 @@ export const auth = (app: Elysia) =>
         userAuthorized,
       };
     })
+    .patch("/badges/:id", async ({ params: { id }, userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+      const [badges] = await db.execute(
+        sql`update users SET badges = array_append(badges, "badge")  where ${users.id} = ${id}`
+      );
+      console.log(badges, "patch");
+      return <p>{badges}</p>;
+    })
     .get("/badges/:id", async ({ params: { id }, userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
         set.status = 307;
         set.redirect = "/sign-in";
       }
+      const [badges] = await db
+        .select({
+          badges: users.badges,
+        })
+        .from(users)
+        .where(eq(users.username, userAuthorized.username));
+
+      console.log(badges, "get");
+      return <p>{badges}</p>;
     });
