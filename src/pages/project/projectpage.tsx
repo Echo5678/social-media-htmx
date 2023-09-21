@@ -1,15 +1,8 @@
-<<<<<<< HEAD:src/pages/projectpage.tsx
-import PersonAddIcon from "../components/assets/personaddicon";
-import Navbar from "../components/navbar";
-import SideBar from "../components/sidebar";
-import { SelectProject } from "../db/schema";
-import { BaseHtml } from "./basehtml";
-=======
+import PersonAddIcon from "../../components/assets/personaddicon";
 import Navbar from "../../components/navbar";
 import SideBar from "../../components/sidebar";
 import { SelectProject } from "../../db/schema";
 import { BaseHtml } from "../base/basehtml";
->>>>>>> c5818e445e37f121271913b4c8995ab3e8d58e77:src/pages/project/projectpage.tsx
 
 const ProjectPage = ({ project }: { project: SelectProject }) => {
   return (
