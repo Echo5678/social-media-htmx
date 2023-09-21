@@ -5,7 +5,13 @@ import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
 import { users } from "../../db/schema";
+<<<<<<< HEAD
 import { sql, eq } from "drizzle-orm";
+=======
+import { sql } from "drizzle-orm";
+import { MessageLayout } from "../../pages/base/messagelayout";
+import MessagePage from "../../pages/message";
+>>>>>>> c5818e445e37f121271913b4c8995ab3e8d58e77
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -76,6 +82,7 @@ export const user = (app: Elysia) =>
         set.status = 307;
         set.redirect = "/sign-in";
       }
+<<<<<<< HEAD
       const [badges] = await db
         .select({
           badges: users.badges,
@@ -85,4 +92,19 @@ export const user = (app: Elysia) =>
 
       console.log(badges, "get");
       return <p>{badges}</p>;
+=======
+    })
+    .get("/messages", async ({ userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+
+      return (
+        <MessageLayout>
+          <MessagePage />
+        </MessageLayout>
+      );
+>>>>>>> c5818e445e37f121271913b4c8995ab3e8d58e77
     });

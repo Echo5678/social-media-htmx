@@ -1,20 +1,20 @@
 import { Elysia, t } from "elysia";
 import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
+import html from "@elysiajs/html";
 
 import { db } from "../../db/client";
-import { projects, users } from "../../db/schema";
+import { blogs, users } from "../../db/schema";
 import { eq, sql } from "drizzle-orm";
 
-import { BaseHtml } from "../../pages/base/basehtml";
-import ProjectForm from "../../pages/project/projectform";
-import html from "@elysiajs/html";
-import ProjectPage from "../../pages/project/projectpage";
-import StarIconFilled from "../../components/assets/stariconfilled";
+import { BlogLayout } from "../../pages/base/bloglayout";
+import { BlogEditorLayout } from "../../pages/base/blog-editor-layout";
+import BlogEditor from "../../pages/blog/blogeditor";
+import BlogPost from "../../pages/blog/blogpost";
 
 const WEEK = 60 * 60 * 24 * 7;
 
-export const project = (app: Elysia) =>
+export const blog = (app: Elysia) =>
   app
     .use(html())
     .use(
@@ -63,7 +63,7 @@ export const project = (app: Elysia) =>
         userAuthorized,
       };
     })
-    .get("/project/form", async ({ userAuthorized, set }) => {
+    .get("/blog/editor", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
         set.status = 307;
@@ -71,67 +71,65 @@ export const project = (app: Elysia) =>
       }
 
       return (
-        <BaseHtml>
-          <ProjectForm />
-        </BaseHtml>
+        <BlogEditorLayout>
+          <BlogEditor />
+        </BlogEditorLayout>
       );
     })
     .post(
-      "/project",
-      async ({
-        userAuthorized,
-        set,
-        body: { name, description, privacy, language },
-      }) => {
+      "/blog",
+      async ({ userAuthorized, set, body: { title, blog } }) => {
         const user = userAuthorized;
         if (!user) {
           set.status = 307;
           set.redirect = "/sign-in";
         }
 
-        const project = await db
-          .insert(projects)
+        const Blog = await db
+          .insert(blogs)
           .values({
-            name,
-            description,
-            privacy,
-            languages: [language],
-            username: user.username,
-            stars: [],
+            owner: userAuthorized.username,
+            title,
+            blog: JSON.parse(blog),
           })
           .returning();
-        return <div></div>;
+        return <div>{...Blog}</div>;
       },
       {
         body: t.Object({
-          name: t.String(),
-          description: t.String(),
-          privacy: t.String(),
-          language: t.String(),
+          title: t.String(),
+          blog: t.String(),
         }),
       }
     )
-    .patch("/stars/:id", async ({ params: { id }, userAuthorized, set }) => {
+    .get("/blog/:id", async ({ userAuthorized, set, params: { id } }) => {
       const user = userAuthorized;
       if (!user) {
         set.status = 307;
         set.redirect = "/sign-in";
       }
-      const [star] = await db.execute(
-        sql`update projects SET stars = array_append(stars, ${userAuthorized.username})  where ${projects.id} = ${id}`
-      );
+      const [Blog] = await db
+        .select()
+        .from(blogs)
+        .where(eq(blogs.id, Number(id)))
+        .limit(1);
+
       return (
-        <button>
-          <StarIconFilled />
-        </button>
+        <BlogLayout>
+          <BlogPost blog={Blog} />
+        </BlogLayout>
       );
     })
+    .get("/blog/editor", async ({ userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
 
-    .get("/project/:id", async ({ params: { id } }) => {
-      const [project] = await db
-        .select()
-        .from(projects)
-        .where(eq(projects.id, Number(id)));
-
-      return <ProjectPage project={project} />;
+      return (
+        <BlogEditorLayout>
+          <BlogEditor />
+        </BlogEditorLayout>
+      );
     });

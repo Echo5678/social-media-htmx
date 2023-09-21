@@ -21,22 +21,42 @@ const Navbar = () => {
           class="flex flex-row justify-around w-[100%] h-[10vh] items-center text-zinc-800  dark:text-[#fafafa]"
         >
           <li>
-            <a href="/home" hx-push-url preload="mouseover">
+            <a
+              href="/home"
+              aria-label="Home Page"
+              hx-push-url
+              preload="mouseover"
+            >
               <HomeIcon />
             </a>
           </li>
           <li>
-            <a href="/search" hx-push-url preload="mouseover">
+            <a
+              href="/search"
+              aria-label="Search Page"
+              hx-push-url
+              preload="mouseover"
+            >
               <SearchIcon />
             </a>
           </li>
           <li>
-            <a href="/notifications" hx-push-url preload="mouseover">
+            <a
+              href="/notifications"
+              aria-label="Notifications Page"
+              hx-push-url
+              preload="mouseover"
+            >
               <NotificationIcon />
             </a>
           </li>
           <li>
-            <a href="/messages" hx-push-url preload="mouseover">
+            <a
+              href="/messages"
+              aria-label="Messages Page"
+              hx-push-url
+              preload="mouseover"
+            >
               <MessageIcon />
             </a>
           </li>

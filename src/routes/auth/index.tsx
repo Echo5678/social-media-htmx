@@ -9,7 +9,7 @@ import { db } from "../../db/client";
 import { users, SelectUser, InsertUser } from "../../db/schema";
 import { eq, sql } from "drizzle-orm";
 
-import { BaseHtml } from "../../pages/basehtml";
+import { BaseHtml } from "../../pages/base/basehtml";
 import SignUpPage from "../../pages/signuppage";
 import Signinpage from "../../pages/signinpage";
 
