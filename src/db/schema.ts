@@ -26,15 +26,10 @@ export const projects = pgTable("projects", {
   description: varchar("description", { length: 2000 }),
   privacy: varchar("privacy", { length: 8 }).notNull(),
   languages: text("languages").array(),
-<<<<<<< HEAD
-  username: text("username"),
-  stars: text("stars").array().default([])
-=======
   username: text("username")
     .notNull()
     .references(() => users.username),
   stars: text("likes").array().default([]),
->>>>>>> c5818e445e37f121271913b4c8995ab3e8d58e77
 });
 
 export const blogs = pgTable("blogs", {
