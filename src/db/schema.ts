@@ -29,7 +29,7 @@ export const projects = pgTable("projects", {
   username: text("username")
     .notNull()
     .references(() => users.username),
-  stars: text("likes").array().default([]),
+  stars: text("stars").array().default([]),
 });
 
 export const blogs = pgTable("blogs", {
