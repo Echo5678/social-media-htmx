@@ -58,6 +58,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
             <div class="flex justify-around items-center lg:w-[80%] md:w-[80%] lg:h-[50%] h-[55vh] bg-[#0a0a0a] border-[1px] border-zinc-800 rounded-lg  mx-auto">
               <div class="flex flex-row flex-col lg:flex-row lg:w-full">
                 <img
+                  alt="Project Image"
                   src={project.image}
                   class="w-[60%] mx-auto md:mx-none lg:w-[50%]"
                 />
