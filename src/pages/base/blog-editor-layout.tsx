@@ -7,6 +7,7 @@ export const BlogEditorLayout = ({ children }: PropsWithChildren) => `
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CoDev</title>
+  <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/dtkwfyslj/image/upload/v1695253847/Untitled_design-removebg-preview_wpselx.png">
   <meta name="description" content="Social Media platform for finding developers interested in the same technologies as you">
   <script src="https://unpkg.com/htmx.org@1.9.5"></script>
   <script src="https://cdn.tailwindcss.com"></script>
