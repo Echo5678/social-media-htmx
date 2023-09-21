@@ -2,7 +2,7 @@ import Header from "../components/header";
 
 export default function LandingPage() {
   return (
-    <main class="px-8">
+    <main class="px-8 pb-10">
       <Header />
       <h1 class="text-7xl sm:text-8xl md:text-9xl text-center font-bold mt-12">
         <span class="block bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">

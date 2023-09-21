@@ -8,6 +8,7 @@ const MessagePage = () => (
         class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block m-6 p-1 focus:border-blue-500"
       />
     </form>
+    <div id="chat"></div>
   </main>
 );
 

@@ -18,7 +18,7 @@ const Navbar = () => {
         </a>
         <ul
           id="icons"
-          class="flex flex-row justify-around w-[100%] h-[10vh] items-center text-zinc-800  dark:text-[#fafafa]"
+          class="flex flex-row justify-around w-[100%] py-5 items-center text-zinc-800  dark:text-[#fafafa]"
         >
           <li>
             <a

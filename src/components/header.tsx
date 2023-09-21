@@ -1,7 +1,15 @@
 const Header = () => {
   return (
     <header hx-boost="true" class="pt-4 flex justify-between items-center">
-      <a class="text-2xl font-semibold hover:cursor-pointer">Co-Dev</a>
+      <a class="text-2xl font-semibold hover:cursor-pointer transition  flex items-center">
+        <img
+          height="65"
+          width="65"
+          src="https://res.cloudinary.com/dtkwfyslj/image/upload/v1695253847/Untitled_design-removebg-preview_wpselx.png"
+          alt="Co-Dev Logo"
+        />
+        Co-Dev
+      </a>
       <nav class="flex space-x-6 font-semibold items-center text-[#444444] dark:text-[#B1B1B1]">
         <a
           href="/pricing"

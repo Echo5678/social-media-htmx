@@ -7,6 +7,20 @@ import PlusIcon from "./assets/plusicon";
 const SideBar = () => (
   <aside class="hidden md:block border-r border-zinc-800 min-h-screen">
     <nav class="flex flex-col px-6 py-3 items-center space-y-7">
+      <a
+        href="/home"
+        aria-label="Home Page"
+        hx-push-url
+        preload="mouseover"
+        class="transition hover:bg-zinc-800 p-1 rounded-full"
+      >
+        <img
+          height="65"
+          width="65"
+          src="https://res.cloudinary.com/dtkwfyslj/image/upload/v1695253847/Untitled_design-removebg-preview_wpselx.png"
+          alt="Co-Dev Logo"
+        />
+      </a>
       <ul
         id="icons"
         class="flex flex-col text-zinc-800  dark:text-[#fafafa] space-y-3"

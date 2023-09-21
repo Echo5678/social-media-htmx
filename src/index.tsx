@@ -28,16 +28,20 @@ const app = new Elysia()
     open(ws) {
       console.log("Connected");
       ws.subscribe("group-chat");
-      ws.publish("group-chat", JSON.stringify(<p>Working</p>));
+      ws.publish("group-chat", <p>Working</p>);
+      ws.send(<p id="chat">Users</p>);
     },
     message(ws, message: any) {
       ws.publish(
         "group-chat",
-        JSON.stringify(
-          <div id="chat-message" class="dark:text-white text-black">
-            ${message.chat_message}
-          </div>
-        )
+        <div id="chat" class="dark:text-white text-black">
+          ${message.chat_message}
+        </div>
+      );
+      ws.send(
+        <div id="chat" hx-swap-oob="beforeend">
+          Yo chat is this working chat.
+        </div>
       );
     },
   })
