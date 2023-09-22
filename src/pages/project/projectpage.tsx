@@ -55,15 +55,14 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
                 </button>
               </div>
             </div>
-            <div class="flex justify-around items-center lg:w-[80%] md:w-[80%] lg:h-[50%] h-[55vh] bg-[#0a0a0a] border-[1px] pb-[5%] md:pb-[0] border-zinc-800 rounded-lg  mx-auto">
-              <div class="flex flex-row flex-col lg:flex-row lg:w-full  h-full">
-                <div class="w-[80%] md:h-[50%] lg:h-full sm:w-[50%] md:w-[50%] mx-auto my-auto lg:my-none  lg:mx-none md:mt-auto items-center">
-                  <img
-                    src={project.image}
-                    class="flex w-full md:mt-auto lg:mt-[0] md:mb-[0px]"
-                  />
-                </div>
-                <div class="flex flex-col justify-around items-left w-[80%] lg:w-[50%] mx-auto lg:mx-[0]">
+            <div class="flex justify-around items-center lg:w-[80%] md:w-[80%] lg:h-[50%] h-[55vh] bg-[#0a0a0a] border-[1px] border-zinc-800 rounded-lg  mx-auto">
+              <div class="flex flex-row flex-col lg:flex-row lg:w-full">
+                <img
+                  alt="Project Image"
+                  src={project.image}
+                  class="w-[60%] mx-auto md:mx-none lg:w-[50%]"
+                />
+                <div class="flex flex-col justify-around items-left">
                   <div class="flex flex-col text-center lg:text-left justify-around">
                     <p class="text-[#2f3336] lg:text-[2vh] font-bold">
                       Description
