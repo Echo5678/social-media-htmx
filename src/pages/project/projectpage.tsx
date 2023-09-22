@@ -9,7 +9,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
     <BaseHtml>
       <div class="flex">
         <SideBar />
-        <main class="flex  flex-col w-full bg-[#111111] h-[112vh] md:h-[100vh] overflow-y-scroll">
+        <main class="flex  flex-col w-full bg-[#111111] h-[113vh] md:h-[100vh] overflow-y-scroll lg:overflow-hidden">
           <header class="flex w-[100%] bg-black top-0 h-[15vh] items-center">
             <div class="flex  flex-row justify-between items-center mx-auto w-[80%] md:w-[80%]">
               <h1 class="md:text-[4vh]  text-[1.8vh] font-semibold ">
@@ -71,13 +71,13 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
                       {project.description}
                     </p>
                   </div>
-                  <div class="flex flex-row lg:w-[90%] lg:h-[50%] justify-between items-center">
-                    <div class="flex flex-row mt-[5%] md:mt-none lg:flex-col w-[90%] lg:w-[30%] justify-around lg:h-full">
+                  <div class="flex flex-row w-full lg:w-[90%] lg:h-[50%] justify-between items-center">
+                    <div class="flex flex-row mt-[5%] md:mt-none lg:flex-col w-full lg:w-[30%] justify-around lg:h-full">
                       <div class="flex flex-col justify-around">
                         <p class="text-[#2f3336] lg:text-[2vh] font-bold">
                           Languages
                         </p>
-                        <div class="flex flex-col w-[90%]">
+                        <div class="flex flex-col w-[90%] items-center md:text-left">
                           {project.languages?.map((item) => (
                             <p class="mr-[2%] lg:text-[1.6vh]">{item}</p>
                           ))}
@@ -87,7 +87,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
                         <p class="text-[#2f3336] lg:text-[2vh] font-bold">
                           Collaborators
                         </p>
-                        <div class="flex flex-col lg:w-[90%]">
+                        <div class="flex flex-col items-center lg:items-left lg:w-[90%]">
                           {project.collaborators?.map((item) => (
                             <p class="mr-[2%] lg:text-[1.6vh]">{item}</p>
                           ))}
