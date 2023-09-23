@@ -10,7 +10,7 @@ export default function ProjectList({ project }: { project: SelectProject[] }) {
       {project.map((item) => (
         <li class="bg-[#010101] border border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-40 transition duration-500 hover:cursor-pointer flex  flex-col">
           <a
-            href="/project/3"
+            href={`/project/${item.id}`}
             hx-boost="true"
             hx-push-url
             preload="mouseover"
