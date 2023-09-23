@@ -18,7 +18,7 @@ export default function SearchPage({
           <div class="pb-6 w-full">
             <input
               hx-get="/search-for"
-              hx-trigger="keyup changed delay:500ms, search"
+              hx-trigger="keyup changed delay:250ms, search"
               hx-target="#list"
               hx-swap="outerHTML"
               type="search"
