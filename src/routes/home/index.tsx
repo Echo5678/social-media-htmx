@@ -101,18 +101,4 @@ export const home = (app: Elysia) =>
           <HomePage project={project} />
         </BaseHtml>
       );
-    })
-
-    .get("/profile", async ({ userAuthorized, set }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
-      }
-
-      return (
-        <BaseHtml>
-          <ProfilePage />
-        </BaseHtml>
-      );
     });
