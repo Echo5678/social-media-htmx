@@ -1,7 +1,16 @@
 import Calendar from "../components/assets/calendar";
 import SettingsIcon from "../components/assets/settings";
+import { SelectUser } from "../db/schema";
 
-export default function ProfilePage() {
+export default function ProfilePage({
+  user,
+  followers,
+  following,
+}: {
+  user: SelectUser;
+  followers: number;
+  following: number;
+}) {
   return (
     <main class="w-full md:w-3/4 xl:w-1/2 mx-auto">
       <div class="relative">
@@ -19,36 +28,29 @@ export default function ProfilePage() {
           class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full"
           alt="Profile Picture"
         />
-        <div class="absolute left-28 bottom-2">
-          <h1 class="text-2xl  md:text-3xl font-semibold [text-shadow:_2px_3px_3px_rgb(0_0_0_/_40%)]">
-            Echo Evader
-          </h1>
-          <h2 class="text-sm [text-shadow:_1px_2px_2px_rgb(0_0_0_/_40%)]">
-            @echo
-          </h2>
-        </div>
       </div>
-      <article class="text-sm text-[#444444] dark:text-[#B1B1B1] border-x border-[#444444] dark:border-[#222222] pt-6 xl:pt-8  pl-2.5 items-center">
-        <section class="pr-2 py-1 w-full xl:w-[75%]">
-          I'm a 16 year old Software Developer from Washington. I like Fried
-          chicken and Eggs. I've worked on a couple projects a simple NextJS
-          e-commerce website with CMS. As well as a Netflix clone also using
-          NextJS with AWS.
+      <article class="text-sm border-x border-[#444444] dark:border-[#222222] pt-6 xl:pt-8  pl-2.5 items-center">
+        <section class="text-white">
+          <h1 class="text-2xl md:text-3xl font-bold">
+            {`${user.first_name} ${user.last_name}`}
+          </h1>
+          <h2 class="text-[#444444] dark:text-[#B1B1B1]">@{user.username}</h2>
         </section>
-        <section class="flex flex-col">
+        <section class="pr-2 py-1 w-full xl:w-[75%]">{user.bio}</section>
+        <section class="flex flex-col text-[#444444] dark:text-[#B1B1B1]">
           <span class="mt-1">
-            <Calendar className="inline" /> Joined September, 2023
+            <Calendar className="inline" /> Joined {user.joined}
           </span>
           <ul class="flex space-x-3  mt-3">
             <li>
               <span class="dark:text-white text-black mr-1 font-medium">
-                100
+                {followers}
               </span>
               Followers
             </li>
             <li>
               <span class="dark:text-white text-black mr-1 font-medium">
-                10
+                {following}
               </span>
               Following
             </li>

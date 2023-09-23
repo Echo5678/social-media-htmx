@@ -4,10 +4,12 @@ import cookie from "@elysiajs/cookie";
 import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
-import { users } from "../../db/schema";
+import { SelectUser, followers, users } from "../../db/schema";
 import { sql, eq } from "drizzle-orm";
 import { MessageLayout } from "../../pages/base/messagelayout";
 import MessagePage from "../../pages/message";
+import ProfilePage from "../../pages/profilepage";
+import { BaseHtml } from "../../pages/base/basehtml";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -44,6 +46,7 @@ export const user = (app: Elysia) =>
 
       const User: any = await db
         .select({
+          id: users.id,
           username: users.username,
           email: users.email,
         })
@@ -87,6 +90,46 @@ export const user = (app: Elysia) =>
 
       console.log(badges, "get");
       return <p>{badges}</p>;
+    })
+    .get("/profile/:id", async ({ userAuthorized, set, params: { id } }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+      const userId = Number(id);
+
+      const userPrepared = db
+        .select()
+        .from(users)
+        .where(eq(sql.placeholder("id"), users.id))
+        .limit(1)
+        .prepare("select_user");
+      const user1: SelectUser[] = await userPrepared.execute({ id: userId });
+
+      const followerPrepared = db
+        .select({ count: sql<number>`count(*)` })
+        .from(followers)
+        .where(eq(sql.placeholder("id"), followers.user_id))
+        .prepare("select_followers");
+      const Followers = await followerPrepared.execute({ id: userId });
+
+      const followingPrepared = db
+        .select({ count: sql<number>`count(*)` })
+        .from(followers)
+        .where(eq(sql.placeholder("id"), followers.follower_id))
+        .prepare("select_following");
+      const following = await followingPrepared.execute({ id: userId });
+
+      return (
+        <BaseHtml>
+          <ProfilePage
+            user={user1[0]}
+            followers={Followers[0].count}
+            following={following[0].count}
+          />
+        </BaseHtml>
+      );
     })
     .get("/messages", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
