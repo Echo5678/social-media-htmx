@@ -141,7 +141,9 @@ export const user = (app: Elysia) =>
           .from(projects)
           .where(eq(sql.placeholder("username"), projects.username))
           .prepare("select_projects");
-        const posts = await postsPrepared.execute({ username: user.username });
+        const posts = await postsPrepared.execute({
+          username: user1[0].username,
+        });
 
         const isUserAccount = user.username === user1[0].username;
 
