@@ -3,7 +3,13 @@ import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
-import { projects, users } from "../../db/schema";
+import {
+  InsertFollower,
+  SelectUser,
+  followers,
+  projects,
+  users,
+} from "../../db/schema";
 import { eq, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
@@ -13,8 +19,15 @@ import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
 import { ProjectFormLayout } from "../../pages/base/project-form-layout";
+import ProfilePage from "../../pages/profilepage";
 
 const WEEK = 60 * 60 * 24 * 7;
+
+const followingPrepared = db
+  .select({ count: sql<number>`count(*)` })
+  .from(followers)
+  .where(eq(sql.placeholder("id"), followers.follower_id))
+  .prepare("select_following");
 
 export const project = (app: Elysia) =>
   app
