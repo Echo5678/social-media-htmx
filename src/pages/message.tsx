@@ -9,6 +9,7 @@ const MessagePage = () => (
       />
     </form>
     <div id="chat"></div>
+    <a>CHeese</a>
   </main>
 );
 
