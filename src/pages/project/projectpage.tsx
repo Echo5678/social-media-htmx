@@ -54,7 +54,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
               </div>
             </div>
             <div class="flex items-center bg-[#0a0a0a] border border-zinc-800 rounded-lg w-full  mt-10">
-              <div class="flex flex-col lg:flex-row w-full py-4">
+              <div class="flex flex-col md:flex-row w-full py-4">
                 <img
                   alt="Project Image"
                   src={project.image}
