@@ -27,8 +27,7 @@ export default function HomePage() {
             <li class="bg-[#010101] border border-zinc-800 p-5 rounded-lg w-full sm:w-[50vw] md:w-[40vw] hover:scale-105 transition duration-500 hover:cursor-pointer">
               <a
                 href="/project/3"
-                hx-boost
-                hx-target="#page"
+                hx-boost="true"
                 hx-push-url
                 preload="mouseover"
               >
