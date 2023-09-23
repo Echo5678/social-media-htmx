@@ -1,8 +1,10 @@
+import { index } from "drizzle-orm/mysql-core";
 import StarIconRegular from "../components/assets/stariconregular";
 import Navbar from "../components/navbar";
 import SideBar from "../components/sidebar";
+import { SelectProject } from "../db/schema";
 
-export default function HomePage() {
+export default function HomePage({ project }: { project: SelectProject[] }) {
   return (
     <>
       <div class="flex">
@@ -24,6 +26,8 @@ export default function HomePage() {
             </a>
           </nav>
           <ul class="flex px-3">
+            <a href="/projects">Press Me</a>
+            {/* {project.map(item => <p>{item.description}</p>)} */}
             <li class="bg-[#010101] border border-zinc-800 p-5 rounded-lg w-full sm:w-[50vw] md:w-[40vw] hover:scale-105 transition duration-500 hover:cursor-pointer">
               <a
                 href="/project/3"
@@ -61,9 +65,9 @@ export default function HomePage() {
                   <StarIconRegular />
                 </button>
               </div>
-              <p hx-patch="/badges/2" hx-swap="innerHTML">
+              {/* <p hx-patch="/badges/2" hx-swap="innerHTML">
                 add badge
-              </p>
+              </p> */}
             </li>
           </ul>
         </main>
