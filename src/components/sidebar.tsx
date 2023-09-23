@@ -1,8 +1,8 @@
-import SearchIcon from "../components/assets/searchicon";
 import HomeIcon from "../components/assets/homeicon";
 import NotificationIcon from "../components/assets/notificationicon";
 import MessageIcon from "../components/assets/messageicon";
 import PlusIcon from "./assets/plusicon";
+import NavbarSearch from "./assets/navbar-search-icon";
 
 const SideBar = () => (
   <aside class="hidden md:block border-r border-zinc-800 min-h-screen">
@@ -45,7 +45,7 @@ const SideBar = () => (
             hx-push-url
             preload="mouseover"
           >
-            <SearchIcon />
+            <NavbarSearch />
           </a>
         </li>
         <li class="transition hover:bg-zinc-800 p-2.5 rounded-full">

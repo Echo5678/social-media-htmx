@@ -103,60 +103,62 @@ export const user = (app: Elysia) =>
       console.log(badges, "get");
       return <p>{badges}</p>;
     })
-    .get("/profile/:id", async ({ userAuthorized, set, params: { id } }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
-      }
-      const userId = Number(id);
+    .get(
+      "/profile/:username",
+      async ({ userAuthorized, set, params: { username } }) => {
+        const user = userAuthorized;
+        if (!user) {
+          set.status = 307;
+          set.redirect = "/sign-in";
+        }
 
-      const userPrepared = db
-        .select()
-        .from(users)
-        .where(eq(sql.placeholder("id"), users.id))
-        .limit(1)
-        .prepare("select_user");
-      const user1: SelectUser[] = await userPrepared.execute({ id: userId });
+        const userPrepared = db
+          .select()
+          .from(users)
+          .where(eq(sql.placeholder("username"), users.username))
+          .limit(1)
+          .prepare("select_user");
+        const user1: SelectUser[] = await userPrepared.execute({ username });
 
-      const followerPrepared = db
-        .select({ count: sql<number>`count(*)` })
-        .from(followers)
-        .where(eq(sql.placeholder("id"), followers.user_id))
-        .prepare("select_followers");
-      const Followers = await followerPrepared.execute({ id: userId });
+        const followerPrepared = db
+          .select({ count: sql<number>`count(*)` })
+          .from(followers)
+          .where(eq(sql.placeholder("id"), followers.user_id))
+          .prepare("select_followers");
+        const Followers = await followerPrepared.execute({ id: user1[0].id });
 
-      const following = await followingPrepared.execute({ id: userId });
+        const following = await followingPrepared.execute({ id: user1[0].id });
 
-      const is_following = await db
-        .select()
-        .from(followers)
-        .where(
-          sql`${followers.user_id} = ${id} and ${followers.follower_id} = ${userAuthorized.id}`
+        const is_following = await db
+          .select()
+          .from(followers)
+          .where(
+            sql`${followers.user_id} = ${user1[0].id} and ${followers.follower_id} = ${userAuthorized.id}`
+          );
+
+        const postsPrepared = db
+          .select()
+          .from(projects)
+          .where(eq(sql.placeholder("username"), projects.username))
+          .prepare("select_projects");
+        const posts = await postsPrepared.execute({ username: user.username });
+
+        const isUserAccount = user.username === user1[0].username;
+
+        return (
+          <BaseHtml>
+            <ProfilePage
+              user={user1[0]}
+              followers={Followers[0].count}
+              following={following[0].count}
+              posts={posts}
+              isFollowing={is_following ? true : false}
+              isUserAccount={isUserAccount}
+            />
+          </BaseHtml>
         );
-
-      const postsPrepared = db
-        .select()
-        .from(projects)
-        .where(eq(sql.placeholder("username"), projects.username))
-        .prepare("select_projects");
-      const posts = await postsPrepared.execute({ username: user.username });
-
-      const isUserAccount = user.username === user1[0].username;
-
-      return (
-        <BaseHtml>
-          <ProfilePage
-            user={user1[0]}
-            followers={Followers[0].count}
-            following={following[0].count}
-            posts={posts}
-            isFollowing={is_following ? true : false}
-            isUserAccount={isUserAccount}
-          />
-        </BaseHtml>
-      );
-    })
+      }
+    )
     .post("/follow/:id", async ({ userAuthorized, set, params: { id } }) => {
       const user = userAuthorized;
       if (!user) {
