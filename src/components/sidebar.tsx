@@ -10,6 +10,7 @@ const SideBar = () => (
       <a
         href="/home"
         aria-label="Home Page"
+        hx-boost="true"
         hx-push-url
         preload="mouseover"
         class="transition hover:bg-zinc-800 p-1 rounded-full"
