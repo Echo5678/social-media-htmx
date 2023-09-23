@@ -4,7 +4,13 @@ import cookie from "@elysiajs/cookie";
 import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
-import { SelectUser, followers, users } from "../../db/schema";
+import {
+  InsertFollower,
+  SelectUser,
+  followers,
+  projects,
+  users,
+} from "../../db/schema";
 import { sql, eq } from "drizzle-orm";
 import { MessageLayout } from "../../pages/base/messagelayout";
 import MessagePage from "../../pages/message";
@@ -12,6 +18,12 @@ import ProfilePage from "../../pages/profilepage";
 import { BaseHtml } from "../../pages/base/basehtml";
 
 const WEEK = 60 * 60 * 24 * 7;
+
+const followingPrepared = db
+  .select({ count: sql<number>`count(*)` })
+  .from(followers)
+  .where(eq(sql.placeholder("id"), followers.follower_id))
+  .prepare("select_following");
 
 export const user = (app: Elysia) =>
   app
@@ -114,12 +126,23 @@ export const user = (app: Elysia) =>
         .prepare("select_followers");
       const Followers = await followerPrepared.execute({ id: userId });
 
-      const followingPrepared = db
-        .select({ count: sql<number>`count(*)` })
-        .from(followers)
-        .where(eq(sql.placeholder("id"), followers.follower_id))
-        .prepare("select_following");
       const following = await followingPrepared.execute({ id: userId });
+
+      const is_following = await db
+        .select()
+        .from(followers)
+        .where(
+          sql`${followers.user_id} = ${id} and ${followers.follower_id} = ${userAuthorized.id}`
+        );
+
+      const postsPrepared = db
+        .select()
+        .from(projects)
+        .where(eq(sql.placeholder("username"), projects.username))
+        .prepare("select_projects");
+      const posts = await postsPrepared.execute({ username: user.username });
+
+      const isUserAccount = user.username === user1[0].username;
 
       return (
         <BaseHtml>
@@ -127,8 +150,45 @@ export const user = (app: Elysia) =>
             user={user1[0]}
             followers={Followers[0].count}
             following={following[0].count}
+            posts={posts}
+            isFollowing={is_following ? true : false}
+            isUserAccount={isUserAccount}
           />
         </BaseHtml>
+      );
+    })
+    .post("/follow/:id", async ({ userAuthorized, set, params: { id } }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+
+      const follow: InsertFollower[] = await db
+        .insert(followers)
+        .values({ user_id: Number(id), follower_id: user.id })
+        .returning();
+
+      const following = await followingPrepared.execute({ id: user.id });
+      return (
+        <div>
+          <button
+            hx-delete={`/unfollow/${id}`}
+            hx-swap="outerHTML"
+            hx-target="#follow"
+            id="follow"
+            class=" px-4 py-2 border rounded-md bg-black text-white dark:bg-white dark:text-black font-medium"
+          >
+            Following
+          </button>
+          <span
+            id="followerCount"
+            hx-swap-oob="true"
+            class="dark:text-white text-black mr-1 font-medium"
+          >
+            {following[0].count}
+          </span>
+        </div>
       );
     })
     .get("/messages", async ({ userAuthorized, set }) => {

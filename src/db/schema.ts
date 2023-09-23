@@ -21,7 +21,8 @@ export const users = pgTable("users", {
   emailverified: boolean("emailverified").default(false),
   password: varchar("password", { length: 60 }).notNull(),
   bio: varchar("bio", { length: 250 }).default(""),
-  joined: timestamp("joined").defaultNow(),
+  verified: boolean("verified").default(false),
+  joined: text("joined"),
   jwt: text("jwt"),
   badges: text("badges").array().default([]),
 });

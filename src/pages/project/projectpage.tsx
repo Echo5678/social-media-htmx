@@ -14,7 +14,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
       <div class="flex">
         <SideBar />
         <div class="flex  flex-col w-full bg-[#fcfcfc] dark:bg-[#111111]">
-          <header class="flex w-full bg-zinc-200 dark:bg-black top-0 py-5 md:py-7 justify-between items-center px-6 md:px-10 xl:px-14">
+          <header class="flex w-full bg-zinc-100 dark:bg-black top-0 py-5 md:py-7 justify-between items-center px-6 md:px-10 xl:px-14">
             <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
               {project.name}
             </h1>
@@ -42,18 +42,18 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
                 </p>
               </div>
               <div class="flex items-center md:items-end md:items-end mx-auto md:mx-0 pt-6 space-x-4 md:pt-0">
-                <button class="flex text-sm font-medium border bg-black border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white">
+                <button class="flex text-sm font-medium border bg-white dark:bg-black border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white">
                   <Instagram />
                 </button>
-                <button class="flex text-sm font-medium border bg-black border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white">
+                <button class="flex text-sm font-medium border  bg-white dark:bg-black border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white">
                   <Twitter />
                 </button>
-                <button class="flex text-sm font-medium border bg-black border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white">
+                <button class="flex text-sm font-medium border bg-white dark:bg-black border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white">
                   <Youtube />
                 </button>
               </div>
             </div>
-            <div class="flex items-center bg-[#0a0a0a] border border-zinc-800 rounded-lg w-full  mt-10">
+            <div class="flex items-center  bg-zinc-100 dark:bg-[#0a0a0a] border border-zinc-300 dark:border-zinc-800 rounded-lg w-full  mt-10">
               <div class="flex flex-col md:flex-row w-full py-4">
                 <img
                   alt="Project Image"
@@ -86,7 +86,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
                 </div>
               </div>
             </div>
-            <div class="flex flex-col bg-[#0a0a0a] border border-zinc-800 rounded-lg  mx-auto w-full p-3 mt-10 mb-20 text-center">
+            <div class="flex flex-col bg-zinc-100 dark:bg-[#0a0a0a] border border-zinc-300 dark:border-zinc-800 rounded-lg  mx-auto w-full p-3 mt-10 mb-20 text-center">
               <p class="text-3xl font-bold">Technologies</p>
               <div class="flex flex-row flex-wrap space-x-5 text-[#444444] dark:text-[#B1B1B1] justify-center pt-2">
                 <p>Bun</p>
