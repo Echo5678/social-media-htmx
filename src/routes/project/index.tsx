@@ -4,7 +4,7 @@ import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
 import { projects, users } from "../../db/schema";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
 import ProjectForm from "../../pages/project/projectform";
@@ -103,7 +103,10 @@ export const project = (app: Elysia) =>
           stars: [],
         });
 
-        const project = await db.select().from(projects);
+        const project = await db
+          .select()
+          .from(projects)
+          .where(eq(projects.privacy, "public"));
 
         return (
           <BaseHtml>
@@ -139,7 +142,9 @@ export const project = (app: Elysia) =>
       const [project] = await db
         .select()
         .from(projects)
-        .where(eq(projects.id, Number(id)));
+        .where(
+          and(eq(projects.id, Number(id)), eq(projects.privacy, "public"))
+        );
 
       return (
         <BaseHtml>

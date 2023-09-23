@@ -124,7 +124,7 @@ export const auth = (app: Elysia) =>
         const hashedPassword = await Bun.password.hash(password);
         const JWT = await jwt.sign({ username, email });
 
-        const user: SelectUser[] = await db
+        const user: InsertUser = await db
           .insert(users)
           .values({
             username,
