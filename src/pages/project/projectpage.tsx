@@ -64,7 +64,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
                   <div class="flex flex-col">
                     <p class="text-lg md:text-xl font-medium">Description</p>
                     <p class="text-[#444444] dark:text-[#B1B1B1] line-clamp-3">
-                      This is the description of my blazingly fast website.
+                      {project.description}
                     </p>
                   </div>
                   <div class="flex flex-col">

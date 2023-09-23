@@ -25,6 +25,7 @@ export const users = pgTable("users", {
   joined: text("joined"),
   jwt: text("jwt"),
   badges: text("badges").array().default([]),
+  profilePicture: varchar("profilepicture").notNull()
 });
 
 export const projects = pgTable("projects", {

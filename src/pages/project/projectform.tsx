@@ -96,12 +96,14 @@ export default function ProjectForm() {
       </div>
       <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
       <div class="justify-end flex">
-        <button
+        <a
           class="bg-black text-white dark:bg-white dark:text-black px-3 py-2 rounded-md  font-semibold mt-2"
           type="submit"
+          href="/home"
+          hx-boost="true"
         >
           Create project
-        </button>
+        </a>
       </div>
     </form>
   );
