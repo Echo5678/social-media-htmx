@@ -95,7 +95,10 @@ export const home = (app: Elysia) =>
         set.status = 307;
         set.redirect = "/sign-in";
       }
-      const project = await db.select().from(projects);
+      const project = await db
+        .select()
+        .from(projects)
+        .where(eq(projects.privacy, "public"));
 
       return (
         <BaseHtml>
