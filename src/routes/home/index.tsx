@@ -49,6 +49,7 @@ export const home = (app: Elysia) =>
 
       const User: any = await db
         .select({
+          id: users.id,
           username: users.username,
           email: users.email,
         })
