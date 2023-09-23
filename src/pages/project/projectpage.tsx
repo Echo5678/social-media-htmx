@@ -13,8 +13,8 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
     <BaseHtml>
       <div class="flex">
         <SideBar />
-        <div class="flex  flex-col w-full bg-[#fcfcfc] dark:bg-[#111111] overflow-y-scroll lg:overflow-hidden">
-          <header class="flex w-full bg-zinc-200 dark:bg-black top-0 py-5 md:py-7 justify-between items-center px-8 md:px-10">
+        <div class="flex  flex-col w-full bg-[#fcfcfc] dark:bg-[#111111]">
+          <header class="flex w-full bg-zinc-200 dark:bg-black top-0 py-5 md:py-7 justify-between items-center px-6 md:px-10 xl:px-14">
             <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
               {project.name}
             </h1>
@@ -64,11 +64,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
                   <div class="flex flex-col">
                     <p class="text-lg md:text-xl font-medium">Description</p>
                     <p class="text-[#444444] dark:text-[#B1B1B1] line-clamp-3">
-                      THis is a rlkjkjkjasdlkjfkljsdkkkkkkkkkkkkkkkk
-                      asidjfkjalsdkfjlkasdf;lkjas;lkdf aksjdflkajsd;lkfja;lskdjf
-                      lkasjd flkj as ;dlkfjlaksdjf;lkasdlfk jas;ldkfj;alksdjf
-                      ;lkajs;dlfkjasl;kdfj ;asldkjf dsl;ak jflk;ajs d;flk
-                      a;slkdf as;lkd f;alks df
+                      This is the description of my blazingly fast website.
                     </p>
                   </div>
                   <div class="flex flex-col">
@@ -90,15 +86,15 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
                 </div>
               </div>
             </div>
-            <div class="flex flex-col md:flex-row justify-around items-center bg-[#0a0a0a] border-[1px] border-zinc-800 rounded-lg  mx-auto w-full px-6 py-4 mt-10 mb-20">
+            <div class="flex flex-col bg-[#0a0a0a] border border-zinc-800 rounded-lg  mx-auto w-full p-3 mt-10 mb-20 text-center">
               <p class="text-3xl font-bold">Technologies</p>
-              <div class="flex flex-row flex-wrap space-x-5 text-[#444444] dark:text-[#B1B1B1]">
-                <p class="font-bold">Bun</p>
-                <p class="font-bold">Elysia</p>
-                <p class="font-bold">Turso</p>
-                <p class="font-bold">HTMX</p>
-                <p class="font-bold">Drizzle</p>
-                <p class="font-bold">Tailwind</p>
+              <div class="flex flex-row flex-wrap space-x-5 text-[#444444] dark:text-[#B1B1B1] justify-center pt-2">
+                <p>Bun</p>
+                <p>Elysia</p>
+                <p>Turso</p>
+                <p>HTMX</p>
+                <p>Drizzle</p>
+                <p>Tailwind</p>
               </div>
             </div>
           </main>
