@@ -4,8 +4,10 @@ import cookie from "@elysiajs/cookie";
 import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
-import { users, projects } from "../../db/schema";
-import { sql } from "drizzle-orm";
+import { users, projects, SelectProject } from "../../db/schema";
+import { ilike, or, sql } from "drizzle-orm";
+
+import validator from "validator";
 
 import { BaseHtml } from "../../pages/base/basehtml";
 import LandingPage from "../../pages/landingpage";
@@ -13,6 +15,8 @@ import HomePage from "../../pages/homepage";
 import ProfilePage from "../../pages/profilepage";
 import BlogPost from "../../pages/blog/blogpost";
 import BlogEditor from "../../pages/blog/blogeditor";
+import SearchPage from "../../pages/searchpage";
+import ProjectList from "../../components/projectlist";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -101,4 +105,50 @@ export const home = (app: Elysia) =>
           <HomePage project={project} />
         </BaseHtml>
       );
-    });
+    })
+    .get("/search", async ({ userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+      const Projects = await db.select().from(projects).limit(10);
+
+      return (
+        <BaseHtml>
+          <SearchPage projects={Projects} />
+        </BaseHtml>
+      );
+    })
+    .get(
+      "/search-for",
+      async ({ userAuthorized, set, query: { search } }) => {
+        const user = userAuthorized;
+        if (!user) {
+          set.status = 307;
+          set.redirect = "/sign-in";
+        }
+        let Projects: SelectProject[];
+
+        if (validator.isAscii(search)) {
+          Projects = await db
+            .select()
+            .from(projects)
+            .where(
+              or(
+                ilike(projects.name, search),
+                ilike(projects.description, search)
+              )
+            );
+        } else {
+          Projects = await db.select().from(projects).limit(10);
+        }
+
+        return <ProjectList project={Projects} />;
+      },
+      {
+        query: t.Object({
+          search: t.String(),
+        }),
+      }
+    );
