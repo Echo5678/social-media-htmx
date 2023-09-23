@@ -12,7 +12,7 @@ import html from "@elysiajs/html";
 import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
-import StarIconRegular from "../../components/assets/stariconregular";
+import { ProjectFormLayout } from "../../pages/base/project-form-layout";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -74,9 +74,9 @@ export const project = (app: Elysia) =>
       }
 
       return (
-        <BaseHtml>
+        <ProjectFormLayout>
           <ProjectForm />
-        </BaseHtml>
+        </ProjectFormLayout>
       );
     })
     .post(
@@ -92,20 +92,24 @@ export const project = (app: Elysia) =>
           set.redirect = "/sign-in";
         }
 
-        const project = await db
-          .insert(projects)
-          .values({
-            name,
-            description,
-            privacy,
-            languages: [language],
-            username: user.username,
-            image: "",
-            collaborators: [],
-            stars: [],
-          })
-          .returning();
-        return <div></div>;
+        await db.insert(projects).values({
+          name,
+          description,
+          privacy,
+          languages: [language],
+          username: user.username,
+          image: "",
+          collaborators: [],
+          stars: [],
+        });
+
+        const project = await db.select().from(projects);
+
+        return (
+          <BaseHtml>
+            <HomePage project={project} />
+          </BaseHtml>
+        );
       },
       {
         body: t.Object({

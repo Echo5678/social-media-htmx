@@ -1,4 +1,3 @@
-import { index } from "drizzle-orm/mysql-core";
 import StarIconRegular from "../components/assets/stariconregular";
 import Navbar from "../components/navbar";
 import SideBar from "../components/sidebar";

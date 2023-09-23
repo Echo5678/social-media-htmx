@@ -1,6 +1,10 @@
 export default function ProjectForm() {
   return (
-    <form class=" md:w-3/4 xl:w-2/3  mx-auto p-6 " hx-post="/project">
+    <form
+      class=" md:w-3/4 xl:w-2/3  mx-auto p-6 "
+      hx-post="/project"
+      hx-swap="outerHTML"
+    >
       <header>
         <h1 class="font-medium text-3xl">Create a Project</h1>
         <span class="block text-[#444444] dark:text-[#B1B1B1] pt-2 text-sm">
@@ -96,14 +100,12 @@ export default function ProjectForm() {
       </div>
       <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
       <div class="justify-end flex">
-        <a
+        <button
           class="bg-black text-white dark:bg-white dark:text-black px-3 py-2 rounded-md  font-semibold mt-2"
           type="submit"
-          href="/home"
-          hx-boost="true"
         >
           Create project
-        </a>
+        </button>
       </div>
     </form>
   );
