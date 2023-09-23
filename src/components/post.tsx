@@ -1,10 +1,7 @@
 import StarIconRegular from "../components/assets/stariconregular";
+import { SelectProject } from "../db/schema";
 
-interface PostProps {
-  badges: any;
-}
-
-const Post = ({ badges }: PostProps) => {
+const Post = ({ project }: { project: SelectProject }) => {
   return (
     <li class="bg-[#010101] border border-zinc-800 p-5 rounded-lg w-full sm:w-[50vw] md:w-[40vw] hover:scale-105 transition duration-500 hover:cursor-pointer">
       <a

@@ -12,6 +12,7 @@ import html from "@elysiajs/html";
 import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
+import StarIconRegular from "../../components/assets/stariconregular";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -129,21 +130,15 @@ export const project = (app: Elysia) =>
         </button>
       );
     })
-    .get("/projects", async ({ userAuthorized, set }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
-      }
-      const project = await db.select().from(projects);
-      return <HomePage project={project} />;
-    })
-
     .get("/project/:id", async ({ params: { id } }) => {
       const [project] = await db
         .select()
         .from(projects)
         .where(eq(projects.id, Number(id)));
 
-      return <ProjectPage project={project} />;
+      return (
+        <BaseHtml>
+          <ProjectPage project={project} />
+        </BaseHtml>
+      );
     });

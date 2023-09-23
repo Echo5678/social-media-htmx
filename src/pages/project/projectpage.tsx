@@ -64,11 +64,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
                   <div class="flex flex-col">
                     <p class="text-lg md:text-xl font-medium">Description</p>
                     <p class="text-[#444444] dark:text-[#B1B1B1] line-clamp-3">
-                      THis is a rlkjkjkjasdlkjfkljsdkkkkkkkkkkkkkkkk
-                      asidjfkjalsdkfjlkasdf;lkjas;lkdf aksjdflkajsd;lkfja;lskdjf
-                      lkasjd flkj as ;dlkfjlaksdjf;lkasdlfk jas;ldkfj;alksdjf
-                      ;lkajs;dlfkjasl;kdfj ;asldkjf dsl;ak jflk;ajs d;flk
-                      a;slkdf as;lkd f;alks df
+                      {project.description}
                     </p>
                   </div>
                   <div class="flex flex-col">

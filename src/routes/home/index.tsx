@@ -93,10 +93,11 @@ export const home = (app: Elysia) =>
         set.status = 307;
         set.redirect = "/sign-in";
       }
+      const project = await db.select().from(projects);
 
       return (
         <BaseHtml>
-          <HomePage />
+          <HomePage project={project} />
         </BaseHtml>
       );
     })
