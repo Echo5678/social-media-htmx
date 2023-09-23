@@ -5,16 +5,13 @@ import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
 import { users, projects, SelectProject } from "../../db/schema";
-import { ilike, or, sql } from "drizzle-orm";
+import { and, eq, ilike, or, sql } from "drizzle-orm";
 
 import validator from "validator";
 
 import { BaseHtml } from "../../pages/base/basehtml";
 import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
-import ProfilePage from "../../pages/profilepage";
-import BlogPost from "../../pages/blog/blogpost";
-import BlogEditor from "../../pages/blog/blogeditor";
 import SearchPage from "../../pages/searchpage";
 import ProjectList from "../../components/projectlist";
 
@@ -98,7 +95,10 @@ export const home = (app: Elysia) =>
         set.status = 307;
         set.redirect = "/sign-in";
       }
-      const project = await db.select().from(projects);
+      const project = await db
+        .select()
+        .from(projects)
+        .where(eq(projects.privacy, "public"));
 
       return (
         <BaseHtml>
@@ -112,7 +112,11 @@ export const home = (app: Elysia) =>
         set.status = 307;
         set.redirect = "/sign-in";
       }
-      const Projects = await db.select().from(projects).limit(10);
+      const Projects = await db
+        .select()
+        .from(projects)
+        .where(eq(projects.privacy, "public"))
+        .limit(10);
 
       return (
         <BaseHtml>
@@ -135,9 +139,12 @@ export const home = (app: Elysia) =>
             .select()
             .from(projects)
             .where(
-              or(
-                ilike(projects.name, search),
-                ilike(projects.description, search)
+              and(
+                or(
+                  ilike(projects.name, search),
+                  ilike(projects.description, search)
+                ),
+                eq(projects.privacy, "public")
               )
             );
         } else {
