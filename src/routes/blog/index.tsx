@@ -11,6 +11,7 @@ import { BlogLayout } from "../../pages/base/bloglayout";
 import { BlogEditorLayout } from "../../pages/base/blog-editor-layout";
 import BlogEditor from "../../pages/blog/blogeditor";
 import BlogPost from "../../pages/blog/blogpost";
+import BlogList from "../../components/bloglist";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -120,6 +121,11 @@ export const blog = (app: Elysia) =>
           <BlogPost blog={Blog} />
         </BlogLayout>
       );
+    })
+    .get("/blog-list", async () => {
+      const Blogs = await db.select().from(blogs).limit(10);
+
+      return <BlogList blogs={Blogs} />;
     })
     .get("/blog/editor", async ({ userAuthorized, set }) => {
       const user = userAuthorized;

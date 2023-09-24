@@ -151,7 +151,7 @@ export const home = (app: Elysia) =>
           Projects = await db.select().from(projects).limit(10);
         }
 
-        return <ProjectList project={Projects} />;
+        return <ProjectList projects={Projects} />;
       },
       {
         query: t.Object({

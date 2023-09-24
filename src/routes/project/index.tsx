@@ -13,6 +13,7 @@ import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
 import { ProjectFormLayout } from "../../pages/base/project-form-layout";
+import ProjectList from "../../components/projectlist";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -65,6 +66,15 @@ export const project = (app: Elysia) =>
       return {
         userAuthorized,
       };
+    })
+    .get("/project-list", async ({ userAuthorized, set }) => {
+      const Projects = await db
+        .select()
+        .from(projects)
+        .where(eq(projects.privacy, "public"))
+        .limit(10);
+
+      return <ProjectList projects={Projects} />;
     })
     .get("/project/form", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
