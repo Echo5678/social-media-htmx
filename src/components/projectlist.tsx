@@ -24,14 +24,17 @@ export default function ProjectList({ project }: { project: SelectProject[] }) {
                 class=" rounded-full"
                 alt="Profile Picture"
               />
-              <div>
+              <div class="w-full">
                 <h2 class="text-lg font-medium  w-full line-clamp-1">
                   {item.name}
                 </h2>
-                <a hx-get={`/profile/${item.username}`}>
-                  <span class="text-[#444444] dark:text-[#B1B1B1] font-semibold tracking-wide">
-                    {item.username}
-                  </span>
+                <a
+                  class="text-[#444444] dark:text-[#B1B1B1] font-semibold tracking-wide underline decoration-1 hover:text-white"
+                  href={`/profile/${item.username}`}
+                  hx-push-url="true"
+                  hx-boost="true"
+                >
+                  {item.username}
                 </a>
               </div>
             </div>

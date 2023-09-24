@@ -99,6 +99,47 @@ export default function ProjectForm() {
         </div>
       </div>
       <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
+      <div class="flex flex-col md:flex-row md:justify-between  mt-4">
+        <div>
+          <label class="font-medium" for="collaborators">
+            Collaborators
+          </label>
+          <input
+            id="collaborators"
+            type="text"
+            name="collaborators"
+            class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
+          />
+          <p class="pt-2 pb-3">
+            Search other collaborators by username, add them to the team
+          </p>
+        </div>
+        <div>
+          <label class="font-medium" for="image">
+            Image
+          </label>
+          <input
+            id="image"
+            type="file"
+            name="image"
+            class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
+          />
+          <p class="pt-2 pb-3">Add thumbnail for project</p>
+        </div>
+      </div>
+      <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
+      <div>
+        <label class="font-medium" for="technologies">
+          Technologies
+        </label>
+        <input
+          id="technologies"
+          type="text"
+          name="technologies"
+          class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
+        />
+        <p class="pt-2 pb-3">List tech stack and third party software</p>
+      </div>
       <div class="justify-end flex">
         <button
           class="bg-black text-white dark:bg-white dark:text-black px-3 py-2 rounded-md  font-semibold mt-2"

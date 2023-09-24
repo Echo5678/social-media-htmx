@@ -3,7 +3,13 @@ import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
-import { projects, users } from "../../db/schema";
+import {
+  InsertFollower,
+  SelectFollower,
+  followers,
+  projects,
+  users,
+} from "../../db/schema";
 import { and, eq, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
