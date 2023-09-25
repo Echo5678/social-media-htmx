@@ -3,7 +3,13 @@ import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
-import { projects, users } from "../../db/schema";
+import {
+  InsertFollower,
+  SelectFollower,
+  followers,
+  projects,
+  users,
+} from "../../db/schema";
 import { and, eq, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
@@ -13,9 +19,16 @@ import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
 import { ProjectFormLayout } from "../../pages/base/project-form-layout";
+import ProfilePage from "../../pages/profilepage";
 import ProjectList from "../../components/projectlist";
 
 const WEEK = 60 * 60 * 24 * 7;
+
+const followingPrepared = db
+  .select({ count: sql<number>`count(*)` })
+  .from(followers)
+  .where(eq(sql.placeholder("id"), followers.follower_id))
+  .prepare("select_following");
 
 export const project = (app: Elysia) =>
   app
@@ -109,6 +122,7 @@ export const project = (app: Elysia) =>
           languages: [language],
           username: user.username,
           image: "",
+          technologies: [],
           collaborators: [],
           stars: [],
         });
@@ -161,4 +175,27 @@ export const project = (app: Elysia) =>
           <ProjectPage project={project} />
         </BaseHtml>
       );
-    });
+    })
+    .patch(
+      "/remove/project/:id",
+      async ({ params: { id }, userAuthorized, set }) => {
+        const user = userAuthorized;
+        if (!user) {
+          set.status = 307;
+          set.redirect = "/sign-in";
+        }
+        const [remove] = await db.execute(
+          sql`DELETE FROM projects WHERE ${projects.id} = ${id}`
+        );
+        const project = await db
+          .select()
+          .from(projects)
+          .where(eq(projects.privacy, "public"));
+
+        return (
+          <BaseHtml>
+            <HomePage project={project} />
+          </BaseHtml>
+        );
+      }
+    );
