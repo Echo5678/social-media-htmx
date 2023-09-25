@@ -67,7 +67,7 @@ export const project = (app: Elysia) =>
         userAuthorized,
       };
     })
-    .get("/project-list", async ({ userAuthorized, set }) => {
+    .get("/project-list", async () => {
       const Projects = await db
         .select()
         .from(projects)

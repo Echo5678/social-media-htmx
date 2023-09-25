@@ -104,12 +104,7 @@ export const blog = (app: Elysia) =>
         }),
       }
     )
-    .get("/blog/:id", async ({ userAuthorized, set, params: { id } }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
-      }
+    .get("/blog/:id", async ({ params: { id } }) => {
       const [Blog] = await db
         .select()
         .from(blogs)
