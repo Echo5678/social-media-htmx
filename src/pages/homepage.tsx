@@ -11,20 +11,24 @@ export default function HomePage({ project }: { project: SelectProject[] }) {
         <main id="page" class="w-full px-6">
           <h1 class="text-xl font-bold py-3">Home</h1>
           <nav class="pb-3 flex space-x-6">
-            <a
-              href="/home/projects"
+            <button
+              hx-get="/project-list"
+              hx-target="#list"
+              hx-swap="outerHTML"
               class="font-medium text-lg pb-2 nav-link relative nav-link-active"
             >
               Projects
-            </a>
-            <a
-              href="/home/projects"
-              class=" text-lg border-white pb-2 nav-link  relative"
+            </button>
+            <button
+              hx-get="/blog-list"
+              hx-target="#list"
+              hx-swap="outerHTML"
+              class="font-medium text-lg pb-2 nav-link relative nav-link-active"
             >
               Blogs
-            </a>
+            </button>
           </nav>
-          <ProjectList project={project} />
+          <ProjectList projects={project} />
         </main>
       </div>
 

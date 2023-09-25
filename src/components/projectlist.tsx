@@ -1,13 +1,17 @@
 import { SelectProject } from "../db/schema";
 import StarIconRegular from "../components/assets/stariconregular";
 
-export default function ProjectList({ project }: { project: SelectProject[] }) {
+export default function ProjectList({
+  projects,
+}: {
+  projects: SelectProject[];
+}) {
   return (
     <ul
       id="list"
-      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-2 gap-y-4 grid-flow-row"
+      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"
     >
-      {project.map((item) => (
+      {projects.map((item) => (
         <li class="bg-[#010101] border border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-40 transition duration-500 hover:cursor-pointer flex  flex-col">
           <a
             href={`/project/${item.id}`}

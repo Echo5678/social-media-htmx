@@ -89,12 +89,7 @@ export const home = (app: Elysia) =>
         },
       }
     )
-    .get("/home", async ({ userAuthorized, set }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
-      }
+    .get("/home", async () => {
       const project = await db
         .select()
         .from(projects)
@@ -106,12 +101,7 @@ export const home = (app: Elysia) =>
         </BaseHtml>
       );
     })
-    .get("/search", async ({ userAuthorized, set }) => {
-      const user = userAuthorized;
-      if (!user) {
-        set.status = 307;
-        set.redirect = "/sign-in";
-      }
+    .get("/search", async () => {
       const Projects = await db
         .select()
         .from(projects)
@@ -126,12 +116,7 @@ export const home = (app: Elysia) =>
     })
     .get(
       "/search-for",
-      async ({ userAuthorized, set, query: { search } }) => {
-        const user = userAuthorized;
-        if (!user) {
-          set.status = 307;
-          set.redirect = "/sign-in";
-        }
+      async ({ query: { search } }) => {
         let Projects: SelectProject[];
 
         if (validator.isAscii(search)) {
@@ -151,7 +136,7 @@ export const home = (app: Elysia) =>
           Projects = await db.select().from(projects).limit(10);
         }
 
-        return <ProjectList project={Projects} />;
+        return <ProjectList projects={Projects} />;
       },
       {
         query: t.Object({
