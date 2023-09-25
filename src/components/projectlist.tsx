@@ -29,7 +29,7 @@ export default function ProjectList({ project }: { project: SelectProject[] }) {
                   {item.name}
                 </h2>
                 <a
-                  class="text-[#444444] dark:text-[#B1B1B1] font-semibold tracking-wide underline decoration-1 hover:text-white"
+                  class="text-[#444444] dark:text-[#B1B1B1] font-semibold tracking-wide hover:underline decoration-1 hover:text-wite"
                   href={`/profile/${item.username}`}
                   hx-push-url="true"
                   hx-boost="true"

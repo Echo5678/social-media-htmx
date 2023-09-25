@@ -112,6 +112,7 @@ export const project = (app: Elysia) =>
           languages: [language],
           username: user.username,
           image: "",
+          technologies: [],
           collaborators: [],
           stars: [],
         });
@@ -164,4 +165,27 @@ export const project = (app: Elysia) =>
           <ProjectPage project={project} />
         </BaseHtml>
       );
-    });
+    })
+    .patch(
+      "/remove/project/:id",
+      async ({ params: { id }, userAuthorized, set }) => {
+        const user = userAuthorized;
+        if (!user) {
+          set.status = 307;
+          set.redirect = "/sign-in";
+        }
+        const [remove] = await db.execute(
+          sql`DELETE FROM projects WHERE ${projects.id} = ${id}`
+        );
+        const project = await db
+          .select()
+          .from(projects)
+          .where(eq(projects.privacy, "public"));
+
+        return (
+          <BaseHtml>
+            <HomePage project={project} />
+          </BaseHtml>
+        );
+      }
+    );
