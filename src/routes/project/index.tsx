@@ -147,6 +147,8 @@ export const project = (app: Elysia) =>
           description: t.String(),
           privacy: t.String(),
           language: t.String(),
+          collaborators: t.String(),
+          technologies: t.String(),
         }),
       }
     )
@@ -179,7 +181,7 @@ export const project = (app: Elysia) =>
         </BaseHtml>
       );
     })
-    .patch(
+    .delete(
       "/remove/project/:id",
       async ({ params: { id }, userAuthorized, set }) => {
         const user = userAuthorized;
