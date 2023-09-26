@@ -2,9 +2,14 @@ export default function ProjectForm() {
   return (
     <form
       class=" md:w-3/4 xl:w-2/3  mx-auto p-6 "
+      hx-boost="true"
       hx-post="/project"
       hx-swap="outerHTML"
+      hx-replace-url="/home"
+      hx-trigger="submit"
+      hx-target-400="#error-message"
     >
+      <div id="error-message"></div>
       <header>
         <h1 class="font-medium text-3xl">Create a Project</h1>
         <span class="block text-[#444444] dark:text-[#B1B1B1] pt-2 text-sm">
