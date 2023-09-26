@@ -97,9 +97,11 @@ export const project = (app: Elysia) =>
       }
 
       return (
-        <ProjectFormLayout>
-          <ProjectForm />
-        </ProjectFormLayout>
+        <BaseHtml>
+          <ProjectFormLayout>
+            <ProjectForm />
+          </ProjectFormLayout>
+        </BaseHtml>
       );
     })
     .post(
@@ -132,6 +134,7 @@ export const project = (app: Elysia) =>
           .from(projects)
           .where(eq(projects.privacy, "public"));
 
+        console.log(user.username);
         return (
           <BaseHtml>
             <HomePage project={project} />
