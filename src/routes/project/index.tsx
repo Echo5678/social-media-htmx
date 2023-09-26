@@ -184,9 +184,10 @@ export const project = (app: Elysia) =>
           set.status = 307;
           set.redirect = "/sign-in";
         }
-        const [remove] = await db.execute(
-          sql`DELETE FROM projects WHERE ${projects.id} = ${id}`
-        );
+        const [remove] = await db
+          .delete(projects)
+          .where(eq(projects.id, Number(id)));
+
         const project = await db
           .select()
           .from(projects)
