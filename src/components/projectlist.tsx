@@ -12,7 +12,7 @@ export default function ProjectList({
       class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"
     >
       {projects.map((item) => (
-        <li class="bg-[#f9f9f9] dark:bg-[#010101] border border-zinc-300 dark:border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-40 transition duration-500 hover:cursor-pointer flex  flex-col">
+        <li class="bg-[#f9f9f9] dark:bg-[#010101] border border-zinc-300 dark:border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-20 transition duration-500 hover:cursor-pointer flex  flex-col">
           <a
             href={`/project/${item.id}`}
             hx-boost="true"

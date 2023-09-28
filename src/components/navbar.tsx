@@ -6,7 +6,7 @@ import NavbarSearch from "./assets/navbar-search-icon";
 
 const Navbar = () => {
   return (
-    <footer class="fixed bottom-0 border-t-2 border-[#2f3336] w-full md:hidden bg-[#fcfcfc] dark:bg-[#0e0e0e]">
+    <footer class="fixed bottom-0 border-t-2 border-[#2f3336] w-full md:hidden bg-[#fcfcfc] dark:bg-[#0e0e0e] z-40">
       <nav class="relative">
         <a
           href="/project/form"
