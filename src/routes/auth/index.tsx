@@ -107,9 +107,8 @@ export const auth = (app: Elysia) =>
           );
         }
         const hashedPassword = await Bun.password.hash(password);
-        const JWT = await jwt.sign({ username, email });
 
-        const user: InsertUser[] = await db
+        const user = await db
           .insert(users)
           .values({
             username,
@@ -118,8 +117,10 @@ export const auth = (app: Elysia) =>
             profile_picture: "",
           })
           .returning();
-
         if (user) {
+          const userId = String(user[0].id);
+          const JWT = await jwt.sign({ userId, username, email });
+
           setCookie("user", JWT);
           set.status = 307;
           set.redirect = "/home";
@@ -218,8 +219,12 @@ export const auth = (app: Elysia) =>
           );
         }
 
+        const userId = String(user[0].id);
+        const userUsername = String(user[0].username);
+
         const JWT = await jwt.sign({
-          username: user[0].username as string,
+          id: userId,
+          username: userUsername,
           email,
         });
 
