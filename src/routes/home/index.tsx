@@ -75,13 +75,9 @@ export const home = (app: Elysia) =>
       }
     )
     .get("/home", async () => {
-      const Projects: SelectProject[] = await db.execute(
-        sql`SELECT *, (ARRAY_LENGTH(stars, 1)) as stars_count FROM projects WHERE privacy = 'public' LIMIT 10`
-      );
-
       return (
         <BaseHtml>
-          <HomePage project={Projects} />
+          <HomePage />
         </BaseHtml>
       );
     })

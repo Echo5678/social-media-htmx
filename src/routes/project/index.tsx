@@ -97,14 +97,9 @@ export const project = (app: Elysia) =>
           stars: [],
         });
 
-        const project = await db
-          .select()
-          .from(projects)
-          .where(eq(projects.privacy, "public"));
-
         return (
           <BaseHtml>
-            <HomePage project={project} />
+            <HomePage />
           </BaseHtml>
         );
       },
@@ -160,14 +155,9 @@ export const project = (app: Elysia) =>
           .delete(projects)
           .where(eq(projects.id, Number(id)));
 
-        const project = await db
-          .select()
-          .from(projects)
-          .where(eq(projects.privacy, "public"));
-
         return (
           <BaseHtml>
-            <HomePage project={project} />
+            <HomePage />
           </BaseHtml>
         );
       }
