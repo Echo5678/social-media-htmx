@@ -12,7 +12,7 @@ export default function ProjectList({
       class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"
     >
       {projects.map((item) => (
-        <li class="bg-[#010101] border border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-40 transition duration-500 hover:cursor-pointer flex  flex-col">
+        <li class="bg-[#f9f9f9] dark:bg-[#010101] border border-zinc-300 dark:border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-40 transition duration-500 hover:cursor-pointer flex  flex-col">
           <a
             href={`/project/${item.id}`}
             hx-boost="true"
@@ -42,16 +42,17 @@ export default function ProjectList({
                 </a>
               </div>
             </div>
-            <p class="line-clamp-3 pt-2 text-[#444444] dark:text-[#B1B1B1] flex-grow">
+            <p class="line-clamp-3 py-2 text-[#444444] dark:text-[#B1B1B1] flex-grow">
               {item.description}
             </p>
           </a>
           <button
             hx-patch={`/stars/${item.id}`}
             hx-swap="outerHTML"
-            class="self-end"
+            class="self-end flex space-x-1 items-center font-medium text-lg"
           >
             <StarIconRegular />
+            <span>{item?.stars_count ? item?.stars_count : 0}</span>
           </button>
         </li>
       ))}

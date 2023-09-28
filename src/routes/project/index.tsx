@@ -3,13 +3,7 @@ import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
-import {
-  InsertFollower,
-  SelectFollower,
-  followers,
-  projects,
-  users,
-} from "../../db/schema";
+import { SelectProject, projects } from "../../db/schema";
 import { and, eq, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
@@ -19,7 +13,6 @@ import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
 import { ProjectFormLayout } from "../../pages/base/project-form-layout";
-import ProfilePage from "../../pages/profilepage";
 import ProjectList from "../../components/projectlist";
 
 const WEEK = 60 * 60 * 24 * 7;
@@ -60,11 +53,9 @@ export const project = (app: Elysia) =>
       };
     })
     .get("/project-list", async () => {
-      const Projects = await db
-        .select()
-        .from(projects)
-        .where(eq(projects.privacy, "public"))
-        .limit(10);
+      const Projects: SelectProject[] = await db.execute(
+        sql`SELECT *, (ARRAY_LENGTH(stars, 1)) as stars_count FROM projects WHERE privacy = 'public' LIMIT 10`
+      );
 
       return <ProjectList projects={Projects} />;
     })
