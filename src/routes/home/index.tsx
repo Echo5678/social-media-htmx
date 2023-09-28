@@ -12,7 +12,6 @@ import validator from "validator";
 import { BaseHtml } from "../../pages/base/basehtml";
 import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
-import SearchPage from "../../pages/searchpage";
 import ProjectList from "../../components/projectlist";
 
 const WEEK = 60 * 60 * 24 * 7;
@@ -78,19 +77,6 @@ export const home = (app: Elysia) =>
       return (
         <BaseHtml>
           <HomePage />
-        </BaseHtml>
-      );
-    })
-    .get("/search", async () => {
-      const Projects = await db
-        .select()
-        .from(projects)
-        .where(eq(projects.privacy, "public"))
-        .limit(10);
-
-      return (
-        <BaseHtml>
-          <SearchPage projects={Projects} />
         </BaseHtml>
       );
     })

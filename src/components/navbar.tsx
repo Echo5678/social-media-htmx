@@ -33,16 +33,6 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              href="/search"
-              aria-label="Search Page"
-              hx-push-url
-              preload="mouseover"
-            >
-              <NavbarSearch />
-            </a>
-          </li>
-          <li>
-            <a
               href="/notifications"
               aria-label="Notifications Page"
               hx-push-url

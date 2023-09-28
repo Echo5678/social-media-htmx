@@ -1,4 +1,5 @@
 import Navbar from "../components/navbar";
+import SearchBar from "../components/searchbar";
 import SideBar from "../components/sidebar";
 
 export default function HomePage() {
@@ -8,6 +9,7 @@ export default function HomePage() {
         <SideBar />
         <main id="page" class="w-full px-6">
           <h1 class="text-xl font-bold py-3">Home</h1>
+          <SearchBar />
           <nav class="pb-3 flex space-x-6">
             <button
               hx-get="/project-list"
