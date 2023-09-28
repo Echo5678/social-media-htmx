@@ -77,6 +77,7 @@ const SideBar = () => (
         hx-boost="true"
         hx-push-url
         preload="mouseover"
+        aria-label="Create a new Project"
       >
         <PlusIcon />
       </a>

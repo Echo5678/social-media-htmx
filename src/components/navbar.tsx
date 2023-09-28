@@ -13,6 +13,7 @@ const Navbar = () => {
           class="absolute right-5 -top-14 p-3 bg-black text-white dark:bg-white dark:text-black rounded-full text-center"
           hx-push-url
           preload="mouseover"
+          aria-label="Create new project"
         >
           <PlusIcon />
         </a>
