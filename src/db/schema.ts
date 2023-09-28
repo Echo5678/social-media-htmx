@@ -23,7 +23,6 @@ export const users = pgTable("users", {
   bio: varchar("bio", { length: 250 }).default(""),
   verified: boolean("verified").default(false),
   joined: text("joined"),
-  jwt: text("jwt"),
   badges: text("badges").array().default([]),
   profile_picture: varchar("profile_picture").notNull(),
 });
@@ -37,7 +36,7 @@ export const projects = pgTable("projects", {
   username: text("username")
     .notNull()
     .references(() => users.username),
-    technologies: text("technologies").array().default([]),
+  technologies: text("technologies").array().default([]),
   image: varchar("image").notNull(),
   collaborators: text("collaborators").array().default([]),
   stars: text("stars").array().default([]),
