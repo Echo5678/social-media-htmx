@@ -57,14 +57,28 @@ export const project = (app: Elysia) =>
         sql`SELECT *, (ARRAY_LENGTH(stars, 1)) as stars_count FROM projects WHERE privacy = 'public' LIMIT 10`
       );
 
-      return <ProjectList projects={Projects} />;
+      if (Projects.length !== 0) {
+        return <ProjectList projects={Projects} />;
+      }
+      return (
+        <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+          Sorry no projects {":("}
+        </div>
+      );
     })
     .get("/project-list/:username", async ({ params: { username } }) => {
       const Projects: SelectProject[] = await db.execute(
         sql`SELECT *, (ARRAY_LENGTH(stars, 1)) as stars_count FROM projects WHERE privacy = 'public' AND username = ${username} LIMIT 10`
       );
 
-      return <ProjectList projects={Projects} />;
+      if (Projects.length !== 0) {
+        return <ProjectList projects={Projects} />;
+      }
+      return (
+        <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+          Sorry no projects {":("}
+        </div>
+      );
     })
     .get("/project/form", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
