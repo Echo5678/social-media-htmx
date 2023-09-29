@@ -18,7 +18,10 @@ const SearchBar = () => (
         class="bg-transparent w-full outline-none py-1.5 flex-grow"
       />
     </div>
-    <button class="bg-black text-white dark:bg-white dark:text-black py-[5.5px] px-3 rounded-md">
+    <button
+      name="filter"
+      class="bg-black text-white dark:bg-white dark:text-black py-[5.5px] px-3 rounded-md"
+    >
       <FilterIcon />
     </button>
   </search>

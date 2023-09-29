@@ -17,7 +17,6 @@ export default function ProjectList({
             href={`/project/${item.id}`}
             hx-boost="true"
             hx-push-url
-            preload="mouseover"
             class="flex-grow"
           >
             <div class="flex space-x-2">
@@ -32,14 +31,9 @@ export default function ProjectList({
                 <h2 class="text-lg font-medium  w-full line-clamp-1">
                   {item.name}
                 </h2>
-                <a
-                  class="text-[#444444] dark:text-[#B1B1B1] font-semibold tracking-wide hover:underline decoration-1 hover:text-wite"
-                  href={`/profile/${item.username}`}
-                  hx-push-url="true"
-                  hx-boost="true"
-                >
+                <span class="text-[#444444] dark:text-[#B1B1B1] font-semibold tracking-wide hover:underline decoration-1 hover:text-wite">
                   {item.username}
-                </a>
+                </span>
               </div>
             </div>
             <p class="line-clamp-3 py-2 text-[#444444] dark:text-[#B1B1B1] flex-grow">
