@@ -5,7 +5,7 @@ const Header = () => {
         <img
           height="65"
           width="65"
-          src="https://res.cloudinary.com/dtkwfyslj/image/upload/v1695253847/Untitled_design-removebg-preview_wpselx.png"
+          src="https://res.cloudinary.com/dtkwfyslj/image/upload/v1695964824/logo-min_znkkto.png"
           alt="Co-Dev Logo"
         />
         Co-Dev

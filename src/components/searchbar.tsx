@@ -20,6 +20,7 @@ const SearchBar = () => (
     </div>
     <button
       name="filter"
+      aria-label="Sort and Filter Menu Button"
       class="bg-black text-white dark:bg-white dark:text-black py-[5.5px] px-3 rounded-md"
     >
       <FilterIcon />
