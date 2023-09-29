@@ -142,7 +142,7 @@ export const project = (app: Elysia) =>
         set.redirect = "/sign-in";
       }
       const [star] = await db.execute(
-        sql`update projects SET stars = array_append(stars, ${userAuthorized.username})  where ${projects.id} = ${id}`
+        sql`update projects SET stars = array_append(stars, ${userAuthorized.username})  where ${projects.id} = ${id}  AND ${userAuthorized.username} <> ALL(stars)`
       );
       return (
         <button>
