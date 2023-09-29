@@ -8,14 +8,22 @@ import SideBar from "../../components/sidebar";
 import { SelectProject } from "../../db/schema";
 import { BaseHtml } from "../base/basehtml";
 
-const ProjectPage = ({ project }: { project: SelectProject }) => {
+const ProjectPage = ({
+  project,
+  username,
+  image,
+}: {
+  project: SelectProject;
+  username?: string;
+  image?: string;
+}) => {
   return (
     <div
       class="flex"
       hx-patch={`/remove/project/${project.id}`}
       hx-swap="outerHTML"
     >
-      <SideBar />
+      <SideBar username={username && username} image={image && image} />
       <div class="flex  flex-col w-full bg-[#fcfcfc] dark:bg-[#111111]">
         <header class="flex w-full bg-zinc-100 dark:bg-black top-0 py-5 md:py-7 justify-between items-center px-6 md:px-10 xl:px-14">
           <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
@@ -107,7 +115,7 @@ const ProjectPage = ({ project }: { project: SelectProject }) => {
           </button>
         </main>
       </div>
-      <Navbar />
+      <Navbar username={username && username} image={image && image} />
     </div>
   );
 };

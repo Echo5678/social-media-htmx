@@ -2,9 +2,10 @@ import HomeIcon from "../components/assets/homeicon";
 import NotificationIcon from "../components/assets/notificationicon";
 import MessageIcon from "../components/assets/messageicon";
 import PlusIcon from "./assets/plusicon";
-import NavbarSearch from "./assets/navbar-search-icon";
+import ProfilePlaceHolder from "./assets/profileplaceholder";
+import ProfileIcon from "./assets/profileicon";
 
-const Navbar = () => {
+const Navbar = ({ image, username }: { image?: string; username?: string }) => {
   return (
     <footer class="fixed bottom-0 border-t-2 border-[#2f3336] w-full md:hidden bg-[#fcfcfc] dark:bg-[#0e0e0e] z-40">
       <nav class="relative">
@@ -49,6 +50,31 @@ const Navbar = () => {
               preload="mouseover"
             >
               <MessageIcon />
+            </a>
+          </li>
+          <li>
+            <a
+              href={username ? `/profile/${username}` : "/sign-in"}
+              hx-boost="true"
+              hx-push-url
+              preload="mouseover"
+              aria-label={username ? "Profile Page" : "Sign In Page"}
+            >
+              {username ? (
+                image ? (
+                  <img
+                    width="32"
+                    height="32"
+                    src={image ? image : ""}
+                    alt="User Profile Picture"
+                    class="rounded-full"
+                  />
+                ) : (
+                  <ProfileIcon />
+                )
+              ) : (
+                <ProfileIcon />
+              )}
             </a>
           </li>
         </ul>

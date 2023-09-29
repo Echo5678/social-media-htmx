@@ -136,17 +136,22 @@ export const project = (app: Elysia) =>
         </button>
       );
     })
-    .get("/project/:id", async ({ params: { id } }) => {
+    .get("/project/:id", async ({ params: { id }, userAuthorized }) => {
       const [project] = await db
         .select()
         .from(projects)
         .where(
           and(eq(projects.id, Number(id)), eq(projects.privacy, "public"))
         );
+      let username;
+
+      if (userAuthorized) {
+        username = userAuthorized.username;
+      }
 
       return (
         <BaseHtml>
-          <ProjectPage project={project} />
+          <ProjectPage project={project} username={username} />
         </BaseHtml>
       );
     })

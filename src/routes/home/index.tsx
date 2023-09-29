@@ -73,10 +73,16 @@ export const home = (app: Elysia) =>
         },
       }
     )
-    .get("/home", async () => {
+    .get("/home", async ({ userAuthorized }) => {
+      let username;
+
+      if (userAuthorized) {
+        username = userAuthorized.username;
+      }
+
       return (
         <BaseHtml>
-          <HomePage />
+          <HomePage username={username} />
         </BaseHtml>
       );
     })

@@ -2,6 +2,7 @@ import HomeIcon from "../components/assets/homeicon";
 import NotificationIcon from "../components/assets/notificationicon";
 import MessageIcon from "../components/assets/messageicon";
 import PlusIcon from "./assets/plusicon";
+import ProfilePlaceHolder from "./assets/profileplaceholder";
 
 const SideBar = ({
   image,
@@ -72,13 +73,21 @@ const SideBar = ({
             preload="mouseover"
             aria-label={username ? "Profile Page" : "Sign In Page"}
           >
-            <img
-              width="32"
-              height="32"
-              src={image ? image : ""}
-              alt="User Profile Picture"
-              class="rounded-full"
-            />
+            {username ? (
+              image ? (
+                <img
+                  width="32"
+                  height="32"
+                  src={image ? image : ""}
+                  alt="User Profile Picture"
+                  class="rounded-full"
+                />
+              ) : (
+                <ProfilePlaceHolder />
+              )
+            ) : (
+              <ProfilePlaceHolder />
+            )}
           </a>
         </li>
       </ul>
