@@ -59,6 +59,13 @@ export const project = (app: Elysia) =>
 
       return <ProjectList projects={Projects} />;
     })
+    .get("/project-list/:username", async ({ params: { username } }) => {
+      const Projects: SelectProject[] = await db.execute(
+        sql`SELECT *, (ARRAY_LENGTH(stars, 1)) as stars_count FROM projects WHERE privacy = 'public' AND username = ${username} LIMIT 10`
+      );
+
+      return <ProjectList projects={Projects} />;
+    })
     .get("/project/form", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {

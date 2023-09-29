@@ -3,7 +3,13 @@ import NotificationIcon from "../components/assets/notificationicon";
 import MessageIcon from "../components/assets/messageicon";
 import PlusIcon from "./assets/plusicon";
 
-const SideBar = () => (
+const SideBar = ({
+  image,
+  username,
+}: {
+  image?: string;
+  username?: string;
+}) => (
   <aside class="hidden md:block border-r border-zinc-800 min-h-screen">
     <nav class="flex flex-col px-6 py-3 items-center space-y-7">
       <a
@@ -12,7 +18,7 @@ const SideBar = () => (
         hx-boost="true"
         hx-push-url
         preload="mouseover"
-        class="transition hover:bg-zinc-800 p-1 rounded-full"
+        class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-1 rounded-full"
       >
         <img
           height="65"
@@ -25,7 +31,7 @@ const SideBar = () => (
         id="icons"
         class="flex flex-col text-zinc-800  dark:text-[#fafafa] space-y-3"
       >
-        <li class="transition hover:bg-zinc-800 p-2.5 rounded-full">
+        <li class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-2.5 rounded-full">
           <a
             href="/home"
             aria-label="Home Page"
@@ -36,7 +42,7 @@ const SideBar = () => (
             <HomeIcon />
           </a>
         </li>
-        <li class="transition hover:bg-zinc-800 p-2.5 rounded-full">
+        <li class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-2.5 rounded-full">
           <a
             href="/notifications"
             aria-label="Notifications page"
@@ -47,7 +53,7 @@ const SideBar = () => (
             <NotificationIcon />
           </a>
         </li>
-        <li class="transition hover:bg-zinc-800 p-2.5 rounded-full">
+        <li class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-2.5 rounded-full">
           <a
             href="/messages"
             aria-label="Message Page"
@@ -56,6 +62,23 @@ const SideBar = () => (
             preload="mouseover"
           >
             <MessageIcon />
+          </a>
+        </li>
+        <li class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-2.5 rounded-full">
+          <a
+            href={username ? `/profile/${username}` : "/sign-in"}
+            hx-boost="true"
+            hx-push-url
+            preload="mouseover"
+            aria-label={username ? "Profile Page" : "Sign In Page"}
+          >
+            <img
+              width="32"
+              height="32"
+              src={image ? image : ""}
+              alt="User Profile Picture"
+              class="rounded-full"
+            />
           </a>
         </li>
       </ul>

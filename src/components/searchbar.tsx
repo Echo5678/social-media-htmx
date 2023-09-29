@@ -3,7 +3,7 @@ import SearchIcon from "./assets/searchicon";
 
 const SearchBar = () => (
   <search class="w-full flex space-x-2 items-center mb-4">
-    <div class="w-full px-2.5 border border-zinc-300 dark:border-zinc-800 rounded-md flex items-center space-x-2 bg-zinc-200 dark:bg-black">
+    <div class="w-full px-2.5 border border-zinc-300 dark:border-zinc-800 rounded-md flex items-center space-x-2 bg-zinc-50 dark:bg-black">
       <SearchIcon />
       <input
         hx-get="/search-for"
