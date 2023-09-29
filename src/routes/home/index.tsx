@@ -86,18 +86,9 @@ export const home = (app: Elysia) =>
         let Projects: SelectProject[];
 
         if (validator.isAscii(search)) {
-          Projects = await db
-            .select()
-            .from(projects)
-            .where(
-              and(
-                or(
-                  ilike(projects.name, search),
-                  ilike(projects.description, search)
-                ),
-                eq(projects.privacy, "public")
-              )
-            );
+          Projects = await db.execute(
+            sql`SELECT * FROM projects WHERE LOWER(name) LIKE '%' || LOWER(${search}) || '%' AND privacy = 'public'`
+          );
         } else {
           Projects = await db.select().from(projects).limit(10);
         }
