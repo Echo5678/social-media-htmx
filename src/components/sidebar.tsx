@@ -18,7 +18,6 @@ const SideBar = ({
         aria-label="Home Page"
         hx-boost="true"
         hx-push-url
-        preload="mouseover"
         class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-1 rounded-full"
       >
         <img
@@ -33,13 +32,7 @@ const SideBar = ({
         class="flex flex-col text-zinc-800  dark:text-[#fafafa] space-y-3"
       >
         <li class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-2.5 rounded-full">
-          <a
-            href="/home"
-            aria-label="Home Page"
-            hx-boost="true"
-            hx-push-url
-            preload="mouseover"
-          >
+          <a href="/home" aria-label="Home Page" hx-boost="true" hx-push-url>
             <HomeIcon />
           </a>
         </li>
@@ -49,7 +42,6 @@ const SideBar = ({
             aria-label="Notifications page"
             hx-boost="true"
             hx-push-url
-            preload="mouseover"
           >
             <NotificationIcon />
           </a>
@@ -60,7 +52,6 @@ const SideBar = ({
             aria-label="Message Page"
             hx-boost="true"
             hx-push-url
-            preload="mouseover"
           >
             <MessageIcon />
           </a>
@@ -70,7 +61,6 @@ const SideBar = ({
             href={username ? `/profile/${username}` : "/sign-in"}
             hx-boost="true"
             hx-push-url
-            preload="mouseover"
             aria-label={username ? "Profile Page" : "Sign In Page"}
           >
             {username ? (
@@ -96,7 +86,6 @@ const SideBar = ({
         class="p-3 bg-black text-white dark:bg-white dark:text-black rounded-full text-center"
         hx-boost="true"
         hx-push-url
-        preload="mouseover"
         aria-label="Create a new Project"
       >
         <PlusIcon />

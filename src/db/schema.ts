@@ -11,6 +11,7 @@ import {
   primaryKey,
   foreignKey,
 } from "drizzle-orm/pg-core";
+import { user } from "../routes";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -72,6 +73,17 @@ export const blogs = pgTable("blogs", {
   blog: json("blog").notNull(),
   posted: timestamp("posted").defaultNow(),
 });
+
+export const notifications = pgTable("notifications", {
+  user_id: integer("user_id")
+    .primaryKey()
+    .references(() => users.id),
+  type: text("type").notNull(),
+  content: text("content").notNull(),
+});
+
+export type SelectNotification = InferSelectModel<typeof notifications>;
+export type InsertNotification = InferSelectModel<typeof notifications>;
 
 export type SelectFollower = InferSelectModel<typeof followers>;
 export type InsertFollower = InferSelectModel<typeof followers>;

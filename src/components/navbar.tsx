@@ -13,7 +13,6 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
           href="/project/form"
           class="absolute right-5 -top-14 p-3 bg-black text-white dark:bg-white dark:text-black rounded-full text-center"
           hx-push-url
-          preload="mouseover"
           aria-label="Create new project"
         >
           <PlusIcon />
@@ -23,12 +22,7 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
           class="flex flex-row justify-around w-[100%] py-5 items-center text-zinc-800  dark:text-[#fafafa]"
         >
           <li>
-            <a
-              href="/home"
-              aria-label="Home Page"
-              hx-push-url
-              preload="mouseover"
-            >
+            <a href="/home" aria-label="Home Page" hx-push-url>
               <HomeIcon />
             </a>
           </li>
@@ -37,18 +31,12 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
               href="/notifications"
               aria-label="Notifications Page"
               hx-push-url
-              preload="mouseover"
             >
               <NotificationIcon />
             </a>
           </li>
           <li>
-            <a
-              href="/messages"
-              aria-label="Messages Page"
-              hx-push-url
-              preload="mouseover"
-            >
+            <a href="/messages" aria-label="Messages Page" hx-push-url>
               <MessageIcon />
             </a>
           </li>
@@ -57,7 +45,6 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
               href={username ? `/profile/${username}` : "/sign-in"}
               hx-boost="true"
               hx-push-url
-              preload="mouseover"
               aria-label={username ? "Profile Page" : "Sign In Page"}
             >
               {username ? (
