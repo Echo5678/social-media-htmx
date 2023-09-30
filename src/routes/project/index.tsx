@@ -145,8 +145,9 @@ export const project = (app: Elysia) =>
         sql`update projects SET stars = array_append(stars, ${userAuthorized.username})  where ${projects.id} = ${id}  AND ${userAuthorized.username} <> ALL(stars)`
       );
       return (
-        <button>
+        <button class="self-end flex space-x-1 items-center font-medium text-lg">
           <StarIconFilled />
+          <span>{1}</span>
         </button>
       );
     })

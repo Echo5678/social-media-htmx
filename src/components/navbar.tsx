@@ -2,7 +2,6 @@ import HomeIcon from "../components/assets/homeicon";
 import NotificationIcon from "../components/assets/notificationicon";
 import MessageIcon from "../components/assets/messageicon";
 import PlusIcon from "./assets/plusicon";
-import ProfilePlaceHolder from "./assets/profileplaceholder";
 import ProfileIcon from "./assets/profileicon";
 
 const Navbar = ({ image, username }: { image?: string; username?: string }) => {
@@ -12,7 +11,6 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
         <a
           href="/project/form"
           class="absolute right-5 -top-14 p-3 bg-black text-white dark:bg-white dark:text-black rounded-full text-center"
-          hx-push-url
           aria-label="Create new project"
         >
           <PlusIcon />

@@ -84,8 +84,6 @@ const SideBar = ({
       <a
         href="/project/form"
         class="p-3 bg-black text-white dark:bg-white dark:text-black rounded-full text-center"
-        hx-boost="true"
-        hx-push-url
         aria-label="Create a new Project"
       >
         <PlusIcon />

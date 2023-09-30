@@ -40,6 +40,10 @@ export const projects = pgTable("projects", {
   technologies: text("technologies").array().default([]),
   image: varchar("image").notNull(),
   collaborators: text("collaborators").array().default([]),
+  categories: text("categories"),
+  instagram_username: text("instagram_username"),
+  twitter_username: text("twitter_username"),
+  youtube_username: text("youtube_username"),
   stars: text("stars").array().default([]),
 });
 
