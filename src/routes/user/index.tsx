@@ -6,6 +6,7 @@ import jwt from "@elysiajs/jwt";
 import { db } from "../../db/client";
 import {
   InsertFollower,
+  SelectNotification,
   SelectUser,
   followers,
   projects,
@@ -16,6 +17,8 @@ import { MessageLayout } from "../../pages/base/messagelayout";
 import MessagePage from "../../pages/message";
 import ProfilePage from "../../pages/profilepage";
 import { BaseHtml } from "../../pages/base/basehtml";
+import NotificationsPage from "../../pages/notificationspage";
+import NotificationsList from "../../components/notificationslist";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -52,25 +55,10 @@ export const user = (app: Elysia) =>
 
       const userJWT: any = await jwt.verify(user);
 
-      if (!userJWT) {
-        return userAuthorized;
+      if (userJWT) {
+        userAuthorized = userJWT;
       }
 
-      const User: any = await db
-        .select({
-          id: users.id,
-          username: users.username,
-          email: users.email,
-        })
-        .from(users)
-        .where(
-          sql`${users.email} = ${userJWT.email} and ${user} = ${users.jwt}`
-        )
-        .limit(1);
-
-      if (User) {
-        userAuthorized = User[0];
-      }
       return {
         userAuthorized,
       };
@@ -192,6 +180,32 @@ export const user = (app: Elysia) =>
             {following[0].count}
           </span>
         </div>
+      );
+    })
+    .get("/notifications-list", async ({ userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 401;
+        return;
+      }
+      const notifications: SelectNotification[] = await db.execute(
+        sql`WITH following AS (SELECT user_id FROM followers WHERE follower_id  = ${user.id}) SELECT * FROM notifications WHERE user_id IN (SELECT user_id FROM following)`
+      );
+      if (notifications.length === 0) {
+        return <p>Sorry no notifications yet. {":("}</p>;
+      }
+      return <NotificationsList notifications={notifications} />;
+    })
+    .get("/notifications", async ({ userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+      }
+      return (
+        <BaseHtml>
+          <NotificationsPage username={user.username} image={user?.image} />
+        </BaseHtml>
       );
     })
     .get("/messages", async ({ userAuthorized, set }) => {

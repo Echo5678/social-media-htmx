@@ -43,25 +43,10 @@ export const auth = (app: Elysia) =>
 
       const userJWT: any = await jwt.verify(user);
 
-      if (!userJWT) {
-        return userAuthorized;
+      if (userJWT) {
+        userAuthorized = userJWT;
       }
 
-      const User: any = await db
-        .select({
-          id: users.id,
-          username: users.username,
-          email: users.email,
-        })
-        .from(users)
-        .where(
-          sql`${users.email} = ${userJWT.email} and ${users.jwt} = ${user}`
-        )
-        .limit(1);
-
-      if (User) {
-        userAuthorized = User[0];
-      }
       return {
         userAuthorized,
       };
@@ -122,20 +107,20 @@ export const auth = (app: Elysia) =>
           );
         }
         const hashedPassword = await Bun.password.hash(password);
-        const JWT = await jwt.sign({ username, email });
 
-        const user: InsertUser[] = await db
+        const user = await db
           .insert(users)
           .values({
             username,
             email,
             password: hashedPassword,
-            jwt: JWT,
             profile_picture: "",
           })
           .returning();
-
         if (user) {
+          const userId = String(user[0].id);
+          const JWT = await jwt.sign({ userId, username, email });
+
           setCookie("user", JWT);
           set.status = 307;
           set.redirect = "/home";
@@ -234,8 +219,12 @@ export const auth = (app: Elysia) =>
           );
         }
 
+        const userId = String(user[0].id);
+        const userUsername = String(user[0].username);
+
         const JWT = await jwt.sign({
-          username: user[0].username as string,
+          id: userId,
+          username: userUsername,
           email,
         });
 

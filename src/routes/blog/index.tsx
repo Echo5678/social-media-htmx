@@ -42,25 +42,10 @@ export const blog = (app: Elysia) =>
 
       const userJWT: any = await jwt.verify(user);
 
-      if (!userJWT) {
-        return userAuthorized;
+      if (userJWT) {
+        userAuthorized = userJWT;
       }
 
-      const User: any = await db
-        .select({
-          id: users.id,
-          username: users.username,
-          email: users.email,
-        })
-        .from(users)
-        .where(
-          sql`${users.email} = ${userJWT.email} and ${user} = ${users.jwt}`
-        )
-        .limit(1);
-
-      if (User) {
-        userAuthorized = User[0];
-      }
       return {
         userAuthorized,
       };

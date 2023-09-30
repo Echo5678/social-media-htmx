@@ -12,7 +12,6 @@ import validator from "validator";
 import { BaseHtml } from "../../pages/base/basehtml";
 import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
-import SearchPage from "../../pages/searchpage";
 import ProjectList from "../../components/projectlist";
 
 const WEEK = 60 * 60 * 24 * 7;
@@ -44,25 +43,10 @@ export const home = (app: Elysia) =>
 
       const userJWT: any = await jwt.verify(user);
 
-      if (!userJWT) {
-        return userAuthorized;
+      if (userJWT) {
+        userAuthorized = userJWT;
       }
 
-      const User: any = await db
-        .select({
-          id: users.id,
-          username: users.username,
-          email: users.email,
-        })
-        .from(users)
-        .where(
-          sql`${users.email} = ${userJWT.email} and ${user} = ${users.jwt}`
-        )
-        .limit(1);
-
-      if (User) {
-        userAuthorized = User[0];
-      }
       return {
         userAuthorized,
       };
@@ -89,28 +73,16 @@ export const home = (app: Elysia) =>
         },
       }
     )
-    .get("/home", async () => {
-      const project = await db
-        .select()
-        .from(projects)
-        .where(eq(projects.privacy, "public"));
+    .get("/home", async ({ userAuthorized }) => {
+      let username;
+
+      if (userAuthorized) {
+        username = userAuthorized.username;
+      }
 
       return (
         <BaseHtml>
-          <HomePage project={project} />
-        </BaseHtml>
-      );
-    })
-    .get("/search", async () => {
-      const Projects = await db
-        .select()
-        .from(projects)
-        .where(eq(projects.privacy, "public"))
-        .limit(10);
-
-      return (
-        <BaseHtml>
-          <SearchPage projects={Projects} />
+          <HomePage username={username} />
         </BaseHtml>
       );
     })
@@ -120,18 +92,9 @@ export const home = (app: Elysia) =>
         let Projects: SelectProject[];
 
         if (validator.isAscii(search)) {
-          Projects = await db
-            .select()
-            .from(projects)
-            .where(
-              and(
-                or(
-                  ilike(projects.name, search),
-                  ilike(projects.description, search)
-                ),
-                eq(projects.privacy, "public")
-              )
-            );
+          Projects = await db.execute(
+            sql`SELECT * FROM projects WHERE LOWER(name) LIKE '%' || LOWER(${search}) || '%' AND privacy = 'public'`
+          );
         } else {
           Projects = await db.select().from(projects).limit(10);
         }

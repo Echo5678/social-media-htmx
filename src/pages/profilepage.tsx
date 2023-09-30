@@ -1,4 +1,5 @@
 import Calendar from "../components/assets/calendar";
+import ProfilePlaceHolder from "../components/assets/profileplaceholder";
 import SettingsIcon from "../components/assets/settings";
 import Verified from "../components/assets/verified";
 import Navbar from "../components/navbar";
@@ -12,6 +13,7 @@ export default function ProfilePage({
   posts,
   isFollowing,
   isUserAccount,
+  backgroundImage,
 }: {
   user: SelectUser;
   followers: number;
@@ -19,6 +21,7 @@ export default function ProfilePage({
   posts: SelectProject[];
   isFollowing: boolean;
   isUserAccount: boolean;
+  backgroundImage?: string;
 }) {
   return (
     <div class="flex">
@@ -26,25 +29,35 @@ export default function ProfilePage({
       <div class="w-full h-full">
         <header class="w-full md:w-3/4 xl:w-1/2 mx-auto">
           <div class="relative">
-            <img
-              src="https://images.unsplash.com/photo-1614851099175-e5b30eb6f696?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJhbm5lcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-              alt="Profile Banner Image"
-              width="750"
-              height="200"
-              class="w-full h-[20vw] sm:h-[15vw] lg:h-[12.5vw] xl:h-[7.5vw] bg-black dark:bg-white"
-            ></img>
-            <img
-              src="https://yt3.ggpht.com/dR6qqf39NiziFmXdMlYnRhVsrM2Qb0b9eQPNhoMICKvZ40Zdxb5zXkqKxX84k_yv7jXojhI1PQ=s108-c-k-c0x00ffffff-no-rj"
-              width="75"
-              height="75"
-              class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full"
-              alt="Profile Picture"
-            />
+            {backgroundImage ? (
+              <img
+                src={backgroundImage}
+                alt="Profile Banner Image"
+                width="750"
+                height="200"
+                class="w-full h-[20vw] sm:h-[15vw] lg:h-[12.5vw] xl:h-[7.5vw] bg-black dark:bg-white"
+              ></img>
+            ) : (
+              <div class="w-full h-[20vw] sm:h-[15vw] lg:h-[12.5vw] xl:h-[7.5vw] bg-zinc-300 dark:bg-zinc-800"></div>
+            )}
+            {user.profile_picture ? (
+              <img
+                src={user.profile_picture}
+                width="75"
+                height="75"
+                class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full"
+                alt="Profile Picture"
+              />
+            ) : (
+              <div class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full w-[75px] h-[75px] flex items-center justify-center">
+                <ProfilePlaceHolder />
+              </div>
+            )}
           </div>
           <article class="text-sm border-x border-zinc-300 dark:border-[#222222] pt-6 xl:pt-8  pl-2.5 items-center">
             <section class=" text-black dark:text-white">
               <div class="flex justify-between pr-4">
-                <div class="flex items-center">
+                <div class="flex items-center space-x-3">
                   <h1 class="text-2xl md:text-3xl font-bold">
                     {`${user.first_name} ${user.last_name}`}
                   </h1>
@@ -121,13 +134,29 @@ export default function ProfilePage({
           </ul>
         </header>
         <main class="w-full md:w-3/4 xl:w-1/2 mx-auto">
-          <ul class="flex flex-col space-y-4">
-            {posts.map((post) => (
-              <li>
-                {post.name} <p>{post.description}</p>
-              </li>
-            ))}
-          </ul>
+          <div class="w-full h-full px-3 md:px-0 py-6">
+            <div
+              hx-get={`/project-list/${user.username}`}
+              hx-swap="outerHTML"
+              hx-trigger="load"
+              class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"
+            >
+              <div class="p-5 rounded-lg w-full h-[250px] animate-pulse bg-zinc-300 dark:bg-zinc-700 flex flex-col  space-y-4">
+                <div class="flex space-x-3 items-center">
+                  <div class="bg-[#f9f9f9] dark:bg-[313131] shadow-lg rounded-full h-[20px] w-[20px]"></div>
+                  <div class="bg-[#f9f9f9] dark:bg-[#616161] shadow-lg rounded-lg h-[10px] w-[35px]"></div>
+                </div>
+                <div class="bg-[#f9f9f9] dark:bg-[#616161] shadow-lg rounded-lg h-[15px] w-full"></div>
+              </div>
+              <div class="p-5 rounded-lg w-full h-[250px] animate-pulse bg-zinc-300 dark:bg-zinc-700 flex flex-col  space-y-4">
+                <div class="flex space-x-3 items-center">
+                  <div class="bg-[#f9f9f9] dark:bg-[313131] shadow-lg rounded-full h-[20px] w-[20px]"></div>
+                  <div class="bg-[#f9f9f9] dark:bg-[#616161] shadow-lg rounded-lg h-[10px] w-[35px]"></div>
+                </div>
+                <div class="bg-[#f9f9f9] dark:bg-[#616161] shadow-lg rounded-lg h-[15px] w-full"></div>
+              </div>
+            </div>
+          </div>
         </main>
       </div>
 

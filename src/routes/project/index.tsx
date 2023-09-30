@@ -3,13 +3,7 @@ import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
-import {
-  InsertFollower,
-  SelectFollower,
-  followers,
-  projects,
-  users,
-} from "../../db/schema";
+import { SelectProject, projects } from "../../db/schema";
 import { and, eq, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
@@ -19,16 +13,9 @@ import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
 import { ProjectFormLayout } from "../../pages/base/project-form-layout";
-import ProfilePage from "../../pages/profilepage";
 import ProjectList from "../../components/projectlist";
 
 const WEEK = 60 * 60 * 24 * 7;
-
-const followingPrepared = db
-  .select({ count: sql<number>`count(*)` })
-  .from(followers)
-  .where(eq(sql.placeholder("id"), followers.follower_id))
-  .prepare("select_following");
 
 export const project = (app: Elysia) =>
   app
@@ -57,37 +44,41 @@ export const project = (app: Elysia) =>
 
       const userJWT: any = await jwt.verify(user);
 
-      if (!userJWT) {
-        return userAuthorized;
+      if (userJWT) {
+        userAuthorized = userJWT;
       }
 
-      const User: any = await db
-        .select({
-          id: users.id,
-          username: users.username,
-          email: users.email,
-        })
-        .from(users)
-        .where(
-          sql`${users.email} = ${userJWT.email} and ${user} = ${users.jwt}`
-        )
-        .limit(1);
-
-      if (User) {
-        userAuthorized = User[0];
-      }
       return {
         userAuthorized,
       };
     })
     .get("/project-list", async () => {
-      const Projects = await db
-        .select()
-        .from(projects)
-        .where(eq(projects.privacy, "public"))
-        .limit(10);
+      const Projects: SelectProject[] = await db.execute(
+        sql`SELECT *, (ARRAY_LENGTH(stars, 1)) as stars_count FROM projects WHERE privacy = 'public' LIMIT 10`
+      );
 
-      return <ProjectList projects={Projects} />;
+      if (Projects.length !== 0) {
+        return <ProjectList projects={Projects} />;
+      }
+      return (
+        <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+          Sorry no projects {":("}
+        </div>
+      );
+    })
+    .get("/project-list/:username", async ({ params: { username } }) => {
+      const Projects: SelectProject[] = await db.execute(
+        sql`SELECT *, (ARRAY_LENGTH(stars, 1)) as stars_count FROM projects WHERE privacy = 'public' AND username = ${username} LIMIT 10`
+      );
+
+      if (Projects.length !== 0) {
+        return <ProjectList projects={Projects} />;
+      }
+      return (
+        <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+          Sorry no projects {":("}
+        </div>
+      );
     })
     .get("/project/form", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
@@ -129,14 +120,9 @@ export const project = (app: Elysia) =>
           stars: [],
         });
 
-        const project = await db
-          .select()
-          .from(projects)
-          .where(eq(projects.privacy, "public"));
-
         return (
           <BaseHtml>
-            <HomePage project={project} />
+            <HomePage />
           </BaseHtml>
         );
       },
@@ -158,7 +144,7 @@ export const project = (app: Elysia) =>
         set.redirect = "/sign-in";
       }
       const [star] = await db.execute(
-        sql`update projects SET stars = array_append(stars, ${userAuthorized.username})  where ${projects.id} = ${id}`
+        sql`update projects SET stars = array_append(stars, ${userAuthorized.username})  where ${projects.id} = ${id}  AND ${userAuthorized.username} <> ALL(stars)`
       );
       return (
         <button>
@@ -166,17 +152,22 @@ export const project = (app: Elysia) =>
         </button>
       );
     })
-    .get("/project/:id", async ({ params: { id } }) => {
+    .get("/project/:id", async ({ params: { id }, userAuthorized }) => {
       const [project] = await db
         .select()
         .from(projects)
         .where(
           and(eq(projects.id, Number(id)), eq(projects.privacy, "public"))
         );
+      let username;
+
+      if (userAuthorized) {
+        username = userAuthorized.username;
+      }
 
       return (
         <BaseHtml>
-          <ProjectPage project={project} />
+          <ProjectPage project={project} username={username} />
         </BaseHtml>
       );
     })
@@ -192,14 +183,9 @@ export const project = (app: Elysia) =>
           .delete(projects)
           .where(eq(projects.id, Number(id)));
 
-        const project = await db
-          .select()
-          .from(projects)
-          .where(eq(projects.privacy, "public"));
-
         return (
           <BaseHtml>
-            <HomePage project={project} />
+            <HomePage />
           </BaseHtml>
         );
       }
