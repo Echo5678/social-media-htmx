@@ -32,24 +32,40 @@ const SideBar = ({
         class="flex flex-col text-zinc-800  dark:text-[#fafafa] space-y-3"
       >
         <li class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-2.5 rounded-full">
-          <a href="/home" aria-label="Home Page" hx-boost="true" hx-push-url>
+          <a href="/home" aria-label="Home Page">
             <HomeIcon />
           </a>
         </li>
-        <li class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-2.5 rounded-full">
-          <a
-            href="/notifications"
-            aria-label="Notifications page"
-            hx-boost="true"
-            hx-push-url
-          >
-            <NotificationIcon />
-          </a>
+        <li
+          class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-2.5 rounded-full"
+          hx-get="/notifications-count"
+          hx-swap="outerHTML"
+          hx-trigger="load"
+        >
+          {username ? (
+            <a
+              href="/notifications"
+              aria-label="Notifications Page"
+              hx-boost="true"
+              hx-push-url
+            >
+              <NotificationIcon />
+            </a>
+          ) : (
+            <a
+              href="/sign-in"
+              aria-label="Sign In Page"
+              hx-boost="true"
+              hx-push-url
+            >
+              <NotificationIcon />
+            </a>
+          )}
         </li>
         <li class="transition hover:bg-zinc-200 hover:dark:bg-zinc-800 p-2.5 rounded-full">
           <a
-            href="/messages"
-            aria-label="Message Page"
+            href={username ? "/messages" : "/sign-in"}
+            aria-label={username ? "Messages Page" : "Sign In Page"}
             hx-boost="true"
             hx-push-url
           >

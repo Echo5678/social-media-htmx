@@ -20,21 +20,41 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
           class="flex flex-row justify-around w-[100%] py-5 items-center text-zinc-800  dark:text-[#fafafa]"
         >
           <li>
-            <a href="/home" aria-label="Home Page" hx-push-url>
+            <a href="/home" aria-label="Home Page">
               <HomeIcon />
             </a>
           </li>
-          <li>
-            <a
-              href="/notifications"
-              aria-label="Notifications Page"
-              hx-push-url
-            >
-              <NotificationIcon />
-            </a>
+          <li
+            hx-get="/notifications-count"
+            hx-swap="outerHTML"
+            hx-trigger="load"
+          >
+            {username ? (
+              <a
+                href="/notifications"
+                aria-label="Notifications Page"
+                hx-boost="true"
+                hx-push-url
+              >
+                <NotificationIcon />
+              </a>
+            ) : (
+              <a
+                href="/sign-in"
+                aria-label="Sign In Page"
+                hx-boost="true"
+                hx-push-url
+              >
+                <NotificationIcon />
+              </a>
+            )}
           </li>
           <li>
-            <a href="/messages" aria-label="Messages Page" hx-push-url>
+            <a
+              href={username ? "/messages" : "/sign-in"}
+              aria-label={username ? "Messages Page" : "Sign In Page"}
+              hx-push-url
+            >
               <MessageIcon />
             </a>
           </li>

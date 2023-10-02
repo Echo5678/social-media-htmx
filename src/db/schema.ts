@@ -12,7 +12,6 @@ import {
   foreignKey,
   unique,
 } from "drizzle-orm/pg-core";
-import { project, user } from "../routes";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -91,15 +90,18 @@ export const blogs = pgTable("blogs", {
     .references(() => users.username),
   title: varchar("title", { length: 65 }).notNull(),
   blog: json("blog").notNull(),
-  posted: timestamp("posted").defaultNow(),
+  posted: text("posted"),
 });
 
 export const notifications = pgTable("notifications", {
   user_id: integer("user_id")
     .primaryKey()
     .references(() => users.id),
-  type: text("type").notNull(),
+  sent_by: text("sent_by").notNull(),
   content: text("content").notNull(),
+  reference: text("reference").notNull(),
+  read: boolean("read").default(false),
+  created_at: text("created_at").notNull(),
 });
 
 export type SelectNotification = InferSelectModel<typeof notifications>;
