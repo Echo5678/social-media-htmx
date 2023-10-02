@@ -3,7 +3,7 @@ import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
-import { SelectProject, projects } from "../../db/schema";
+import { SelectProject, projects, stars } from "../../db/schema";
 import { and, eq, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
@@ -54,7 +54,7 @@ export const project = (app: Elysia) =>
     })
     .get("/project-list", async () => {
       const Projects: SelectProject[] = await db.execute(
-        sql`SELECT *, (ARRAY_LENGTH(stars, 1)) as stars_count FROM projects WHERE privacy = 'public' LIMIT 10`
+        sql`SELECT id, name, description, privacy, username, languages, image, collaborators, technologies, instagram_username, twitter_username,	youtube_username,	categories, count(project_id) as stars_count FROM projects FULL JOIN stars ON id = project_id WHERE privacy = 'public' GROUP BY id LIMIT 10`
       );
 
       if (Projects.length !== 0) {
@@ -68,12 +68,13 @@ export const project = (app: Elysia) =>
     })
     .get("/project-list/:username", async ({ params: { username } }) => {
       const Projects: SelectProject[] = await db.execute(
-        sql`SELECT *, (ARRAY_LENGTH(stars, 1)) as stars_count FROM projects WHERE privacy = 'public' AND username = ${username} LIMIT 10`
+        sql`SELECT id, name, description, privacy, username, languages, image, collaborators, technologies, instagram_username, twitter_username,	youtube_username,	categories, count(project_id) as stars_count FROM projects FULL JOIN stars ON id = project_id WHERE privacy = 'public' AND username = ${username} GROUP BY id LIMIT 10`
       );
 
       if (Projects.length !== 0) {
-        return <ProjectList projects={Projects} />;
+        return <ProjectList projects={Projects} type="single" />;
       }
+
       return (
         <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
           Sorry no projects {":("}
@@ -115,7 +116,6 @@ export const project = (app: Elysia) =>
           image: "",
           technologies: [],
           collaborators: [],
-          stars: [],
         });
 
         return (
@@ -135,19 +135,23 @@ export const project = (app: Elysia) =>
         }),
       }
     )
-    .patch("/stars/:id", async ({ params: { id }, userAuthorized, set }) => {
+    .post("/stars/:id", async ({ params: { id }, userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
         set.status = 307;
         set.redirect = "/sign-in";
       }
-      const [star] = await db.execute(
-        sql`update projects SET stars = array_append(stars, ${userAuthorized.username})  where ${projects.id} = ${id}  AND ${userAuthorized.username} <> ALL(stars)`
-      );
+      await db
+        .insert(stars)
+        .values({ project_id: Number(id), user_id: user.id });
+      const count = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(stars)
+        .where(eq(stars.project_id, Number(id)));
       return (
         <button class="self-end flex space-x-1 items-center font-medium text-lg">
           <StarIconFilled />
-          <span>{1}</span>
+          <span>{count[0].count}</span>
         </button>
       );
     })

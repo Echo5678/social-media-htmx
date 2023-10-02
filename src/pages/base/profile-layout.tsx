@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from "@kitajs/html";
 
-export const ProjectFormLayout = ({ children }: PropsWithChildren) => (
+export const ProfileLayout = ({ children }: PropsWithChildren) => (
   <>
     <html lang="en">
       <head>
@@ -8,7 +8,7 @@ export const ProjectFormLayout = ({ children }: PropsWithChildren) => (
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           http-equiv="Content-Security-Policy"
-          content="script-src https://unpkg.com/htmx.org@1.9.5 https://unpkg.com/hyperscript.org@0.9.11 https://cdn.tailwindcss.com https://unpkg.com/htmx.org/dist/ext/response-targets.js https://unpkg.com/htmx.org/dist/ext/preload.js"
+          content="script-src https://unpkg.com/htmx.org@1.9.5 https://unpkg.com/hyperscript.org@0.9.11 https://cdn.tailwindcss.com https://unpkg.com/htmx.org/dist/ext/response-targets.js"
         ></meta>
         <title>CoDev</title>
         <link
@@ -24,23 +24,16 @@ export const ProjectFormLayout = ({ children }: PropsWithChildren) => (
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
-        <script src="https://unpkg.com/htmx.org/dist/ext/preload.js"></script>
       </head>
-      <style>
-        {`input[type="radio"] + label span {
-    transition: background .2s,
-      transform .2s;
-  }
-
-  input[type="radio"] + label span:hover,
-  input[type="radio"] + label:hover span{
-  transform: scale(1.2);
-  } 
-
-  input[type="radio"]:checked + label span {
-  background-color: #3490DC; //bg-blue
-  box-shadow: 0px 0px 0px 2px white inset;
-  }`}
+      <style type="text/tailwindcss">
+        {`
+        @layer utilities {
+            .selected {
+                border-bottom: 2px solid;
+                color: white;
+            }
+        }
+        `}
       </style>
       <body
         class="min-h-screen bg-[#fcfcfc] text-black dark:bg-[#0e0e0e] dark:text-white flex flex-col"

@@ -10,8 +10,9 @@ import {
   integer,
   primaryKey,
   foreignKey,
+  unique,
 } from "drizzle-orm/pg-core";
-import { user } from "../routes";
+import { project, user } from "../routes";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -44,8 +45,23 @@ export const projects = pgTable("projects", {
   instagram_username: text("instagram_username"),
   twitter_username: text("twitter_username"),
   youtube_username: text("youtube_username"),
-  stars: text("stars").array().default([]),
 });
+
+export const stars = pgTable(
+  "stars",
+  {
+    project_id: integer("project_id")
+      .primaryKey()
+      .notNull()
+      .references(() => projects.id),
+    user_id: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+  },
+  (t) => ({
+    unq: unique().on(t.project_id, t.user_id),
+  })
+);
 
 export const followers = pgTable(
   "followers",

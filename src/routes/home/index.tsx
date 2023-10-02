@@ -13,6 +13,7 @@ import { BaseHtml } from "../../pages/base/basehtml";
 import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
 import ProjectList from "../../components/projectlist";
+import { ProfileLayout } from "../../pages/base/profile-layout";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -81,9 +82,9 @@ export const home = (app: Elysia) =>
       }
 
       return (
-        <BaseHtml>
+        <ProfileLayout>
           <HomePage username={username} />
-        </BaseHtml>
+        </ProfileLayout>
       );
     })
     .get(

@@ -107,6 +107,14 @@ export const blog = (app: Elysia) =>
 
       return <BlogList blogs={Blogs} />;
     })
+    .get("/blog-list/:username", async ({ params: { username } }) => {
+      const Blogs = await db
+        .select()
+        .from(blogs)
+        .where(eq(blogs.owner, String(username)));
+
+      return <BlogList blogs={Blogs} type="single" />;
+    })
     .get("/blog/editor", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {

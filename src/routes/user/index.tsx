@@ -19,6 +19,7 @@ import ProfilePage from "../../pages/profilepage";
 import { BaseHtml } from "../../pages/base/basehtml";
 import NotificationsPage from "../../pages/notificationspage";
 import NotificationsList from "../../components/notificationslist";
+import { ProfileLayout } from "../../pages/base/profile-layout";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -135,7 +136,7 @@ export const user = (app: Elysia) =>
         const isUserAccount = user.username === user1[0].username;
 
         return (
-          <BaseHtml>
+          <ProfileLayout>
             <ProfilePage
               user={user1[0]}
               followers={Followers[0].count}
@@ -144,7 +145,7 @@ export const user = (app: Elysia) =>
               isFollowing={is_following ? true : false}
               isUserAccount={isUserAccount}
             />
-          </BaseHtml>
+          </ProfileLayout>
         );
       }
     )

@@ -121,17 +121,43 @@ export default function ProfilePage({
               </ul>
             </section>
           </article>
-          <ul class="text-[#444444] dark:text-[#B1B1B1] border-zinc-300 dark:border-[#222222] font-medium flex space-x-6 items-center border-b sm:border-x  sm:rounded-b-md justify-between pt-2 px-[25%] ">
-            <li class="hover:dark:text-white hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer">
-              Posts
-            </li>
-            <li class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer">
+          <div
+            id="tabs"
+            hx-target="#list"
+            role="tablist"
+            _="on htmx:afterOnLoad set @aria-selected of <[aria-selected=true]/> to false tell the target take .selected set @aria-selected to true"
+            class="text-[#444444] dark:text-[#B1B1B1] border-zinc-300 dark:border-[#222222] font-medium flex space-x-6 items-center border-b sm:border-x  sm:rounded-b-md justify-between pt-2 px-[25%] "
+          >
+            <button
+              role="tab"
+              aria-controls="tab-content"
+              aria-selected="true"
+              hx-get={`/project-list/${user.username}`}
+              hx-swap="outerHTML"
+              class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer selected"
+            >
+              Projects
+            </button>
+            <button
+              role="tab"
+              aria-controls="tab-content"
+              aria-selected="false"
+              hx-get={`/blog-list/${user.username}`}
+              hx-swap="outerHTML"
+              class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer"
+            >
               Media
-            </li>
-            <li class="self-end py-1.5">
+            </button>
+            <button
+              role="tab"
+              aria-controls="tab-content"
+              aria-selected="false"
+              hx-get="/tab3"
+              class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer"
+            >
               <SettingsIcon />
-            </li>
-          </ul>
+            </button>
+          </div>
         </header>
         <main class="w-full md:w-3/4 xl:w-1/2 mx-auto">
           <div class="w-full h-full px-3 md:px-0 py-6">
