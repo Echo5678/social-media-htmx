@@ -102,7 +102,7 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
           >
             <ul>
               <li class="p-3">
-                <a href="/project/new" class="flex space-x-2  w-[200px]">
+                <a href="/project/form" class="flex space-x-2  w-[200px]">
                   <ProjectIcon />
                   <span>Create New Project</span>
                 </a>

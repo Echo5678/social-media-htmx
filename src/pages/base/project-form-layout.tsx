@@ -8,7 +8,7 @@ export const ProjectFormLayout = ({ children }: PropsWithChildren) => (
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           http-equiv="Content-Security-Policy"
-          content="script-src https://unpkg.com/htmx.org@1.9.5 https://unpkg.com/hyperscript.org@0.9.11 https://cdn.tailwindcss.com https://unpkg.com/htmx.org/dist/ext/response-targets.js https://unpkg.com/htmx.org/dist/ext/preload.js"
+          content="script-src https://unpkg.com/htmx.org@1.9.5 https://unpkg.com/hyperscript.org@0.9.11 https://cdn.tailwindcss.com https://unpkg.com/htmx.org/dist/ext/response-targets.js"
         ></meta>
         <title>CoDev</title>
         <link
@@ -24,7 +24,6 @@ export const ProjectFormLayout = ({ children }: PropsWithChildren) => (
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
-        <script src="https://unpkg.com/htmx.org/dist/ext/preload.js"></script>
       </head>
       <style>
         {`input[type="radio"] + label span {

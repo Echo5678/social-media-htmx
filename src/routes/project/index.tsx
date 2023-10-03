@@ -99,12 +99,21 @@ export const project = (app: Elysia) =>
       async ({
         userAuthorized,
         set,
-        body: { name, description, privacy, language },
+        body: { name, description, privacy, language, image },
       }) => {
         const user = userAuthorized;
         if (!user) {
           set.status = 307;
           set.redirect = "/sign-in";
+        }
+        if (!name || !description || !privacy || !language || !image) {
+          set.status = 401;
+
+          return (
+            <p class="w-full px-3 py-2 text-red-500 dark:text-white dark:bg-red-500/30 border rounded-md border-red-700 mb-6">
+              Bro fill out the form :|
+            </p>
+          );
         }
 
         await db.insert(projects).values({
@@ -132,6 +141,7 @@ export const project = (app: Elysia) =>
           language: t.String(),
           collaborators: t.String(),
           technologies: t.String(),
+          image: t.File(),
         }),
       }
     )
