@@ -7,7 +7,7 @@ const NotificationsPage = ({
   username?: string;
   image?: string;
 }) => (
-  <main>
+  <>
     <div class="flex">
       <Navbar username={username && username} image={image && image} />
       <main id="page" class="w-full px-6">
@@ -33,7 +33,7 @@ const NotificationsPage = ({
         </div>
       </main>
     </div>
-  </main>
+  </>
 );
 
 export default NotificationsPage;

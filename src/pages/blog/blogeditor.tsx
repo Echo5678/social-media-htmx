@@ -10,18 +10,7 @@ const BlogEditor = ({
   return (
     <div class="flex">
       <Navbar username={username && username} image={image && image} />
-      <div>
-        <header class="pl-6 pt-6">
-          <a
-            hx-boost
-            preload="mouseover"
-            hx-push-url
-            href="/home"
-            class="text-2xl font-semibold hover:cursor-pointer"
-          >
-            Co-Dev
-          </a>
-        </header>
+      <main class="w-full">
         <form
           hx-post="/blog"
           hx-target="#main"
@@ -50,7 +39,7 @@ const BlogEditor = ({
             Post
           </button>
         </form>
-      </div>
+      </main>
     </div>
   );
 };
