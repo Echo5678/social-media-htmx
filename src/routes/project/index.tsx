@@ -117,6 +117,8 @@ export const project = (app: Elysia) =>
           image: "",
           technologies: [],
           collaborators: [],
+          slogan: "",
+          application_type: "",
           stars: [],
         });
 
@@ -134,6 +136,10 @@ export const project = (app: Elysia) =>
           language: t.String(),
           collaborators: t.String(),
           technologies: t.String(),
+          image: t.File(),
+          slogan: t.String(),
+          application_type: t.String(),
+          stars: t.String(),
         }),
       }
     )
@@ -190,3 +196,5 @@ export const project = (app: Elysia) =>
         );
       }
     );
+const cloudinary_key = process.env.CLOUDKEY;
+const cloud_name = process.env.CLOUDNAME;

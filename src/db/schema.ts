@@ -40,6 +40,8 @@ export const projects = pgTable("projects", {
   technologies: text("technologies").array().default([]),
   image: varchar("image").notNull(),
   collaborators: text("collaborators").array().default([]),
+  slogan: varchar("slogan").notNull(),
+  application_type: varchar("application_type").notNull(),
   stars: text("stars").array().default([]),
 });
 
