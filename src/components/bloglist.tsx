@@ -5,7 +5,7 @@ export default function BlogList({
   type,
 }: {
   blogs: SelectBlog[];
-  type: string;
+  type?: string;
 }) {
   return (
     <ul

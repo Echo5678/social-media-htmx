@@ -4,7 +4,6 @@ import PersonAddIcon from "../../components/assets/personaddicon";
 import Twitter from "../../components/assets/twitter";
 import Youtube from "../../components/assets/youtube";
 import Navbar from "../../components/navbar";
-import SideBar from "../../components/sidebar";
 import { SelectProject } from "../../db/schema";
 
 const ProjectPage = ({
@@ -20,7 +19,7 @@ const ProjectPage = ({
 }) => {
   return (
     <div class="flex">
-      <SideBar username={username && username} image={image && image} />
+      <Navbar username={username && username} image={image && image} />
       <div class="flex  flex-col w-full bg-[#fcfcfc] dark:bg-[#111111]">
         <header class="flex w-full bg-zinc-100 dark:bg-black top-0 py-5 md:py-7 justify-between items-center px-6 md:px-10 xl:px-14">
           <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
@@ -130,7 +129,6 @@ const ProjectPage = ({
           </div>
         </main>
       </div>
-      <Navbar username={username && username} image={image && image} />
     </div>
   );
 };

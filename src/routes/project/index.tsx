@@ -90,7 +90,7 @@ export const project = (app: Elysia) =>
 
       return (
         <ProjectFormLayout>
-          <ProjectForm />
+          <ProjectForm username={user?.username} image={user?.image} />
         </ProjectFormLayout>
       );
     })

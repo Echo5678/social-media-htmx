@@ -1,6 +1,5 @@
 import Navbar from "../components/navbar";
 import SearchBar from "../components/searchbar";
-import SideBar from "../components/sidebar";
 
 export default function HomePage({
   username,
@@ -12,7 +11,7 @@ export default function HomePage({
   return (
     <>
       <div class="flex">
-        <SideBar username={username && username} image={image && image} />
+        <Navbar username={username && username} image={image && image} />
         <main id="page" class="w-full px-6">
           <h1 class="text-xl font-bold py-3">Home</h1>
           <SearchBar />
@@ -67,8 +66,6 @@ export default function HomePage({
           </div>
         </main>
       </div>
-
-      <Navbar username={username && username} image={image && image} />
     </>
   );
 }

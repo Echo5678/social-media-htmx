@@ -146,6 +146,8 @@ export const user = (app: Elysia) =>
               posts={posts}
               isFollowing={is_following ? true : false}
               isUserAccount={isUserAccount}
+              username={user.username}
+              image={user?.image}
             />
           </ProfileLayout>
         );
@@ -175,13 +177,11 @@ export const user = (app: Elysia) =>
           >
             Following
           </button>
-          <span
-            id="followerCount"
-            hx-swap-oob="true"
-            class="dark:text-white text-black mr-1 font-medium"
-          >
-            {following[0].count}
-          </span>
+          <div id="followerCount" hx-swap-oob="true">
+            <span class="dark:text-white text-black mr-1 font-medium">
+              {following[0].count}
+            </span>
+          </div>
         </div>
       );
     })
