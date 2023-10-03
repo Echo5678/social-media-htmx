@@ -1,4 +1,3 @@
-import SideBar from "../components/sidebar";
 import Navbar from "../components/navbar";
 
 const NotificationsPage = ({
@@ -10,7 +9,7 @@ const NotificationsPage = ({
 }) => (
   <main>
     <div class="flex">
-      <SideBar username={username && username} image={image && image} />
+      <Navbar username={username && username} image={image && image} />
       <main id="page" class="w-full px-6">
         <h1 class="text-xl font-bold py-3">Notifications</h1>
         <div
@@ -34,8 +33,6 @@ const NotificationsPage = ({
         </div>
       </main>
     </div>
-
-    <Navbar username={username && username} image={image && image} />
   </main>
 );
 

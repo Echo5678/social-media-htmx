@@ -4,7 +4,7 @@ import cookie from "@elysiajs/cookie";
 import html from "@elysiajs/html";
 
 import { db } from "../../db/client";
-import { blogs, users } from "../../db/schema";
+import { SelectBlog, blogs, users } from "../../db/schema";
 import { eq, sql } from "drizzle-orm";
 
 import { BlogLayout } from "../../pages/base/bloglayout";
@@ -89,7 +89,7 @@ export const blog = (app: Elysia) =>
         }),
       }
     )
-    .get("/blog/:id", async ({ params: { id } }) => {
+    .get("/blog/:id", async ({ params: { id }, userAuthorized }) => {
       const [Blog] = await db
         .select()
         .from(blogs)
@@ -98,14 +98,26 @@ export const blog = (app: Elysia) =>
 
       return (
         <BlogLayout>
-          <BlogPost blog={Blog} />
+          <BlogPost
+            blog={Blog}
+            username={userAuthorized?.username}
+            image={userAuthorized?.image}
+          />
         </BlogLayout>
       );
     })
     .get("/blog-list", async () => {
-      const Blogs = await db.select().from(blogs).limit(10);
+      const Blogs: SelectBlog[] = await db.select().from(blogs).limit(10);
 
       return <BlogList blogs={Blogs} />;
+    })
+    .get("/blog-list/:username", async ({ params: { username } }) => {
+      const Blogs = await db
+        .select()
+        .from(blogs)
+        .where(eq(blogs.owner, String(username)));
+
+      return <BlogList blogs={Blogs} type="single" />;
     })
     .get("/blog/editor", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
@@ -116,7 +128,7 @@ export const blog = (app: Elysia) =>
 
       return (
         <BlogEditorLayout>
-          <BlogEditor />
+          <BlogEditor username={user?.username} image={user?.image} />
         </BlogEditorLayout>
       );
     });

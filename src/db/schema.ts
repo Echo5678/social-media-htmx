@@ -10,8 +10,8 @@ import {
   integer,
   primaryKey,
   foreignKey,
+  unique,
 } from "drizzle-orm/pg-core";
-import { user } from "../routes";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -43,7 +43,27 @@ export const projects = pgTable("projects", {
   slogan: varchar("slogan").notNull(),
   application_type: varchar("application_type").notNull(),
   stars: text("stars").array().default([]),
+  categories: text("categories"),
+  instagram_username: text("instagram_username"),
+  twitter_username: text("twitter_username"),
+  youtube_username: text("youtube_username"),
 });
+
+export const stars = pgTable(
+  "stars",
+  {
+    project_id: integer("project_id")
+      .primaryKey()
+      .notNull()
+      .references(() => projects.id),
+    user_id: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+  },
+  (t) => ({
+    unq: unique().on(t.project_id, t.user_id),
+  })
+);
 
 export const followers = pgTable(
   "followers",
@@ -73,15 +93,18 @@ export const blogs = pgTable("blogs", {
     .references(() => users.username),
   title: varchar("title", { length: 65 }).notNull(),
   blog: json("blog").notNull(),
-  posted: timestamp("posted").defaultNow(),
+  posted: text("posted"),
 });
 
 export const notifications = pgTable("notifications", {
   user_id: integer("user_id")
     .primaryKey()
     .references(() => users.id),
-  type: text("type").notNull(),
+  sent_by: text("sent_by").notNull(),
   content: text("content").notNull(),
+  reference: text("reference").notNull(),
+  read: boolean("read").default(false),
+  created_at: text("created_at").notNull(),
 });
 
 export type SelectNotification = InferSelectModel<typeof notifications>;

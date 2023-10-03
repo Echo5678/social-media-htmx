@@ -3,21 +3,27 @@ import StarIconRegular from "../components/assets/stariconregular";
 
 export default function ProjectList({
   projects,
+  type,
 }: {
   projects: SelectProject[];
+  type?: string;
 }) {
   return (
     <ul
       id="list"
-      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"
+      class={
+        type === "single"
+          ? "grid grid-cols-1 gap-4 grid-flow-row"
+          : "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"
+      }
     >
       {projects.map((item) => (
-        <li class="bg-[#f9f9f9] dark:bg-[#010101] border border-zinc-300 dark:border-zinc-800 rounded-lg w-full hover:scale-105 hover:z-20 transition duration-500 hover:cursor-pointer flex  flex-col">
+        <li class="bg-[#f9f9f9] dark:bg-[#010101] border border-zinc-300 dark:border-zinc-800 rounded-lg w-full hover:scale-105 hover:z-20 transition duration-500 hover:cursor-pointer flex  flex-col p-5">
           <a
             href={`/project/${item.id}`}
             hx-boost="true"
             hx-push-url
-            class="p-5 flex flex-col"
+            class="flex flex-col flex-grow"
           >
             <div class="flex space-x-2">
               <img
@@ -39,15 +45,15 @@ export default function ProjectList({
             <p class="line-clamp-3 py-2 text-[#444444] dark:text-[#B1B1B1] flex-grow">
               {item.description}
             </p>
-            <button
-              hx-patch={`/stars/${item.id}`}
-              hx-swap="outerHTML"
-              class="self-end flex space-x-1 items-center font-medium text-lg"
-            >
-              <StarIconRegular />
-              <span>{item?.stars_count ? item?.stars_count : 0}</span>
-            </button>
           </a>
+          <button
+            hx-post={`/stars/${item.id}`}
+            hx-swap="outerHTML"
+            class="self-end flex space-x-1 items-center font-medium text-lg"
+          >
+            <StarIconRegular />
+            <span>{item?.stars_count ? item?.stars_count : 0}</span>
+          </button>
         </li>
       ))}
     </ul>

@@ -1,10 +1,20 @@
 import { SelectBlog } from "../db/schema";
 
-export default function BlogList({ blogs }: { blogs: SelectBlog[] }) {
+export default function BlogList({
+  blogs,
+  type,
+}: {
+  blogs: SelectBlog[];
+  type?: string;
+}) {
   return (
     <ul
       id="list"
-      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"
+      class={
+        type === "single"
+          ? "grid grid-cols-1 gap-4 grid-flow-row"
+          : "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"
+      }
     >
       {blogs.map((blog) => (
         <li class="bg-[#010101] border border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-40 transition duration-500 hover:cursor-pointer flex  flex-col">

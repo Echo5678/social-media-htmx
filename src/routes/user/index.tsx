@@ -9,6 +9,7 @@ import {
   SelectNotification,
   SelectUser,
   followers,
+  notifications,
   projects,
   users,
 } from "../../db/schema";
@@ -19,6 +20,8 @@ import ProfilePage from "../../pages/profilepage";
 import { BaseHtml } from "../../pages/base/basehtml";
 import NotificationsPage from "../../pages/notificationspage";
 import NotificationsList from "../../components/notificationslist";
+import { ProfileLayout } from "../../pages/base/profile-layout";
+import NotificationIcon from "../../components/assets/notificationicon";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -135,7 +138,7 @@ export const user = (app: Elysia) =>
         const isUserAccount = user.username === user1[0].username;
 
         return (
-          <BaseHtml>
+          <ProfileLayout>
             <ProfilePage
               user={user1[0]}
               followers={Followers[0].count}
@@ -143,8 +146,10 @@ export const user = (app: Elysia) =>
               posts={posts}
               isFollowing={is_following ? true : false}
               isUserAccount={isUserAccount}
+              username={user.username}
+              image={user?.image}
             />
-          </BaseHtml>
+          </ProfileLayout>
         );
       }
     )
@@ -172,13 +177,11 @@ export const user = (app: Elysia) =>
           >
             Following
           </button>
-          <span
-            id="followerCount"
-            hx-swap-oob="true"
-            class="dark:text-white text-black mr-1 font-medium"
-          >
-            {following[0].count}
-          </span>
+          <div id="followerCount" hx-swap-oob="true">
+            <span class="dark:text-white text-black mr-1 font-medium">
+              {following[0].count}
+            </span>
+          </div>
         </div>
       );
     })
@@ -188,13 +191,42 @@ export const user = (app: Elysia) =>
         set.status = 401;
         return;
       }
-      const notifications: SelectNotification[] = await db.execute(
-        sql`WITH following AS (SELECT user_id FROM followers WHERE follower_id  = ${user.id}) SELECT * FROM notifications WHERE user_id IN (SELECT user_id FROM following)`
-      );
-      if (notifications.length === 0) {
+
+      const notis: SelectNotification[] = await db
+        .select()
+        .from(notifications)
+        .where(eq(notifications.user_id, Number(user.id)));
+
+      if (notis.length === 0) {
         return <p>Sorry no notifications yet. {":("}</p>;
       }
-      return <NotificationsList notifications={notifications} />;
+
+      return <NotificationsList notis={notis} />;
+    })
+    .get("/notifications-count", async ({ userAuthorized, set }) => {
+      const user = userAuthorized;
+      if (!user) {
+        set.status = 401;
+        return;
+      }
+      const noti_count = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(notifications)
+        .where(eq(notifications.user_id, user.id))
+        .limit(1);
+
+      return (
+        <li class="md:transition md:hover:bg-zinc-200 md:hover:dark:bg-zinc-800 md:p-2.5 md:rounded-full">
+          <a
+            href="/notifications"
+            aria-label="Notifications Page"
+            hx-boost="true"
+            hx-push-url
+          >
+            <NotificationIcon notification_count={noti_count[0].count} />
+          </a>
+        </li>
+      );
     })
     .get("/notifications", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
