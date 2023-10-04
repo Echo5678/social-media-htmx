@@ -93,6 +93,23 @@ export default function ProjectForm({
               </label>
             </div>
           </div>
+          <div>
+            <label class="font-medium" for="collaborators">
+              Collaborators
+            </label>
+            <input
+              id="collaborators"
+              type="text"
+              name="collaborators"
+              class="`outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500`"
+            />
+            <p class="pt-2 pb-3">
+              Search other collaborators by username, add them to the team
+            </p>
+          </div>
+        </div>
+        <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
+        <div class="flex flex-col md:flex-row md:justify-between  mt-4">
           <div class="flex flex-col  pt-6 md:pt-0 md:px-6">
             <label for="languages" class="font-medium">
               Choose a Language:
@@ -112,48 +129,32 @@ export default function ProjectForm({
               <option value="Mojo">Mojo</option>
             </select>
           </div>
-        </div>
-        <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
-        <div class="flex flex-col md:flex-row md:justify-between  mt-4">
-          <div>
-            <label class="font-medium" for="collaborators">
-              Collaborators
+          <div class="flex flex-col  pt-6 md:pt-0 md:px-6">
+            <label class="font-medium" for="technologies">
+              Technologies
             </label>
             <input
-              id="collaborators"
+              id="technologies"
               type="text"
-              name="collaborators"
+              name="technologies"
               class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
             />
-            <p class="pt-2 pb-3">
-              Search other collaborators by username, add them to the team
-            </p>
-          </div>
-          <div>
-            <label class="font-medium" for="image">
-              Image
-            </label>
-            <input
-              id="image"
-              type="file"
-              name="image"
-              class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
-            />
-            <p class="pt-2 pb-3">Add thumbnail for project</p>
+            <p class="pt-2 pb-3">List tech stack and third party software</p>
           </div>
         </div>
         <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
-        <div>
-          <label class="font-medium" for="technologies">
-            Technologies
+
+        <div class="flex flex-col  pt-6 md:pt-0 md:px-6">
+          <label class="font-medium" for="image">
+            Image
           </label>
           <input
-            id="technologies"
-            type="text"
-            name="technologies"
+            id="image"
+            type="file"
+            name="image"
             class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
           />
-          <p class="pt-2 pb-3">List tech stack and third party software</p>
+          <p class="pt-2 pb-3">Add thumbnail for project</p>
         </div>
         <div class="justify-end flex">
           <button
