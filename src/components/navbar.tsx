@@ -102,13 +102,16 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
           >
             <ul>
               <li class="p-3">
-                <a href="/project/form" class="flex space-x-2  w-[200px]">
+                <a
+                  href="/project/form"
+                  class="flex space-x-2  w-[200px] items-center"
+                >
                   <ProjectIcon />
                   <span>Create New Project</span>
                 </a>
               </li>
               <li class="mt-6 p-3">
-                <a href="/blog/editor" class="flex space-x-2">
+                <a href="/blog/editor" class="flex space-x-2 items-center">
                   <div>
                     <NotePad />
                   </div>

@@ -1,3 +1,4 @@
+import { ImagePlus } from "../../components/assets/imageplus";
 import Navbar from "../../components/navbar";
 
 export default function ProjectForm({
@@ -12,25 +13,25 @@ export default function ProjectForm({
       <Navbar username={username && username} image={image && image} />
       <main class="w-full h-full">
         <form
-          class=" md:w-3/4 xl:w-2/3  mx-auto p-6 "
+          class=" md:w-11/12 xl:w-3/4  mx-auto p-6 "
           hx-post="/project"
           hx-encoding="multipart/form-data"
           hx-swap="outerHTML"
           hx-target="#main"
-          hx-replace-url="/home"
+          hx-replace-url="true"
           hx-trigger="submit"
-          hx-target-401="#error-message"
+          hx-target-400="#error-message"
         >
           <div id="error-message"></div>
           <header>
             <h1 class="font-medium text-3xl">Create a Project</h1>
             <span class="block text-[#444444] dark:text-[#B1B1B1] pt-2 text-sm">
-              A Project is a description of your idea and the technologies that
+              A Project is a description of your idea and the categories that
               will be used to create it.
             </span>
           </header>
-          <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
-          <div>
+          <div class="w-full h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
+          <div class="pt-2">
             <label class="font-medium" for="name">
               Project name
             </label>
@@ -40,7 +41,7 @@ export default function ProjectForm({
               name="name"
               class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
             />
-            <p class="pt-2 pb-3">
+            <p class="pt-1 pb-4 text-[#444444] dark:text-[#B1B1B1]">
               Good Project names are simple and creative. Keep it simple.
             </p>
             <label class="font-medium" for="description">
@@ -53,118 +54,142 @@ export default function ProjectForm({
               maxlength="1000"
               class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full block mt-1.5 p-1 focus:border-blue-500"
             />
+            <p class="pt-1 pb-3 text-[#444444] dark:text-[#B1B1B1]">
+              Give a good description of the problem your project is trying to
+              solve.
+            </p>
           </div>
-          <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-6 mb-2"></div>
-          <div class="flex flex-col md:flex-row md:justify-between  mt-4">
-            <div>
-              <div>
+          <div class="flex flex-col  mt-6 md:pt-0">
+            <label for="languages" class="font-medium">
+              Choose the language(s):
+            </label>
+            <ul class="grid grid-cols-2 grid-rows-auto pt-2">
+              <li class="space-x-2 font-medium flex items-center">
                 <input
-                  type="radio"
-                  id="public"
-                  name="privacy"
-                  value="public"
-                  class="hidden"
-                  checked
+                  type="checkbox"
+                  name="nocode"
+                  id="nocode"
+                  class="border-gray-300 dark:border-gray-600 h-5 w-5"
                 />
-                <label for="public" class="flex items-center cursor-pointer">
-                  <span class="w-4 h-4 inline-block mr-1 rounded-full border border-grey"></span>
-                  <div class="flex flex-col pl-3">
-                    <h2 class="text-lg font-semibold">Public</h2>
-                    <p class="text-[#444444] dark:text-[#B1B1B1]">
-                      Anyone can see my amazing project.
-                    </p>
-                  </div>
-                </label>
-              </div>
-              <div>
+                <label for="nocode">No Code</label>
+              </li>
+              <li class="space-x-2 font-medium flex items-center">
                 <input
-                  type="radio"
-                  id="private"
-                  name="privacy"
-                  value="private"
-                  class="hidden"
+                  type="checkbox"
+                  name="c"
+                  id="c"
+                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
                 />
-                <label for="private" class="flex items-center cursor-pointer">
-                  <span class="w-4 h-4 inline-block mr-1 rounded-full border border-grey"></span>
-                  <div class="flex flex-col pl-3">
-                    <h2 class="text-lg font-semibold">Private</h2>
-                    <p class="text-[#444444] dark:text-[#B1B1B1]">
-                      Only I can see my amazing project
-                    </p>
-                  </div>
-                </label>
-              </div>
-            </div>
-            <div class="flex flex-col  pt-6 md:pt-0 md:px-6">
-              <label for="languages" class="font-medium">
-                Choose a Language:
-              </label>
-              <select
-                id="languages"
-                class="appearance-none px-2 py-3 bg-transparent outline-none border border-zinc-200 dark:border-zinc-800  block text-[#444444] dark:text-[#B1B1B1]  rounded-md w-full text-center mt-3"
-                name="language"
-              >
-                <option value="No Code">No Code</option>
-                <option value="C/C++">C/C++</option>
-                <option value="Rust">Rust</option>
-                <option value="Go">Go</option>
-                <option value="JavaScript">JavaScript</option>
-                <option value="Python">Python</option>
-                <option value="Haskell">Haskell</option>
-                <option value="Mojo">Mojo</option>
-              </select>
-            </div>
+                <label for="c">C</label>
+              </li>
+              <li class="space-x-2 font-medium flex items-center">
+                <input
+                  type="checkbox"
+                  name="rust"
+                  id="rust"
+                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
+                />
+                <label for="rust">Rust</label>
+              </li>
+              <li class="space-x-2 font-medium flex items-center">
+                <input
+                  type="checkbox"
+                  name="go"
+                  id="go"
+                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
+                />
+                <label for="go">Go</label>
+              </li>
+              <li class="space-x-2 font-medium flex items-center">
+                <input
+                  type="checkbox"
+                  name="javascript"
+                  id="javascript"
+                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
+                />
+                <label for="javascript">JavaScript</label>
+              </li>
+              <li class="space-x-2 font-medium flex items-center">
+                <input
+                  type="checkbox"
+                  name="python"
+                  id="python"
+                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
+                />
+                <label for="python">Python</label>
+              </li>
+              <li class="space-x-2 font-medium flex items-center">
+                <input
+                  type="checkbox"
+                  name="haskell"
+                  id="haskell"
+                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
+                />
+                <label for="haskell">Java</label>
+              </li>
+              <li class="space-x-2 font-medium flex items-center">
+                <input
+                  type="checkbox"
+                  name="mojo"
+                  id="mojo"
+                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
+                />
+                <label for="mojo">Other</label>
+              </li>
+            </ul>
           </div>
-          <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
-          <div class="flex flex-col md:flex-row md:justify-between  mt-4">
+          <div class="pt-6">
+            <label class="font-medium" for="categories">
+              Categories
+            </label>
+            <input
+              id="categories"
+              type="text"
+              name="categories"
+              class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
+            />
+            <p class="pt-2 pb-3 text-[#444444] dark:text-[#B1B1B1]">
+              What category is your product?
+            </p>
+          </div>
+          <div class="pt-4">
+            <label class="font-medium" for="brief-description">
+              Brief description
+            </label>
+            <input
+              id="brief-description"
+              type="text"
+              name="brief-description"
+              class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
+            />
+            <p class="pt-2 text-[#444444] dark:text-[#B1B1B1]">
+              Shortened description of your project.
+            </p>
+          </div>
+          <div class="w-full h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
+          <div class="flex justify-between">
             <div>
-              <label class="font-medium" for="collaborators">
-                Collaborators
-              </label>
-              <input
-                id="collaborators"
-                type="text"
-                name="collaborators"
-                class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
-              />
-              <p class="pt-2 pb-3">
-                Search other collaborators by username, add them to the team
-              </p>
-            </div>
-            <div>
-              <label class="font-medium" for="image">
-                Image
+              <label class="text-blue-500 hover:cursor-pointer" for="image">
+                <ImagePlus />
               </label>
               <input
                 id="image"
                 type="file"
+                accept="image/png image/jpeg image/jpg"
                 name="image"
                 alt="Project Thumbnail"
                 class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500 hidden"
               />
-              <p class="pt-2 pb-3">Add thumbnail for project</p>
             </div>
-          </div>
-          <div class="w-[90%] mx-auto h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
-          <div>
-            <label class="font-medium" for="technologies">
-              Technologies
-            </label>
-            <input
-              id="technologies"
-              type="text"
-              name="technologies"
-              class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
-            />
-            <p class="pt-2 pb-3">List tech stack and third party software</p>
-          </div>
-          <div class="justify-end flex">
-            <button
-              class="bg-black text-white dark:bg-white dark:text-black px-3 py-2 rounded-md  font-semibold mt-2"
-              type="submit"
-            >
-              Create project
-            </button>
+
+            <div class="flex">
+              <button
+                class="bg-black text-white dark:bg-white dark:text-black px-3 py-2 rounded-md  font-semibold mt-2"
+                type="submit"
+              >
+                Create project
+              </button>
+            </div>
           </div>
         </form>
       </main>

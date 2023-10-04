@@ -54,7 +54,7 @@ export const project = (app: Elysia) =>
     })
     .get("/project-list", async () => {
       const Projects: SelectProject[] = await db.execute(
-        sql`SELECT id, name, description, privacy, username, languages, image, collaborators, technologies, instagram_username, twitter_username,	youtube_username,	categories, count(project_id) as stars_count FROM projects FULL JOIN stars ON id = project_id WHERE privacy = 'public' GROUP BY id LIMIT 10`
+        sql`SELECT id, name, description, username, languages, image, collaborators, technologies, instagram_username, twitter_username,	youtube_username,	categories, count(project_id) as stars_count FROM projects FULL JOIN stars ON id = project_id GROUP BY id LIMIT 10`
       );
 
       if (Projects.length !== 0) {
@@ -68,7 +68,7 @@ export const project = (app: Elysia) =>
     })
     .get("/project-list/:username", async ({ params: { username } }) => {
       const Projects: SelectProject[] = await db.execute(
-        sql`SELECT id, name, description, privacy, username, languages, image, collaborators, technologies, instagram_username, twitter_username,	youtube_username,	categories, count(project_id) as stars_count FROM projects FULL JOIN stars ON id = project_id WHERE privacy = 'public' AND username = ${username} GROUP BY id LIMIT 10`
+        sql`SELECT id, name, description, username, languages, image, collaborators, technologies, instagram_username, twitter_username,	youtube_username,	categories, count(project_id) as stars_count FROM projects FULL JOIN stars ON id = project_id WHERE username = ${username} GROUP BY id LIMIT 10`
       );
 
       if (Projects.length !== 0) {
@@ -99,15 +99,15 @@ export const project = (app: Elysia) =>
       async ({
         userAuthorized,
         set,
-        body: { name, description, privacy, language, image },
+        body: { name, description, language, image },
       }) => {
         const user = userAuthorized;
         if (!user) {
           set.status = 307;
           set.redirect = "/sign-in";
         }
-        if (!name || !description || !privacy || !language || !image) {
-          set.status = 401;
+        if (!name || !description || !language || !image) {
+          set.status = 400;
 
           return (
             <p class="w-full px-3 py-2 text-red-500 dark:text-white dark:bg-red-500/30 border rounded-md border-red-700 mb-6">
@@ -116,10 +116,12 @@ export const project = (app: Elysia) =>
           );
         }
 
+        set.status = 301;
+        set.redirect = "/home";
+
         await db.insert(projects).values({
           name,
           description,
-          privacy,
           languages: [language],
           username: user.username,
           image: "",
@@ -137,7 +139,6 @@ export const project = (app: Elysia) =>
         body: t.Object({
           name: t.String(),
           description: t.String(),
-          privacy: t.String(),
           language: t.String(),
           collaborators: t.String(),
           technologies: t.String(),
@@ -166,12 +167,7 @@ export const project = (app: Elysia) =>
       );
     })
     .get("/project/:id", async ({ params: { id }, userAuthorized }) => {
-      const [project] = await db
-        .select()
-        .from(projects)
-        .where(
-          and(eq(projects.id, Number(id)), eq(projects.privacy, "public"))
-        );
+      const [project] = await db.select().from(projects);
       let username;
 
       if (userAuthorized) {
