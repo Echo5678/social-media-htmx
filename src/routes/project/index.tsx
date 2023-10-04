@@ -14,8 +14,18 @@ import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
 import { ProjectFormLayout } from "../../pages/base/project-form-layout";
 import ProjectList from "../../components/projectlist";
+import cloudinary from "cloudinary";
+const cloudinary_key = process.env.CLOUDKEY;
+const cloud_name = process.env.CLOUDNAME;
 
 const WEEK = 60 * 60 * 24 * 7;
+
+// const cloudinaryConfig = cloudinary.config({
+//   cloud_name: process.env.CLOUDNAME,
+//   api_key: process.env.CLOUDAPIKEY,
+//   api_secret: process.env.CLOUDINARYSECRET,
+//   secure: true,
+// });
 
 export const project = (app: Elysia) =>
   app
@@ -99,7 +109,7 @@ export const project = (app: Elysia) =>
       async ({
         userAuthorized,
         set,
-        body: { name, description, privacy, language },
+        body: { name, description, privacy, language, image },
       }) => {
         const user = userAuthorized;
         if (!user) {
@@ -200,5 +210,13 @@ export const project = (app: Elysia) =>
         );
       }
     );
-const cloudinary_key = process.env.CLOUDKEY;
-const cloud_name = process.env.CLOUDNAME;
+// .get("/get-signature", (req, res) => {
+//   const timestamp = Math.round(new Date().getTime() / 1000);
+//   const signature = cloudinary.utils.api_sign_request(
+//     {
+//       timestamp: timestamp,
+//     },
+//     cloudinaryConfig.api_secret
+//   );
+//   res.json({ timestamp: signature });
+// });
