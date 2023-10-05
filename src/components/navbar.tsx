@@ -98,7 +98,7 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
           </button>
           <div
             id="menu"
-            class="menu hidden text-black  dark:text-white absolute max-md:right-5 max-md:bottom-48 md:left-28 md:top-64 text-lg font-medium"
+            class="menu hidden text-black  dark:text-white absolute max-md:right-5 max-md:bottom-48 md:left-28 md:top-64 text-lg font-medium bg-black/20 rounded-md"
           >
             <ul>
               <li class="p-3">

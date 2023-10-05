@@ -39,11 +39,28 @@ export const ProjectFormLayout = ({ children }: PropsWithChildren) => (
   input[type="radio"]:checked + label span {
   background-color: #3490DC; //bg-blue
   box-shadow: 0px 0px 0px 2px white inset;
-  }`}
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  `}
       </style>
       <style type="text/tailwindcss">
         {`
         @layer utilities {
+          input:checked + div {
+            @apply border-zinc-800 dark:border-zinc-100;
+          }
+          input:checked + div svg {
+            @apply block;
+          }
+
             .selected {
                 border-bottom: 2px solid;
                 color: white;

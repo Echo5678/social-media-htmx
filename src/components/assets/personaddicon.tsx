@@ -5,6 +5,7 @@ const PersonAddIcon = () => {
       width="36"
       height="36"
       viewBox="0 0 36 36"
+      class="bg-cover"
     >
       <path
         fill="currentColor"

@@ -94,7 +94,7 @@ export const home = (app: Elysia) =>
 
         if (validator.isAscii(search)) {
           Projects = await db.execute(
-            sql`SELECT * FROM projects WHERE LOWER(name) LIKE '%' || LOWER(${search}) || '%' AND privacy = 'public'`
+            sql`SELECT * FROM projects WHERE LOWER(name) LIKE '%' || LOWER(${search}) || '%'`
           );
         } else {
           Projects = await db.select().from(projects).limit(10);

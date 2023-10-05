@@ -1,4 +1,5 @@
 import { ImagePlus } from "../../components/assets/imageplus";
+import PersonAddIcon from "../../components/assets/personaddicon";
 import Navbar from "../../components/navbar";
 
 export default function ProjectForm({
@@ -8,6 +9,16 @@ export default function ProjectForm({
   username?: string;
   image?: string;
 }) {
+  const languages = [
+    "c",
+    "python",
+    "rust",
+    "javascript",
+    "java",
+    "go",
+    "no code",
+    "other",
+  ];
   return (
     <div class="flex">
       <Navbar username={username && username} image={image && image} />
@@ -21,6 +32,7 @@ export default function ProjectForm({
           hx-replace-url="true"
           hx-trigger="submit"
           hx-target-400="#error-message"
+          autocomplete="off"
         >
           <div id="error-message"></div>
           <header>
@@ -59,85 +71,41 @@ export default function ProjectForm({
               solve.
             </p>
           </div>
+          <div class="w-full h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
           <div class="flex flex-col  mt-6 md:pt-0">
             <label for="languages" class="font-medium">
               Choose the language(s):
             </label>
-            <ul class="grid grid-cols-2 grid-rows-auto pt-2">
-              <li class="space-x-2 font-medium flex items-center">
-                <input
-                  type="checkbox"
-                  name="nocode"
-                  id="nocode"
-                  class="border-gray-300 dark:border-gray-600 h-5 w-5"
-                />
-                <label for="nocode">No Code</label>
-              </li>
-              <li class="space-x-2 font-medium flex items-center">
-                <input
-                  type="checkbox"
-                  name="c"
-                  id="c"
-                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
-                />
-                <label for="c">C</label>
-              </li>
-              <li class="space-x-2 font-medium flex items-center">
-                <input
-                  type="checkbox"
-                  name="rust"
-                  id="rust"
-                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
-                />
-                <label for="rust">Rust</label>
-              </li>
-              <li class="space-x-2 font-medium flex items-center">
-                <input
-                  type="checkbox"
-                  name="go"
-                  id="go"
-                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
-                />
-                <label for="go">Go</label>
-              </li>
-              <li class="space-x-2 font-medium flex items-center">
-                <input
-                  type="checkbox"
-                  name="javascript"
-                  id="javascript"
-                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
-                />
-                <label for="javascript">JavaScript</label>
-              </li>
-              <li class="space-x-2 font-medium flex items-center">
-                <input
-                  type="checkbox"
-                  name="python"
-                  id="python"
-                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
-                />
-                <label for="python">Python</label>
-              </li>
-              <li class="space-x-2 font-medium flex items-center">
-                <input
-                  type="checkbox"
-                  name="haskell"
-                  id="haskell"
-                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
-                />
-                <label for="haskell">Java</label>
-              </li>
-              <li class="space-x-2 font-medium flex items-center">
-                <input
-                  type="checkbox"
-                  name="mojo"
-                  id="mojo"
-                  class="border-gray-300 dark:border-gray-600 rounded h-5 w-5"
-                />
-                <label for="mojo">Other</label>
-              </li>
+            <ul class="grid grid-cols-2 grid-rows-auto pt-2 gap-y-4">
+              {languages.map((item) => (
+                <li class="space-x-2 font-medium flex items-center">
+                  <input
+                    type="checkbox"
+                    name={item}
+                    id={item}
+                    class="opacity-0 absolute h-8 w-8"
+                  />
+                  <div class="bg-transparent border-2 rounded-md border-black dark:border-white w-8 h-8 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-blue-500">
+                    <svg
+                      class="fill-current hidden text-black dark:text-white pointer-events-none h-6 w-6"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g fill="currentColor">
+                        <g fill="currentColor">
+                          <path d="m20.076 6.207c.566.552 .566 1.444 0 1.996l-9.404 9.176c-.282.275-.652.414-1.023.414-.37 0-.741-.139-1.023-.414l-4.702-4.588c-.566-.552-.566-1.444 0-1.996.566-.552 1.48-.552 2.046 0l3.679 3.59 8.381-8.178c.566-.552 1.48-.552 2.046 0z" />
+                        </g>
+                      </g>
+                    </svg>
+                  </div>
+                  <label for={item}>
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                  </label>
+                </li>
+              ))}
             </ul>
           </div>
+          <div class="w-full h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
           <div class="pt-6">
             <label class="font-medium" for="categories">
               Categories
@@ -164,6 +132,34 @@ export default function ProjectForm({
             />
             <p class="pt-2 text-[#444444] dark:text-[#B1B1B1]">
               Shortened description of your project.
+            </p>
+          </div>
+          <div class="w-full h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
+          <div class="pt-6">
+            <label class="font-medium" for="collaborators">
+              Collaborators
+            </label>
+            <div class="w-full md:w-1/2 relative">
+              <input
+                id="collaborators"
+                type="text"
+                name="collaborators"
+                hx-get="/user-list"
+                hx-trigger="keyup changed delay:250ms, search"
+                hx-target="#user-list"
+                hx-swap="innerHTML"
+                class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md block mt-1.5 p-1 w-full"
+                autocomplete="off"
+                _="on focus or focusout toggle .border on me then toggle .border-x on me then toggle .border-t on me then toggle .rounded-md on me then toggle .rounded-t-md on me then toggle .hidden on #user-list"
+              />
+              <ul
+                id="user-list"
+                class="px-2  border-x border-b border-zinc-200 dark:border-zinc-800 rounded-b-md  w-full hidden border-t flex flex-col absolute bg-[#fcfcfc] dark:bg-[#0e0e0e] max-h-[800px] overflow-y-scroll hide-scrollbar"
+              ></ul>
+            </div>
+
+            <p class="pt-2 text-[#444444] dark:text-[#B1B1B1]">
+              Find people to collaborate with
             </p>
           </div>
           <div class="w-full h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
