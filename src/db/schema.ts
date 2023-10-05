@@ -32,7 +32,6 @@ export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 30 }).notNull(),
   description: varchar("description", { length: 2000 }),
-  privacy: varchar("privacy", { length: 8 }).notNull(),
   languages: text("languages").array(),
   username: text("username")
     .notNull()

@@ -98,17 +98,20 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
           </button>
           <div
             id="menu"
-            class="menu hidden text-black  dark:text-white absolute max-md:right-5 max-md:bottom-48 md:left-28 md:top-64 text-lg font-medium"
+            class="menu hidden text-black  dark:text-white absolute max-md:right-5 max-md:bottom-48 md:left-28 md:top-64 text-lg font-medium bg-black/20 rounded-md"
           >
             <ul>
               <li class="p-3">
-                <a href="/project/form" class="flex space-x-2  w-[200px]">
+                <a
+                  href="/project/form"
+                  class="flex space-x-2  w-[200px] items-center"
+                >
                   <ProjectIcon />
                   <span>Create New Project</span>
                 </a>
               </li>
               <li class="mt-6 p-3">
-                <a href="/blog/editor" class="flex space-x-2">
+                <a href="/blog/editor" class="flex space-x-2 items-center">
                   <div>
                     <NotePad />
                   </div>

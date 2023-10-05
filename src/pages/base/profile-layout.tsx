@@ -2,6 +2,7 @@ import { type PropsWithChildren } from "@kitajs/html";
 
 export const ProfileLayout = ({ children }: PropsWithChildren) => (
   <>
+    {"<!DOCTYPE html>"}
     <html lang="en">
       <head>
         <meta charset="UTF-8" />
