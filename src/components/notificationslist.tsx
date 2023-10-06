@@ -1,7 +1,7 @@
 import { SelectNotification } from "../db/schema";
 
 const NotificationsList = ({ notis }: { notis: SelectNotification[] }) => (
-  <ul class="grid grid-cols-1 lg:grid-cols-2 gap-4 grid-flow-row">
+  <ul class="grid grid-cols-1 xl:grid-cols-2 gap-4 grid-flow-row">
     {notis.map((noti) => (
       <li class="bg-[#f9f9f9] dark:bg-[#010101] border border-zinc-300 dark:border-zinc-800 rounded-lg w-full hover:cursor-pointer flex  flex-col relative">
         <a

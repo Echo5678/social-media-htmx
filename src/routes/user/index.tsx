@@ -243,59 +243,6 @@ export const user = (app: Elysia) =>
         </BaseHtml>
       );
     })
-    .get(
-      "/user-list",
-      async ({ userAuthorized, set, query: { collaborators } }) => {
-        const user = userAuthorized;
-        if (!user) {
-          set.status = 307;
-          set.redirect = "/sign-in";
-        }
-        let Users: SelectUser[];
-
-        if (validator.isAscii(collaborators)) {
-          Users = await db.execute(
-            sql`SELECT * FROM users WHERE LOWER(username) LIKE '%' || LOWER(${collaborators}) || '%'`
-          );
-        }
-
-        if (Users) {
-          return (
-            <>
-              {Users.map((user) => (
-                <li class="py-3 font-medium text-lg flex justify-between  items-center">
-                  <span>@{user.username}</span>
-                  <button
-                    aria-label="Invite User"
-                    class="px-1 py-0.5 bg-black text-white dark:bg-white dark:text-black rounded-md"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="24"
-                      width="24"
-                      viewBox="0 0 24 24"
-                      class="bg-cover"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M13.048 16.623A4.205 4.205 0 0 1 11.859 13.687c0-.95.314-1.826.844-2.531H7.359a1.688 1.688 0 0 0-1.687 1.688v.402C5.672 15.337 8.04 16.781 11.297 16.781a9.456 9.456 0 0 0 1.752-.158ZM14.672 6.656A3.375 3.375 0 1 0 7.922 6.656a3.375 3.375 0 0 0 6.75 0Zm1.406 10.688a3.657 3.657 0 1 0 0-7.312 3.657 3.657 0 0 0 0 7.313Zm0-6.187a.282.282 0 0 1 .282.282V13.406h1.969a.282.282 0 0 1 0 .563H16.359v1.969a.282.282 0 0 1-.562 0V13.969h-1.969a.282.282 0 0 1 0-.562H15.797v-1.969a.282.282 0 0 1 .281-.281Z"
-                      />
-                    </svg>
-                  </button>
-                </li>
-              ))}
-            </>
-          );
-        }
-
-        return <li class="text-center py-3">Sorry no users found {":("}</li>;
-      },
-      {
-        query: t.Object({
-          collaborators: t.String(),
-        }),
-      }
-    )
     .get("/messages", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {

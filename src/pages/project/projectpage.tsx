@@ -120,17 +120,8 @@ const ProjectPage = ({
                   <h2 class="text-lg md:text-xl font-medium">Languages</h2>
                   <ul class="text-[#444444] dark:text-[#B1B1B1] flex space-x-2">
                     {project.languages?.map((item, index) => (
-                      <li>
-                        {item}
-                        {index !== project?.languages?.length - 1 && ","}
-                      </li>
+                      <li>{item}</li>
                     ))}
-                  </ul>
-                </section>
-                <section class="flex flex-col">
-                  <h2 class="text-lg md:text-xl font-medium">Collaborators</h2>
-                  <ul class="text-[#444444] dark:text-[#B1B1B1]">
-                    None yet {":("}
                   </ul>
                 </section>
               </article>
