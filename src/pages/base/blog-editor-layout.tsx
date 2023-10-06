@@ -38,7 +38,24 @@ export const BlogEditorLayout = ({ children }: PropsWithChildren) => (
     --plus-color: black; 
     --plus-icon-size: 40px;
 }
-
+.custom-scrollbar::-webkit-scrollbar-track
+  {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #2e2e2e;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar
+  {
+    width: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb
+  {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+  }
 .plus{
   border-radius:100%;
   background:#fff;
@@ -152,7 +169,7 @@ export const BlogEditorLayout = ({ children }: PropsWithChildren) => (
         `}
       </style>
       <body
-        class="min-h-screen bg-[#fcfcfc] text-black dark:bg-[#0e0e0e] dark:text-white flex flex-col"
+        class="min-h-screen bg-[#fcfcfc] text-black dark:bg-[#0e0e0e] dark:text-white flex flex-col custom-scrollbar"
         id="main"
         hx-ext="preload"
       >

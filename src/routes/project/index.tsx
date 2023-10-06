@@ -99,18 +99,36 @@ export const project = (app: Elysia) =>
       async ({
         userAuthorized,
         set,
-        body: { name, description, language, image },
+        body: {
+          name,
+          description,
+          languages,
+          image,
+          brief_description,
+          technologies,
+          categories,
+        },
       }) => {
         const user = userAuthorized;
         if (!user) {
           set.status = 307;
           set.redirect = "/sign-in";
         }
-        if (!name || !description || !language || !image) {
+        if (
+          !name ||
+          !description ||
+          !languages ||
+          !brief_description ||
+          !technologies ||
+          !categories
+        ) {
           set.status = 400;
 
           return (
-            <p class="w-full px-3 py-2 text-red-500 dark:text-white dark:bg-red-500/30 border rounded-md border-red-700 mb-6">
+            <p
+              id="#error-message"
+              class="w-full px-3 py-2 text-red-500 dark:text-white dark:bg-red-500/30 border rounded-md border-red-700 mb-6"
+            >
               Bro fill out the form :|
             </p>
           );
@@ -122,11 +140,12 @@ export const project = (app: Elysia) =>
         await db.insert(projects).values({
           name,
           description,
-          languages: [language],
+          languages: [...languages],
           username: user.username,
           image: "",
-          technologies: [],
-          collaborators: [],
+          technologies: [...technologies],
+          categories: [...categories],
+          brief_description,
         });
 
         return (
@@ -139,10 +158,12 @@ export const project = (app: Elysia) =>
         body: t.Object({
           name: t.String(),
           description: t.String(),
-          language: t.String(),
-          collaborators: t.String(),
           technologies: t.String(),
-          image: t.File(),
+          categories: t.Array(t.String()),
+          brief_description: t.String(),
+          image: t.Optional(t.File()),
+          collaborators: t.Optional(t.Any()),
+          languages: t.Array(t.String()),
         }),
       }
     )
@@ -166,20 +187,32 @@ export const project = (app: Elysia) =>
         </button>
       );
     })
-    .get("/project/:id", async ({ params: { id }, userAuthorized }) => {
-      const [project] = await db.select().from(projects);
-      let username;
+    .get(
+      "/project/:id",
+      async ({ params: { id }, userAuthorized }) => {
+        const [project] = await db
+          .select()
+          .from(projects)
+          .where(eq(projects.id, Number(id)))
+          .limit(1);
+        let username;
 
-      if (userAuthorized) {
-        username = userAuthorized.username;
+        if (userAuthorized) {
+          username = userAuthorized.username;
+        }
+
+        return (
+          <BaseHtml>
+            <ProjectPage project={project} username={username} />
+          </BaseHtml>
+        );
+      },
+      {
+        params: t.Object({
+          id: t.String(),
+        }),
       }
-
-      return (
-        <BaseHtml>
-          <ProjectPage project={project} username={username} />
-        </BaseHtml>
-      );
-    })
+    )
     .delete(
       "/remove/project/:id",
       async ({ params: { id }, userAuthorized, set }) => {

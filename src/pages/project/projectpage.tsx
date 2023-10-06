@@ -29,22 +29,41 @@ const ProjectPage = ({
             <button class="flex text-sm font-medium border border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white">
               <PersonAddIcon />
             </button>
-            <button class="flex text-sm font-medium border border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white">
-              <Github />
-            </button>
-            <button class="bg-black text-white dark:bg-white dark:text-black font-medium rounded-lg text-center px-5 py-[10px]">
-              Visit
-            </button>
+            {project.github_repo && (
+              <a
+                target="_blank"
+                href={project.github_repo}
+                class="flex text-sm font-medium border border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white"
+              >
+                <Github />
+              </a>
+            )}
+
+            {project.website_url && (
+              <a
+                target="_blank"
+                href={project.website_url}
+                class="bg-black text-white dark:bg-white dark:text-black font-medium rounded-lg text-center px-5 py-[10px]"
+              >
+                Visit
+              </a>
+            )}
           </div>
         </header>
         <main class="flex flex-col items-center px-6 md:px-10 xl:px-14 h-full">
           <div class=" flex flex-col md:flex-row justify-between w-full">
             <div class="text-center md:text-left pt-10">
-              <h1 class="text-2xl md:text-3xl lg:text-4xl font-medium">
-                Investments and Economical
+              <h1 class="text-2xl sm:text-3xl lg:text-4xl font-medium">
+                {project?.categories &&
+                  project?.categories.map((cat, index) => (
+                    <>
+                      {index > 0 && <span class="px-2">and</span>}
+                      <span>{cat}</span>
+                    </>
+                  ))}
               </h1>
               <p class="text-[#444444] dark:text-[#B1B1B1]  pt-3 md:pr-1">
-                The new way to monitor and document transactions and investments
+                {project.brief_description}
               </p>
             </div>
             <div class="flex items-center md:items-end md:items-end mx-auto md:mx-0 pt-6 space-x-4 md:pt-0">
@@ -99,18 +118,19 @@ const ProjectPage = ({
                 </section>
                 <section class="flex flex-col">
                   <h2 class="text-lg md:text-xl font-medium">Languages</h2>
-                  <ul class="text-[#444444] dark:text-[#B1B1B1]">
-                    {project.languages?.map((item) => (
-                      <li>{item}</li>
+                  <ul class="text-[#444444] dark:text-[#B1B1B1] flex space-x-2">
+                    {project.languages?.map((item, index) => (
+                      <li>
+                        {item}
+                        {index !== project?.languages?.length - 1 && ","}
+                      </li>
                     ))}
                   </ul>
                 </section>
                 <section class="flex flex-col">
                   <h2 class="text-lg md:text-xl font-medium">Collaborators</h2>
                   <ul class="text-[#444444] dark:text-[#B1B1B1]">
-                    {project.collaborators?.map((item) => (
-                      <li>{item}</li>
-                    ))}
+                    None yet {":("}
                   </ul>
                 </section>
               </article>
@@ -119,12 +139,11 @@ const ProjectPage = ({
           <div class="flex flex-col bg-zinc-100 dark:bg-[#0a0a0a] border border-zinc-300 dark:border-zinc-800 rounded-lg  mx-auto w-full p-3 mt-10 mb-20 text-center">
             <p class="text-3xl font-bold">Technologies</p>
             <div class="flex flex-row flex-wrap space-x-5 text-[#444444] dark:text-[#B1B1B1] justify-center pt-2">
-              <p>Bun</p>
-              <p>Elysia</p>
-              <p>Turso</p>
-              <p>HTMX</p>
-              <p>Drizzle</p>
-              <p>Tailwind</p>
+              {project.technologies ? (
+                project.technologies.map((tech) => <div>{tech}</div>)
+              ) : (
+                <div>Yay no libraries!</div>
+              )}
             </div>
           </div>
         </main>

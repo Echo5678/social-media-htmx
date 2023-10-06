@@ -38,11 +38,13 @@ export const projects = pgTable("projects", {
     .references(() => users.username),
   technologies: text("technologies").array().default([]),
   image: varchar("image").notNull(),
-  collaborators: text("collaborators").array().default([]),
-  categories: text("categories"),
+  categories: text("categories").array(),
   instagram_username: text("instagram_username"),
   twitter_username: text("twitter_username"),
   youtube_username: text("youtube_username"),
+  brief_description: text("brief_description").notNull(),
+  website_url: varchar("website_url", { length: 300 }),
+  github_repo: text("github_repo"),
 });
 
 export const stars = pgTable(
