@@ -12,6 +12,7 @@ const NotificationsPage = ({
       <Navbar username={username && username} image={image && image} />
       <main id="page" class="w-full px-6">
         <h1 class="text-xl font-bold py-3">Notifications</h1>
+        <div id="error-message"></div>
         <div
           hx-get="/notifications-list"
           hx-swap="outerHTML"

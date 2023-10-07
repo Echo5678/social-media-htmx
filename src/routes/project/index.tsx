@@ -3,8 +3,15 @@ import jwt from "@elysiajs/jwt";
 import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
-import { SelectProject, projects, stars } from "../../db/schema";
-import { and, eq, sql } from "drizzle-orm";
+import {
+  SelectProject,
+  invites,
+  notifications,
+  projects,
+  stars,
+  users,
+} from "../../db/schema";
+import { and, eq, ne, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
 import ProjectForm from "../../pages/project/projectform";
@@ -14,6 +21,7 @@ import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
 import { ProjectFormLayout } from "../../pages/base/project-form-layout";
 import ProjectList from "../../components/projectlist";
+import InvitePage from "../../pages/invitepage";
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -210,6 +218,151 @@ export const project = (app: Elysia) =>
       {
         params: t.Object({
           id: t.String(),
+        }),
+      }
+    )
+    .get(
+      "/project/:id/invite",
+      async ({ params: { id }, userAuthorized, set }) => {
+        let username;
+
+        if (userAuthorized) {
+          username = userAuthorized.username;
+        }
+        const [project] = await db
+          .select()
+          .from(projects)
+          .where(
+            and(
+              eq(projects.id, Number(id)),
+              eq(projects.username, userAuthorized.username)
+            )
+          )
+          .limit(1);
+
+        const Users = await db
+          .select()
+          .from(users)
+          .where(ne(users.id, Number(userAuthorized.id)))
+          .limit(10);
+
+        if (!project) {
+          set.status = 404;
+
+          return (
+            <BaseHtml>
+              <div class="flex flex-col space-y-12 justify-center items-center text-center min-h-screen">
+                <h1 class="text-2xl font-bold sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl">
+                  Error: Project not found
+                </h1>
+                <span>
+                  Return
+                  <a
+                    href="/home"
+                    aria-label="Home Page"
+                    class="text-blue-700 dark:text-blue-500 underline ml-1"
+                  >
+                    Home
+                  </a>
+                </span>
+              </div>
+            </BaseHtml>
+          );
+        }
+        return (
+          <BaseHtml>
+            <InvitePage
+              users={Users}
+              username={username}
+              image={userAuthorized?.image}
+              project_id={id}
+            />
+          </BaseHtml>
+        );
+      },
+      {
+        params: t.Object({
+          id: t.String(),
+        }),
+      }
+    )
+    .post(
+      "/invite/:id/:userId",
+      async ({ params: { id, userId }, userAuthorized, set }) => {
+        const user = userAuthorized;
+        if (!user) {
+          set.status = 401;
+          set.redirect = "/sign-in";
+        }
+        const [project] = await db
+          .select()
+          .from(projects)
+          .where(
+            and(
+              eq(projects.id, Number(id)),
+              eq(projects.username, userAuthorized.username)
+            )
+          )
+          .limit(1);
+
+        if (!project) {
+          set.status = 404;
+
+          return (
+            <BaseHtml>
+              <div class="flex flex-col space-y-12 justify-center items-center text-center min-h-screen">
+                <h1 class="text-2xl font-bold sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl">
+                  Error: Project not found
+                </h1>
+                <span>
+                  Return
+                  <a
+                    href="/home"
+                    aria-label="Home Page"
+                    class="text-blue-700 dark:text-blue-500 underline ml-1"
+                  >
+                    Home
+                  </a>
+                </span>
+              </div>
+            </BaseHtml>
+          );
+        }
+
+        const invite = await db
+          .insert(invites)
+          .values({ project_id: Number(id), user_id: Number(userId) })
+          .returning();
+
+        const user_id = Number(userId);
+
+        if (invite) {
+          const noti = await db.insert(notifications).values({
+            user_id,
+            content: `${userAuthorized.username} has invited you`,
+            reference: `/invite/${id}/${userId}`,
+            sent_by: userAuthorized.username,
+            type: "invite",
+            read: false,
+          });
+
+          return (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M20.3 4.7 8.5 16.5 3.7 11.7 2.3 13.15 8.5 19.3 21.7 6.1z"></path>
+            </svg>
+          );
+        }
+      },
+      {
+        params: t.Object({
+          id: t.String(),
+          userId: t.String(),
         }),
       }
     )

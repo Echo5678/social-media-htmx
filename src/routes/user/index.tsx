@@ -20,7 +20,7 @@ import MessagePage from "../../pages/message";
 import ProfilePage from "../../pages/profilepage";
 import { BaseHtml } from "../../pages/base/basehtml";
 import NotificationsPage from "../../pages/notificationspage";
-import NotificationsList from "../../components/notificationslist";
+import NotificationsList from "../../components/notifications/notificationslist";
 import { ProfileLayout } from "../../pages/base/profile-layout";
 import NotificationIcon from "../../components/assets/notificationicon";
 

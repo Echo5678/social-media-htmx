@@ -26,9 +26,17 @@ const ProjectPage = ({
             {project.name}
           </h1>
           <div class="flex items-center space-x-3">
-            <button class="flex text-sm font-medium border border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white">
-              <PersonAddIcon />
-            </button>
+            {username === project.username && (
+              <a
+                href={`/project/${project.id}/invite`}
+                hx-boost="true"
+                hx-push-url="true"
+                class="flex text-sm font-medium border border-zinc-800 rounded-lg px-2 py-1 items-center text-black dark:text-white"
+              >
+                <PersonAddIcon />
+              </a>
+            )}
+
             {project.github_repo && (
               <a
                 target="_blank"

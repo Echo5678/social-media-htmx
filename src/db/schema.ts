@@ -11,6 +11,7 @@ import {
   primaryKey,
   foreignKey,
   unique,
+  date,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -23,9 +24,11 @@ export const users = pgTable("users", {
   password: varchar("password", { length: 60 }).notNull(),
   bio: varchar("bio", { length: 250 }).default(""),
   verified: boolean("verified").default(false),
-  joined: text("joined"),
+  joined: date("joined"),
   badges: text("badges").array().default([]),
   profile_picture: varchar("profile_picture").notNull(),
+  roles: varchar("roles", { length: 30 }).array().notNull(),
+  languages: varchar("languages", { length: 30 }).array().notNull(),
 });
 
 export const projects = pgTable("projects", {
@@ -76,10 +79,25 @@ export const followers = pgTable(
   (table) => {
     return {
       pk: primaryKey(table.user_id, table.follower_id),
-      userReferences: foreignKey({
-        columns: [table.user_id, table.follower_id],
-        foreignColumns: [users.id, users.id],
-      }),
+      unq: unique().on(table.follower_id, table.user_id),
+    };
+  }
+);
+
+export const invites = pgTable(
+  "invites",
+  {
+    user_id: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    project_id: integer("project_id")
+      .notNull()
+      .references(() => projects.id),
+  },
+  (table) => {
+    return {
+      pk: primaryKey(table.user_id, table.project_id),
+      unq: unique().on(table.project_id, table.user_id),
     };
   }
 );
@@ -91,18 +109,18 @@ export const blogs = pgTable("blogs", {
     .references(() => users.username),
   title: varchar("title", { length: 65 }).notNull(),
   blog: json("blog").notNull(),
-  posted: text("posted"),
+  posted: date("posted"),
 });
 
 export const notifications = pgTable("notifications", {
-  user_id: integer("user_id")
-    .primaryKey()
-    .references(() => users.id),
+  id: serial("id").primaryKey(),
+  user_id: integer("user_id").references(() => users.id),
   sent_by: text("sent_by").notNull(),
   content: text("content").notNull(),
   reference: text("reference").notNull(),
   read: boolean("read").default(false),
-  created_at: text("created_at").notNull(),
+  type: text("type").notNull(),
+  created_at: date("created_at").defaultNow(),
 });
 
 export type SelectNotification = InferSelectModel<typeof notifications>;
