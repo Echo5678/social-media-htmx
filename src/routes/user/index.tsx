@@ -252,7 +252,7 @@ export const user = (app: Elysia) =>
 
       return (
         <MessageLayout>
-          <MessagePage />
+          <MessagePage username={user.username} image={user?.image} />
         </MessageLayout>
       );
     });

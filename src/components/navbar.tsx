@@ -15,9 +15,9 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
           class="md:transition md:hover:bg-zinc-200 md:hover:dark:bg-zinc-800 md:p-1 md:rounded-full hidden md:block"
         >
           <img
-            height="65"
-            width="65"
-            src="https://res.cloudinary.com/dtkwfyslj/image/upload/v1695964824/logo-min_znkkto.png"
+            height="60"
+            width="60"
+            src="https://d20yxzu0sm1upk.cloudfront.net/logo-min_65x65.png"
             alt="Co-Dev Logo"
           />
         </a>

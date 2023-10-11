@@ -5,7 +5,7 @@ const Header = () => {
         <img
           height="65"
           width="65"
-          src="https://res.cloudinary.com/dtkwfyslj/image/upload/v1695964824/logo-min_znkkto.png"
+          src="https://d20yxzu0sm1upk.cloudfront.net/logo-min_65x65.png"
           alt="Co-Dev Logo"
         />
         Co-Dev

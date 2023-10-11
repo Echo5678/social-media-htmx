@@ -189,34 +189,6 @@ export default function ProjectForm({
             </ul>
           </div>
           <div class="w-full h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
-          <div class="pt-6">
-            <label class="font-medium" for="collaborators">
-              Collaborators
-            </label>
-            <div class="w-full md:w-1/2 relative">
-              <input
-                id="collaborators"
-                type="text"
-                name="collaborators"
-                hx-get="/user-list"
-                hx-trigger="keyup changed delay:250ms, search"
-                hx-target="#user-list"
-                hx-swap="innerHTML"
-                class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md block mt-1.5 p-1 w-full"
-                autocomplete="off"
-                _="on focus or focusout toggle .border on me then toggle .border-x on me then toggle .border-t on me then toggle .rounded-md on me then toggle .rounded-t-md on me then toggle .hidden on #user-list"
-              />
-              <ul
-                id="user-list"
-                class="px-2  border-x border-b border-zinc-200 dark:border-zinc-800 rounded-b-md  w-full hidden border-t flex flex-col absolute bg-[#fcfcfc] dark:bg-[#0e0e0e] max-h-[800px] overflow-y-scroll hide-scrollbar"
-              ></ul>
-            </div>
-
-            <p class="pt-2 text-[#444444] dark:text-[#B1B1B1]">
-              Find people to collaborate with!
-            </p>
-          </div>
-          <div class="w-full h-[1px] bg-zinc-200 dark:bg-zinc-800 mt-3 mb-2"></div>
           <div class="flex justify-between">
             <div>
               <label class="text-blue-500 hover:cursor-pointer" for="image">

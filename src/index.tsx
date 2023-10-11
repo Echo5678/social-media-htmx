@@ -26,12 +26,13 @@ const app = new Elysia()
   .use(user)
   .ws("/messages-ws", {
     open(ws) {
-      console.log("Connected");
-      ws.subscribe("group-chat");
-      ws.publish("group-chat", <p>Working</p>);
-      ws.send(<p id="chat">Users</p>);
+      ws.subscribe("group-chat").publish(
+        "group-chat",
+        <p>`${ws.data.userAuthorized.username} has joined the chat.`</p>
+      );
     },
     message(ws, message: any) {
+      console.log(message);
       ws.publish(
         "group-chat",
         <div id="chat" class="dark:text-white text-black">
@@ -39,10 +40,14 @@ const app = new Elysia()
         </div>
       );
       ws.send(
-        <div id="chat" hx-swap-oob="beforeend">
-          Yo chat is this working chat.
+        <div id="chat" class="dark:text-white text-black">
+          {message.chat_message}
         </div>
       );
+    },
+    close(ws) {
+      ws.publish("group-chat", "Bro has left chat 💀");
+      ws.unsubscribe("group-chat");
     },
   })
   .onError(({ code, set }) => {
