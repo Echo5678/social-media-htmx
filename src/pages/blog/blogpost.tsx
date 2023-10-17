@@ -42,7 +42,7 @@ export default function BlogPost({
         />
         <article
           id="editor"
-          class="prose prose-stone dark:prose-invert md:prose-lg lg:prose-xl prose-p:leading-relaxed prose-p:pt-4 max-w-none prose-a:text-blue-500 hover:prose-a:text-blue-600 prose-h1:text-2xl md:prose-h1:text-4xl xl:prose-h1:text-5xl"
+          class="prose prose-stone dark:prose-invert sm:prose-lg lg:prose-xl max-w-none prose-a:text-blue-500 hover:prose-a:text-blue-600"
         ></article>
         <div class="w-full h-[1px] px-2 bg-zinc-200 dark:bg-zinc-700"></div>
         <footer class="pb-6">
@@ -63,7 +63,7 @@ export default function BlogPost({
             </div>
             <p class="pl-12">
               Worst Blog Post I've ever read you post some shit like this again
-              and I'mma beat you ass.
+              and I'mma beat yo ass.
             </p>
           </div>
         </footer>

@@ -30,7 +30,8 @@ const BlogEditor = ({
           <input id="blog" name="blog" type="text" class="hidden" />
           <div
             id="editor"
-            class="p-2  prose prose-stone dark:prose-invert md:prose-lg lg:prose-xl prose-p:leading-relaxed prose-p:pt-4 max-w-none prose-a:text-blue-500 hover:prose-a:text-blue-600 prose-h1:text-2xl md:prose-h1:text-4xl xl:prose-h1:text-5xl"
+            class="prose prose-stone dark:prose-invert sm:prose-lg lg:prose-xl max-w-none p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg h-full"
+            disabled
           ></div>
           <button
             type="submit"

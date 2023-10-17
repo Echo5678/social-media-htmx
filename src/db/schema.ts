@@ -16,8 +16,7 @@ import {
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  first_name: varchar("first_name", { length: 50 }),
-  last_name: varchar("last_name", { length: 50 }),
+  name: varchar("name", { length: 50 }),
   username: varchar("username", { length: 20 }).unique(),
   email: varchar("email", { length: 320 }).unique(),
   emailverified: boolean("emailverified").default(false),

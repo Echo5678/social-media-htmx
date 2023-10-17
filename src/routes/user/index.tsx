@@ -7,6 +7,7 @@ import { db } from "../../db/client";
 import {
   InsertFollower,
   SelectNotification,
+  SelectProject,
   SelectUser,
   followers,
   notifications,
@@ -69,6 +70,50 @@ export const user = (app: Elysia) =>
         userAuthorized,
       };
     })
+    .patch(
+      "/user",
+      async ({ userAuthorized, set, body: { username, name } }) => {
+        if (!userAuthorized) {
+          set.status = 307;
+          set.redirect = "/sign-in";
+        }
+
+        const [user1] = await db
+          .update(users)
+          .set({ username: username?.toLowerCase(), name })
+          .where(eq(users.id, userAuthorized.id))
+          .returning({
+            updatedName: users.name,
+            updatedUsername: users.username,
+          });
+
+        return (
+          <>
+            <h1
+              hx-swap-oob="name"
+              id="name"
+              class="text-2xl md:text-3xl font-bold"
+            >
+              {user1.updatedName}
+            </h1>
+            <h2
+              hx-swap-oob="username"
+              id="username"
+              class="text-[#444444] dark:text-[#B1B1B1]"
+            >
+              @{user1.updatedUsername}
+            </h2>
+            <p class="text-green-600 dark:text-green-300">Saved</p>
+          </>
+        );
+      },
+      {
+        body: t.Object({
+          name: t.Optional(t.String()),
+          username: t.Optional(t.String()),
+        }),
+      }
+    )
     .patch("/badges/:id", async ({ params: { id }, userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
@@ -129,15 +174,6 @@ export const user = (app: Elysia) =>
             sql`${followers.user_id} = ${user1[0].id} and ${followers.follower_id} = ${userAuthorized.id}`
           );
 
-        const postsPrepared = db
-          .select()
-          .from(projects)
-          .where(eq(sql.placeholder("username"), projects.username))
-          .prepare("select_projects");
-        const posts = await postsPrepared.execute({
-          username: user1[0].username,
-        });
-
         const isUserAccount = user.username === user1[0].username;
 
         return (
@@ -146,7 +182,6 @@ export const user = (app: Elysia) =>
               user={user1[0]}
               followers={Followers[0].count}
               following={following[0].count}
-              posts={posts}
               isFollowing={is_following ? true : false}
               isUserAccount={isUserAccount}
               username={user.username}

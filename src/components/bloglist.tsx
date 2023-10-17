@@ -17,14 +17,14 @@ export default function BlogList({
       }
     >
       {blogs.map((blog) => (
-        <li class="bg-[#010101] border border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-40 transition duration-500 hover:cursor-pointer flex  flex-col">
+        <li class="bg-[#f9f9f9] dark:bg-[#010101] border border-zinc-300 dark:border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-40 transition duration-500 hover:cursor-pointer flex  flex-col">
           <a href={`/blog/${blog.id}`} class="flex-grow">
             <div class="flex space-x-2">
               <div>
                 <h2 class="text-xl font-semibold  w-full line-clamp-1">
                   {blog.title}
                 </h2>
-                <span class="text-[#444444] dark:text-[#B1B1B1] font-semibold tracking-wide">
+                <span class="text-[#444444] dark:text-[#B1B1B1]">
                   {blog.posted}
                 </span>
               </div>
