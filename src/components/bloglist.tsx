@@ -25,7 +25,11 @@ export default function BlogList({
                   {blog.title}
                 </h2>
                 <span class="text-[#444444] dark:text-[#B1B1B1]">
-                  {blog.posted}
+                  {new Date(String(blog.posted)).toLocaleDateString("en-us", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
                 </span>
               </div>
             </div>
