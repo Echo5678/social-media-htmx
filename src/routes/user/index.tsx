@@ -215,7 +215,7 @@ export const user = (app: Elysia) =>
           >
             Following
           </button>
-          <div id="followerCount" hx-swap-oob="true">
+          <div id="followerCount" hx-swap-oob="follower-count">
             <span class="dark:text-white text-black mr-1 font-medium">
               {following[0].count}
             </span>

@@ -157,7 +157,7 @@ export default function ProfilePage({
                   })}
                 </span>
                 <ul class="flex space-x-3  mt-3">
-                  <li id="followerCount" hx-swap-oob="true">
+                  <li id="follower-count">
                     <span class="dark:text-white text-black mr-1 font-medium">
                       {followers}
                     </span>
