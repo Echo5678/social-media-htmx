@@ -1,6 +1,4 @@
 import { Elysia, t } from "elysia";
-import html from "@elysiajs/html";
-import cookie from "@elysiajs/cookie";
 import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
@@ -25,10 +23,6 @@ import NotificationsList from "../../components/notifications/notificationslist"
 import { ProfileLayout } from "../../pages/base/profile-layout";
 import NotificationIcon from "../../components/assets/notificationicon";
 
-import validator from "validator";
-
-const WEEK = 60 * 60 * 24 * 7;
-
 const followingPrepared = db
   .select({ count: sql<number>`count(*)` })
   .from(followers)
@@ -37,30 +31,20 @@ const followingPrepared = db
 
 export const user = (app: Elysia) =>
   app
-    .use(html())
     .use(
       jwt({
         name: "jwt",
         secret: process.env.JWT_SECRET as string,
       })
     )
-    .use(
-      cookie({
-        httpOnly: true,
-        maxAge: WEEK,
-        sameSite: "strict",
-        signed: true,
-        secret: process.env.COOKIE_SECRET as string,
-      })
-    )
     .derive(async ({ jwt, cookie: { user } }) => {
       let userAuthorized;
 
-      if (!user) {
+      if (!user.value) {
         return userAuthorized;
       }
 
-      const userJWT: any = await jwt.verify(user);
+      const userJWT: any = await jwt.verify(user.value);
 
       if (userJWT) {
         userAuthorized = userJWT;

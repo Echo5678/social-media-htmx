@@ -1,7 +1,5 @@
-import cookie from "@elysiajs/cookie";
 import jwt from "@elysiajs/jwt";
-import html from "@elysiajs/html";
-import { Elysia, t } from "elysia";
+import { Cookie, Elysia, t } from "elysia";
 
 import validator from "validator";
 
@@ -13,35 +11,22 @@ import { BaseHtml } from "../../pages/base/basehtml";
 import SignUpPage from "../../pages/signuppage";
 import Signinpage from "../../pages/signinpage";
 
-const WEEK = 60 * 60 * 24 * 7;
-
 export const auth = (app: Elysia) =>
   app
-
-    .use(html())
     .use(
       jwt({
         name: "jwt",
         secret: process.env.JWT_SECRET as string,
       })
     )
-    .use(
-      cookie({
-        httpOnly: true,
-        maxAge: WEEK,
-        sameSite: "strict",
-        signed: true,
-        secret: process.env.COOKIE_SECRET as string,
-      })
-    )
     .derive(async ({ jwt, cookie: { user } }) => {
       let userAuthorized;
 
-      if (!user) {
+      if (!user.value) {
         return userAuthorized;
       }
 
-      const userJWT: any = await jwt.verify(user);
+      const userJWT: any = await jwt.verify(user.value);
 
       if (userJWT) {
         userAuthorized = userJWT;
@@ -76,7 +61,7 @@ export const auth = (app: Elysia) =>
     )
     .post(
       "/sign-up",
-      async ({ body: { username, email, password }, setCookie, set, jwt }) => {
+      async ({ body: { username, email, password }, cookie, set, jwt }) => {
         if (!validator.isEmail(email)) {
           set.status = 400;
           return (
@@ -115,13 +100,15 @@ export const auth = (app: Elysia) =>
             email,
             password: hashedPassword,
             profile_picture: "",
+            roles: [""],
+            languages: [""],
           })
           .returning();
         if (user) {
           const userId = String(user[0].id);
           const JWT = await jwt.sign({ userId, username, email });
 
-          setCookie("user", JWT);
+          cookie.user.value = JWT;
           set.status = 307;
           set.redirect = "/home";
         }
@@ -170,7 +157,7 @@ export const auth = (app: Elysia) =>
     )
     .post(
       "/sign-in",
-      async ({ body: { email, password }, setCookie, set, jwt }) => {
+      async ({ body: { email, password }, cookie: { user }, set, jwt }) => {
         if (!validator.isEmail(email)) {
           set.status = 400;
           return (
@@ -192,14 +179,15 @@ export const auth = (app: Elysia) =>
             </div>
           );
         }
-
-        const user = await db
+        console.log("MADE IT THIS FAR");
+        const userDB = await db
           .select()
           .from(users)
           .where(eq(users.email, email))
           .limit(1);
+        console.log("Got this far");
 
-        if (!user) {
+        if (!userDB) {
           set.status = 400;
           return (
             <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
@@ -208,7 +196,7 @@ export const auth = (app: Elysia) =>
           );
         }
 
-        const isMatch = await Bun.password.verify(password, user[0].password);
+        const isMatch = await Bun.password.verify(password, userDB[0].password);
 
         if (!isMatch) {
           set.status = 400;
@@ -219,8 +207,8 @@ export const auth = (app: Elysia) =>
           );
         }
 
-        const userId = String(user[0].id);
-        const userUsername = String(user[0].username);
+        const userId = String(userDB[0].id);
+        const userUsername = String(userDB[0].username);
 
         const JWT = await jwt.sign({
           id: userId,
@@ -228,8 +216,8 @@ export const auth = (app: Elysia) =>
           email,
         });
 
-        if (user) {
-          setCookie("user", JWT);
+        if (JWT) {
+          user.value = JWT;
           set.status = 307;
           set.redirect = "/home";
         }

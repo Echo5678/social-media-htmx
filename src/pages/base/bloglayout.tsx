@@ -1,6 +1,8 @@
-import { type PropsWithChildren } from "@kitajs/html";
-
-export const BlogLayout = ({ children }: PropsWithChildren) => (
+export const BlogLayout = ({
+  children,
+}: {
+  children: JSX.Element | JSX.Element[];
+}) => (
   <>
     {"<!DOCTYPE html>"}
     <html lang="en">
@@ -11,7 +13,7 @@ export const BlogLayout = ({ children }: PropsWithChildren) => (
         <link
           rel="icon"
           type="image/x-icon"
-          href="https://res.cloudinary.com/dtkwfyslj/image/upload/v1695253847/Untitled_design-removebg-preview_wpselx.png"
+          href="https://d20yxzu0sm1upk.cloudfront.net/logo-min_65x65.png"
         />
         <meta
           name="description"

@@ -1,11 +1,21 @@
-import { Elysia, t, ws } from "elysia";
+import { Elysia, t } from "elysia";
 import { html } from "@elysiajs/html";
 import { swagger } from "@elysiajs/swagger";
 
 import { BaseHtml } from "./pages/base/basehtml";
 import { auth, home, project, blog, user } from "./routes";
 
-const app = new Elysia()
+const WEEK = 60 * 60 * 24 * 7;
+
+const app = new Elysia({
+  cookie: {
+    httpOnly: true,
+    maxAge: WEEK,
+    sameSite: "strict",
+    sign: ["user"],
+    secrets: process.env.COOKIE_SECRET as string,
+  },
+})
   .use(
     swagger({
       documentation: {
@@ -16,9 +26,7 @@ const app = new Elysia()
       },
     })
   )
-
   .use(html())
-  .use(ws())
   .use(auth)
   .use(home)
   .use(project)
@@ -28,7 +36,7 @@ const app = new Elysia()
     open(ws) {
       ws.subscribe("group-chat").publish(
         "group-chat",
-        <p>`${ws.data.userAuthorized.username} has joined the chat.`</p>
+        <p>`${ws.data?.userAuthorized.username} has joined the chat.`</p>
       );
     },
     message(ws, message: any) {
@@ -71,5 +79,5 @@ const app = new Elysia()
   .listen(3000);
 
 console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+  `🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}/`
 );

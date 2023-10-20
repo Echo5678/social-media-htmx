@@ -3,13 +3,11 @@ import {
   serial,
   pgTable,
   varchar,
-  timestamp,
   boolean,
   text,
   json,
   integer,
   primaryKey,
-  foreignKey,
   unique,
   date,
 } from "drizzle-orm/pg-core";

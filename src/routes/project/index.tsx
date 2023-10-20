@@ -1,6 +1,5 @@
 import { Elysia, t } from "elysia";
 import jwt from "@elysiajs/jwt";
-import cookie from "@elysiajs/cookie";
 
 import { db } from "../../db/client";
 import {
@@ -15,7 +14,6 @@ import { and, eq, ne, sql } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
 import ProjectForm from "../../pages/project/projectform";
-import html from "@elysiajs/html";
 import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
@@ -23,34 +21,22 @@ import { ProjectFormLayout } from "../../pages/base/project-form-layout";
 import ProjectList from "../../components/projectlist";
 import InvitePage from "../../pages/invitepage";
 
-const WEEK = 60 * 60 * 24 * 7;
-
 export const project = (app: Elysia) =>
   app
-    .use(html())
     .use(
       jwt({
         name: "jwt",
         secret: process.env.JWT_SECRET as string,
       })
     )
-    .use(
-      cookie({
-        httpOnly: true,
-        maxAge: WEEK,
-        sameSite: "strict",
-        signed: true,
-        secret: process.env.COOKIE_SECRET as string,
-      })
-    )
     .derive(async ({ jwt, cookie: { user } }) => {
       let userAuthorized;
 
-      if (!user) {
+      if (!user.value) {
         return userAuthorized;
       }
 
-      const userJWT: any = await jwt.verify(user);
+      const userJWT: any = await jwt.verify(user.value);
 
       if (userJWT) {
         userAuthorized = userJWT;

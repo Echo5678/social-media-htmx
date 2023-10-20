@@ -31,11 +31,10 @@ const BlogEditor = ({
           <div
             id="editor"
             class="prose prose-stone dark:prose-invert sm:prose-lg lg:prose-xl max-w-none p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg h-full"
-            disabled
           ></div>
           <button
             type="submit"
-            class="outline-none bg-black text-white  dark:bg-white dark:text-black px-3 py-1 rounded-md mt-6 text-lg ml-auto self-end"
+            class="outline-none bg-black text-white  dark:bg-white dark:text-black px-3 py-1 rounded-md mt-6 text-lg ml-auto self-end font-medium"
           >
             Post
           </button>

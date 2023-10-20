@@ -1,6 +1,24 @@
-import { type PropsWithChildren } from "@kitajs/html";
+function toString(obj: Object) {
+  const string: string = Object.entries(obj)
+    .map(([key, value]) =>
+      value === Object(value)
+        ? Array.isArray(value)
+          ? `[${toString(value)}],`
+          : `${typeof key.split("")[0] === "number" ? "" : key}: {${toString(
+              value
+            )}},`
+        : `${key}:\'${value}\',`
+    )
+    .join(" ");
 
-export const BlogEditorLayout = ({ children }: PropsWithChildren) => (
+  return string;
+}
+
+export const BlogEditorLayout = ({
+  children,
+}: {
+  children: JSX.Element | JSX.Element[];
+}) => (
   <>
     {"<!DOCTYPE html>"}
     <html lang="en">
@@ -11,7 +29,7 @@ export const BlogEditorLayout = ({ children }: PropsWithChildren) => (
         <link
           rel="icon"
           type="image/x-icon"
-          href="https://res.cloudinary.com/dtkwfyslj/image/upload/v1695253847/Untitled_design-removebg-preview_wpselx.png"
+          href="https://d20yxzu0sm1upk.cloudfront.net/logo-min_65x65.png"
         />
         <meta
           name="description"
@@ -180,6 +198,8 @@ export const BlogEditorLayout = ({ children }: PropsWithChildren) => (
       {`    
   <script>
         const stuff = document.querySelector("#blog");
+
+        const toString = ${toString}
         
         const editor = new EditorJS({
           holder: 'editor',
@@ -210,11 +230,12 @@ export const BlogEditorLayout = ({ children }: PropsWithChildren) => (
               inlineToolbar: true
             },
           },
+          
           placeholder: "Write a blog post.", 
           onChange: (api, event) => {
             editor.save().then(output => {
-              console.log("VARIABLE", JSON.stringify(output,  null, 2));
-              stuff.value = JSON.stringify(output);
+              console.log("{" + toString(output) + "}")
+              stuff.value = "{" + toString(output) + "}"
             }).catch(e => {
               console.log("Failed to save.", e);
             })
