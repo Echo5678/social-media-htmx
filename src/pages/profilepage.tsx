@@ -46,7 +46,6 @@ export default function ProfilePage({
               <input
                 aria-label="Change Username"
                 type="text"
-                id="change-name"
                 name="name"
                 class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
               />
@@ -58,7 +57,6 @@ export default function ProfilePage({
               <input
                 aria-label="Change Username"
                 type="text"
-                id="username"
                 name="username"
                 class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
               />
@@ -181,6 +179,7 @@ export default function ProfilePage({
             >
               <button
                 role="tab"
+                aria-label="Projects"
                 aria-controls="tab-content"
                 aria-selected="true"
                 hx-get={`/project-list/${user.username}`}
@@ -191,6 +190,7 @@ export default function ProfilePage({
               </button>
               <button
                 role="tab"
+                aria-label="Media"
                 aria-controls="tab-content"
                 aria-selected="false"
                 hx-get={`/blog-list/${user.username}`}
@@ -202,6 +202,7 @@ export default function ProfilePage({
               {isUserAccount && (
                 <button
                   role="tab"
+                  aria-label="Settings"
                   aria-controls="tab-content"
                   aria-selected="false"
                   _="on click showModal() on #modal"

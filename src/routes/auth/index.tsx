@@ -1,11 +1,11 @@
 import jwt from "@elysiajs/jwt";
-import { Cookie, Elysia, t } from "elysia";
+import { Elysia, t } from "elysia";
 
 import validator from "validator";
 
 import { db } from "../../db/client";
-import { users, SelectUser, InsertUser } from "../../db/schema";
-import { eq, sql } from "drizzle-orm";
+import { users } from "../../db/schema";
+import { eq } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
 import SignUpPage from "../../pages/signuppage";

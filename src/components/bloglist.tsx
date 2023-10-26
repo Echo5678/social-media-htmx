@@ -17,7 +17,7 @@ export default function BlogList({
       }
     >
       {blogs.map((blog) => (
-        <li class="bg-[#f9f9f9] dark:bg-[#010101] border border-zinc-300 dark:border-zinc-800 p-5 rounded-lg w-full hover:scale-105 hover:z-40 transition duration-500 hover:cursor-pointer flex  flex-col">
+        <li class="bg-[#f9f9f9] dark:bg-[#010101] border border-zinc-300 dark:border-zinc-800 p-5 rounded-lg w-full hover:cursor-pointer flex  flex-col">
           <a href={`/blog/${blog.id}`} class="flex-grow">
             <div class="flex space-x-2">
               <div>

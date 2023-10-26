@@ -4,7 +4,6 @@
   "dependencies": {
     "@elysiajs/html": "^0.7.3",
     "@elysiajs/jwt": "^0.7.0",
-    "@elysiajs/swagger": "^0.7.3",
     "drizzle-orm": "^0.28.6",
     "elysia": "^0.7.17",
     "postgres": "3.3.5",

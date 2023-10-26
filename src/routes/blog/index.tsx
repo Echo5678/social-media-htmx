@@ -2,8 +2,8 @@ import { Elysia, t } from "elysia";
 import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
-import { SelectBlog, blogs, users } from "../../db/schema";
-import { eq, sql } from "drizzle-orm";
+import { SelectBlog, blogs } from "../../db/schema";
+import { eq } from "drizzle-orm";
 
 import { BlogLayout } from "../../pages/base/bloglayout";
 import { BlogEditorLayout } from "../../pages/base/blog-editor-layout";

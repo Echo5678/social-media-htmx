@@ -1,6 +1,5 @@
 import { Elysia, t } from "elysia";
 import { html } from "@elysiajs/html";
-import { swagger } from "@elysiajs/swagger";
 
 import { BaseHtml } from "./pages/base/basehtml";
 import { auth, home, project, blog, user } from "./routes";
@@ -16,16 +15,6 @@ const app = new Elysia({
     secrets: process.env.COOKIE_SECRET as string,
   },
 })
-  .use(
-    swagger({
-      documentation: {
-        info: {
-          title: "Co-Dev Documentation",
-          version: "1.0.0",
-        },
-      },
-    })
-  )
   .use(html())
   .use(auth)
   .use(home)
@@ -34,29 +23,33 @@ const app = new Elysia({
   .use(user)
   .ws("/messages-ws", {
     open(ws) {
-      ws.subscribe("group-chat").publish(
-        "group-chat",
-        <p>`${ws.data?.userAuthorized.username} has joined the chat.`</p>
-      );
+      ws.subscribe(ws.data?.userAuthorized.id);
     },
     message(ws, message: any) {
-      console.log(message);
       ws.publish(
-        "group-chat",
-        <div id="chat" class="dark:text-white text-black">
-          ${message.chat_message}
-        </div>
+        ws.data?.userAuthorized.id,
+        <>
+          <div id="chat" hx-swap-oob="beforeend">
+            <p class="py-2 px-3.5 rounded-3xl bg-zinc-100 text-black dark:bg-zinc-800 dark:text-white self-start max-w-[85%]">
+              {`${message.chat_message}${" "}`}
+            </p>
+          </div>
+        </>
       );
       ws.send(
-        <div id="chat" class="dark:text-white text-black">
-          {message.chat_message}
-        </div>
+        <>
+          <div id="chat" hx-swap-oob="beforeend">
+            <p class="self-end py-2 px-3.5  bg-blue-800 rounded-3xl text-white max-w-[85%]">
+              {`${message.message}${" "}`}
+            </p>
+          </div>
+        </>
       );
     },
     close(ws) {
-      ws.publish("group-chat", "Bro has left chat 💀");
       ws.unsubscribe("group-chat");
     },
+    perMessageDeflate: true,
   })
   .onError(({ code, set }) => {
     if (code === "NOT_FOUND") {

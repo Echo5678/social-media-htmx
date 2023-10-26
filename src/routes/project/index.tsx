@@ -20,6 +20,7 @@ import HomePage from "../../pages/homepage";
 import { ProjectFormLayout } from "../../pages/base/project-form-layout";
 import ProjectList from "../../components/projectlist";
 import InvitePage from "../../pages/invitepage";
+import { BunFile } from "bun";
 
 export const project = (app: Elysia) =>
   app
@@ -117,7 +118,6 @@ export const project = (app: Elysia) =>
           !categories
         ) {
           set.status = 400;
-
           return (
             <p
               id="#error-message"
@@ -127,6 +127,9 @@ export const project = (app: Elysia) =>
             </p>
           );
         }
+        console.log(image);
+
+        await Bun.write("/capture.png", image as File);
 
         set.status = 301;
         set.redirect = "/home";

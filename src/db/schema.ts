@@ -10,23 +10,32 @@ import {
   primaryKey,
   unique,
   date,
+  index,
 } from "drizzle-orm/pg-core";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 50 }),
-  username: varchar("username", { length: 20 }).unique(),
-  email: varchar("email", { length: 320 }).unique(),
-  emailverified: boolean("emailverified").default(false),
-  password: varchar("password", { length: 60 }).notNull(),
-  bio: varchar("bio", { length: 250 }).default(""),
-  verified: boolean("verified").default(false),
-  joined: date("joined"),
-  badges: text("badges").array().default([]),
-  profile_picture: varchar("profile_picture").notNull(),
-  roles: varchar("roles", { length: 30 }).array().notNull(),
-  languages: varchar("languages", { length: 30 }).array().notNull(),
-});
+export const users = pgTable(
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 50 }),
+    username: varchar("username", { length: 20 }).unique(),
+    email: varchar("email", { length: 320 }).unique(),
+    emailverified: boolean("emailverified").default(false),
+    password: varchar("password", { length: 60 }).notNull(),
+    bio: varchar("bio", { length: 250 }).default(""),
+    verified: boolean("verified").default(false),
+    joined: date("joined"),
+    badges: text("badges").array().default([]),
+    profile_picture: varchar("profile_picture").notNull(),
+    roles: varchar("roles", { length: 30 }).array().notNull(),
+    languages: varchar("languages", { length: 30 }).array().notNull(),
+  },
+  (table) => {
+    return {
+      userIndex: index("username_index").on(table.username),
+    };
+  }
+);
 
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
@@ -77,6 +86,8 @@ export const followers = pgTable(
     return {
       pk: primaryKey(table.user_id, table.follower_id),
       unq: unique().on(table.follower_id, table.user_id),
+      followedIndex: index("followed_index").on(table.user_id),
+      followingIndex: index("following_index").on(table.follower_id),
     };
   }
 );
@@ -109,16 +120,39 @@ export const blogs = pgTable("blogs", {
   posted: date("posted"),
 });
 
-export const notifications = pgTable("notifications", {
-  id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => users.id),
-  sent_by: text("sent_by").notNull(),
-  content: text("content").notNull(),
-  reference: text("reference").notNull(),
-  read: boolean("read").default(false),
-  type: text("type").notNull(),
-  created_at: date("created_at").defaultNow(),
-});
+export const notifications = pgTable(
+  "notifications",
+  {
+    id: serial("id").primaryKey(),
+    user_id: integer("user_id").references(() => users.id),
+    sent_by: text("sent_by").notNull(),
+    content: text("content").notNull(),
+    reference: text("reference").notNull(),
+    read: boolean("read").default(false),
+    type: text("type").notNull(),
+    created_at: date("created_at").defaultNow(),
+  },
+  (table) => {
+    return {
+      blogIndex: index("blog_index").on(table.user_id),
+    };
+  }
+);
+
+export const messages = pgTable(
+  "messages",
+  {
+    sender_id: integer("sender_id").references(() => users.id),
+    user_id: integer("user_id").references(() => users.id),
+    message: varchar("message", { length: 1000 }).notNull(),
+    sent: date("sent").defaultNow(),
+  },
+  (table) => {
+    return {
+      msgIndex: index("msgIndex").on(table.user_id, table.sender_id),
+    };
+  }
+);
 
 export type SelectNotification = InferSelectModel<typeof notifications>;
 export type InsertNotification = InferSelectModel<typeof notifications>;

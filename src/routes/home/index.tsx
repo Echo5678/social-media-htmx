@@ -1,10 +1,8 @@
 import { Elysia, t } from "elysia";
-import html from "@elysiajs/html";
 import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
-import { users, projects, SelectProject } from "../../db/schema";
-import { and, eq, ilike, or, sql } from "drizzle-orm";
+import { projects, SelectProject } from "../../db/schema";
 
 import validator from "validator";
 
