@@ -32,7 +32,7 @@ export default function SignUpPage() {
         class="w-full sm:w-1/2 md:w-1/3 xl:w-1/4 bg-black text-white dark:bg-white dark:text-black rounded-md py-2 text-center font-medium hover:cursor-pointer"
         type="submit"
       >
-        Sign In
+        Sign up
       </button>
       <span>
         Already have an account?{" "}
@@ -42,7 +42,7 @@ export default function SignUpPage() {
           class="text-blue-500 hover:underline"
           preload="mouseover"
         >
-          Sign up
+          Sign in
         </a>
       </span>
     </form>

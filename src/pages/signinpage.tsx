@@ -2,11 +2,13 @@ export default function SignInPage() {
   return (
     <form
       class="flex justify-center items-center flex-col space-y-4 min-h-screen px-4"
-      hx-boost="true"
       hx-post="/sign-in"
       hx-replace-url="/home"
       hx-trigger="submit"
+      hx-target="#main"
+      hx-swap="outerHTML"
       hx-target-400="#error-message"
+      hx-target-500="#error-message"
     >
       <h1 class="text-3xl font-medium">Log in with Co-Dev</h1>
       <div id="error-message"></div>

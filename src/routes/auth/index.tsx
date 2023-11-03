@@ -10,6 +10,7 @@ import { eq } from "drizzle-orm";
 import { BaseHtml } from "../../pages/base/basehtml";
 import SignUpPage from "../../pages/signuppage";
 import Signinpage from "../../pages/signinpage";
+import HomePage from "../../pages/homepage";
 
 export const auth = (app: Elysia) =>
   app
@@ -65,23 +66,35 @@ export const auth = (app: Elysia) =>
         if (!validator.isEmail(email)) {
           set.status = 400;
           return (
-            <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+            <div
+              id="error-message"
+              hx-swap-oob="true"
+              class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600"
+            >
               Please provide valid email.
-            </p>
+            </div>
           );
         }
         if (!validator.isAlphanumeric(username)) {
           set.status = 400;
           return (
-            <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+            <div
+              id="error-message"
+              hx-swap-oob="true"
+              class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600"
+            >
               Username can only contain letters and numbers.
-            </p>
+            </div>
           );
         }
         if (!validator.isStrongPassword(password)) {
           set.status = 400;
           return (
-            <div class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+            <div
+              id="error-message"
+              hx-swap-oob="true"
+              class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600"
+            >
               Password must be:
               <ul>
                 <li>Minimum 8 characters</li>
@@ -104,6 +117,7 @@ export const auth = (app: Elysia) =>
             languages: [""],
           })
           .returning();
+
         if (user) {
           const userId = String(user[0].id);
           const JWT = await jwt.sign({ userId, username, email });
@@ -111,7 +125,15 @@ export const auth = (app: Elysia) =>
           cookie.user.value = JWT;
           set.status = 307;
           set.redirect = "/home";
+          return;
         }
+
+        set.status = 500;
+        return (
+          <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+            Error creating account.
+          </p>
+        );
       },
       {
         body: t.Object({
@@ -179,13 +201,11 @@ export const auth = (app: Elysia) =>
             </div>
           );
         }
-        console.log("MADE IT THIS FAR");
         const userDB = await db
           .select()
           .from(users)
           .where(eq(users.email, email))
           .limit(1);
-        console.log("Got this far");
 
         if (!userDB) {
           set.status = 400;
@@ -219,18 +239,21 @@ export const auth = (app: Elysia) =>
         if (JWT) {
           user.value = JWT;
           set.status = 307;
-          set.redirect = "/home";
+          return;
         }
+
+        set.status = 500;
+        return (
+          <p class="border border-red-500 dark:border-red-600 px-3 py-3.5 rounded-md text-red-500 dark:text-red-600">
+            Error Authenticating
+          </p>
+        );
       },
       {
         body: t.Object({
           email: t.String(),
           password: t.String(),
         }),
-        detail: {
-          summary: "Sign In Route",
-          tags: ["Auth, Sign Up"],
-        },
         error({ code, error }) {
           if (code === "VALIDATION") {
             console.log(error.all);

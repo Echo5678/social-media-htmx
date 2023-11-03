@@ -11,6 +11,7 @@ import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
 import ProjectList from "../../components/projectlist";
 import { ProfileLayout } from "../../pages/base/profile-layout";
+import { sql } from "drizzle-orm";
 
 export const home = (app: Elysia) =>
   app
@@ -37,28 +38,19 @@ export const home = (app: Elysia) =>
         userAuthorized,
       };
     })
-    .get(
-      "/",
-      ({ userAuthorized, set }) => {
-        if (userAuthorized) {
-          set.status = 301;
-          set.redirect = "/home";
-          return;
-        }
-
-        return (
-          <BaseHtml>
-            <LandingPage />
-          </BaseHtml>
-        );
-      },
-      {
-        detail: {
-          summary: "Home Page",
-          tags: ["Home", "Main"],
-        },
+    .get("/", ({ userAuthorized, set }) => {
+      if (userAuthorized) {
+        set.status = 307;
+        set.redirect = "/home";
+        return;
       }
-    )
+
+      return (
+        <BaseHtml>
+          <LandingPage />
+        </BaseHtml>
+      );
+    })
     .get("/home", async ({ userAuthorized }) => {
       let username;
 

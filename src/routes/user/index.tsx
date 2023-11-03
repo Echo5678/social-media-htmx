@@ -123,11 +123,10 @@ export const user = (app: Elysia) =>
         .from(users)
         .where(eq(users.username, userAuthorized.username));
 
-      console.log(badges, "get");
       return <p>{badges}</p>;
     })
     .get(
-      "/profile/:username",
+      "/:username",
       async ({ userAuthorized, set, params: { username } }) => {
         const user = userAuthorized;
         if (!user) {
@@ -152,14 +151,21 @@ export const user = (app: Elysia) =>
 
         const following = await followingPrepared.execute({ id: user1[0].id });
 
-        const is_following = await db
-          .select()
-          .from(followers)
-          .where(
-            sql`${followers.user_id} = ${user1[0].id} and ${followers.follower_id} = ${userAuthorized.id}`
-          );
+        let is_following;
+        let isUserAccount;
+        if (user) {
+          is_following = await db
+            .select()
+            .from(followers)
+            .where(
+              sql`${followers.user_id} = ${user1[0].id} and ${followers.follower_id} = ${userAuthorized.id}`
+            );
 
-        const isUserAccount = user.username === user1[0].username;
+          isUserAccount = user.username === user1[0].username;
+        } else {
+          is_following = false;
+          isUserAccount = false;
+        }
 
         return (
           <ProfileLayout>
@@ -169,7 +175,7 @@ export const user = (app: Elysia) =>
               following={following[0].count}
               isFollowing={is_following ? true : false}
               isUserAccount={isUserAccount}
-              username={user.username}
+              username={user?.username}
               image={user?.image}
             />
           </ProfileLayout>
@@ -254,20 +260,22 @@ export const user = (app: Elysia) =>
     .get("/notifications", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
-        set.status = 307;
+        set.status = 302;
         set.redirect = "/sign-in";
+        return;
       }
       return (
         <BaseHtml>
-          <NotificationsPage username={user.username} image={user?.image} />
+          <NotificationsPage username={user?.username} image={user?.image} />
         </BaseHtml>
       );
     })
     .get("/messages", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
-        set.status = 307;
+        set.status = 302;
         set.redirect = "/sign-in";
+        return;
       }
 
       return (
