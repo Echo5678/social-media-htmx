@@ -20,7 +20,6 @@ import HomePage from "../../pages/homepage";
 import { ProjectFormLayout } from "../../pages/base/project-form-layout";
 import ProjectList from "../../components/projectlist";
 import InvitePage from "../../pages/invitepage";
-import { BunFile } from "bun";
 
 export const project = (app: Elysia) =>
   app

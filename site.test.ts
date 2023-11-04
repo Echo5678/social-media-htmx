@@ -35,6 +35,9 @@ describe("POST auth", () => {
         cookie += n;
       }
     }
+    if (cookie) {
+      await db.delete(users).where(eq(users.email, email));
+    }
   });
   test("Create User", async () => {
     const req = await fetch(`${url}/sign-up`, {
@@ -51,10 +54,6 @@ describe("POST auth", () => {
     expect(req.status).toBe(404);
     expect(req.url).toBe(`${url}/home`);
     expect(req.headers.get("Set-Cookie")).toBeDefined();
-
-    if (req.status === 404) {
-      await db.delete(users).where(eq(users.email, email));
-    }
   });
 });
 
@@ -169,5 +168,15 @@ describe("GET all pages signed in", () => {
     });
     expect(req.status).toBe(200);
     expect(req.url).toBe(`${url}/project/25`);
+  });
+  test("Profile Page", async () => {
+    const req = await fetch(`${url}/${username}`, {
+      headers: {
+        Cookie: cookie,
+      },
+      credentials: "same-origin",
+    });
+    expect(req.status).toBe(200);
+    expect(req.url).toBe(`${url}/${username}`);
   });
 });

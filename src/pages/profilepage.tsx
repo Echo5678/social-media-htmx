@@ -8,20 +8,12 @@ import { SelectUser } from "../db/schema";
 
 export default function ProfilePage({
   user,
-  followers,
-  following,
-  isFollowing,
   isUserAccount,
-  backgroundImage,
   username,
   image,
 }: {
   user: SelectUser;
-  followers: number;
-  following: number;
-  isFollowing: boolean;
   isUserAccount: boolean;
-  backgroundImage?: string;
   username?: string;
   image?: string;
 }) {
@@ -77,9 +69,9 @@ export default function ProfilePage({
         <div class="w-full h-full">
           <header class="w-full md:w-3/4 xl:w-1/2 mx-auto">
             <div class="relative">
-              {backgroundImage ? (
+              {user?.backgroundImage ? (
                 <img
-                  src={backgroundImage}
+                  src={user?.backgroundImage}
                   alt="Profile Banner Image"
                   width="750"
                   height="200"
@@ -117,7 +109,7 @@ export default function ProfilePage({
                   </div>
 
                   {!isUserAccount &&
-                    (isFollowing ? (
+                    (user?.exists ? (
                       <button
                         hx-delete={`/unfollow/${user.id}`}
                         hx-swap="outerHTML"
@@ -157,13 +149,13 @@ export default function ProfilePage({
                 <ul class="flex space-x-3  mt-3">
                   <li id="follower-count">
                     <span class="dark:text-white text-black mr-1 font-medium">
-                      {followers}
+                      {user.follower_count}
                     </span>
                     Followers
                   </li>
                   <li>
                     <span class="dark:text-white text-black mr-1 font-medium">
-                      {following}
+                      {user.following_count}
                     </span>
                     Following
                   </li>

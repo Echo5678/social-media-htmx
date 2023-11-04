@@ -31,7 +31,7 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
             </a>
           </li>
           <li
-            hx-get="/notifications-count"
+            hx-get="/check-for-notifications"
             hx-swap="outerHTML"
             hx-trigger="load"
             class="md:transition md:hover:bg-zinc-200 md:hover:dark:bg-zinc-800 md:p-2.5 md:rounded-full"

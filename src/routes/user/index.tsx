@@ -144,7 +144,7 @@ export const user = (app: Elysia) =>
 
         if (user?.username) {
           userInfoCached = await client.get(
-            `${user?.username}${username}-info`
+            `${user?.username}-${username}-info`
           );
         } else {
           userInfoCached = await client.get(`${username}-info`);
@@ -156,80 +156,48 @@ export const user = (app: Elysia) =>
           return (
             <ProfileLayout>
               <ProfilePage
-                user={userInfoCached.user}
-                followers={userInfoCached.followers}
-                following={userInfoCached.following}
-                isFollowing={userInfoCached.is_following}
-                isUserAccount={
-                  userInfoCached.user.id === user?.id ? true : false
-                }
+                user={userInfoCached}
+                isUserAccount={userInfoCached.id === user?.id ? true : false}
                 username={user?.username}
                 image={user?.image}
               />
             </ProfileLayout>
           );
         }
-        let cache = {};
-        const userPrepared = db
-          .select()
-          .from(users)
-          .where(eq(sql.placeholder("username"), users.username))
-          .limit(1)
-          .prepare("select_user");
-        const user1: SelectUser[] = await userPrepared.execute({ username });
 
-        const followerPrepared = db
-          .select({ count: sql<number>`count(*)` })
-          .from(followers)
-          .where(eq(sql.placeholder("id"), followers.user_id))
-          .prepare("select_followers");
-        const Followers = await followerPrepared.execute({ id: user1[0].id });
-
-        const following = await followingPrepared.execute({ id: user1[0].id });
-
-        let is_following;
-        let isUserAccount;
-        if (user) {
-          is_following = await db
-            .select()
-            .from(followers)
-            .where(
-              sql`${followers.user_id} = ${user1[0].id} and ${followers.follower_id} = ${userAuthorized.id}`
-            );
-
-          isUserAccount = user.username === user1[0].username;
-        } else {
-          is_following = false;
-          isUserAccount = false;
-        }
-
-        cache.user = user1[0];
-        cache.followers = Followers[0].count;
-        cache.following = following[0].count;
-        cache.isfollowing = is_following ? true : false;
-
-        if (user?.username) {
-          await client.set(
-            `${user.username}${username}-info`,
-            JSON.stringify(cache)
-          );
-        } else {
-          await client.set(`${username}-info`, JSON.stringify(cache));
-        }
-
-        return (
-          <ProfileLayout>
-            <ProfilePage
-              user={user1[0]}
-              followers={Followers[0].count}
-              following={following[0].count}
-              isFollowing={is_following ? true : false}
-              isUserAccount={isUserAccount}
-              username={user?.username}
-              image={user?.image}
-            />
-          </ProfileLayout>
+        const user1 = await db.execute(
+          sql`WITH userInfo AS (SELECT * FROM users WHERE username = ${username}), followerInfo AS (SELECT sum((user_id = (SELECT id FROM userInfo))::int) as follower_count, sum((follower_id = (SELECT id FROM userInfo))::int) as following_count, sum((follower_id = (SELECT id FROM userInfo))::int) as following_count  FROM followers), isFollowing AS (select exists(select 1 from followers where user_id = (SELECT id FROM userInfo) AND follower_id = ${
+            user?.id ? user?.id : 0
+          })) SELECT * FROM userInfo, followerInfo, isFollowing`
         );
+
+        if (user1) {
+          const cache = user1[0];
+
+          if (user?.username) {
+            await client.setEx(
+              `${user.username}-${username}-info`,
+              12.5,
+              JSON.stringify(cache)
+            );
+          } else {
+            await client.setEx(`${username}-info`, 12.5, JSON.stringify(cache));
+          }
+
+          return (
+            <ProfileLayout>
+              <ProfilePage
+                user={user1[0]}
+                isUserAccount={user1[0].id === user?.id}
+                username={user?.username}
+                image={user?.image}
+              />
+            </ProfileLayout>
+          );
+        }
+
+        set.status = 404;
+        return;
       }
     )
     .post("/follow/:id", async ({ userAuthorized, set, params: { id } }) => {
@@ -282,18 +250,42 @@ export const user = (app: Elysia) =>
 
       return <NotificationsList notis={notis} />;
     })
-    .get("/notifications-count", async ({ userAuthorized, set }) => {
+    .get("/check-for-notifications", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {
         set.status = 401;
         return;
       }
-      const noti_count = await db
+
+      const cachedNotifications = await client.get(
+        `${user.username}-notifications`
+      );
+
+      if (cachedNotifications) {
+        return (
+          <li class="md:transition md:hover:bg-zinc-200 md:hover:dark:bg-zinc-800 md:p-2.5 md:rounded-full">
+            <a
+              href="/notifications"
+              aria-label="Notifications Page"
+              hx-boost="true"
+              hx-push-url
+            >
+              <NotificationIcon notification={cachedNotifications} />
+            </a>
+          </li>
+        );
+      }
+      const notification = await db
         .select({ count: sql<number>`count(*)` })
         .from(notifications)
         .where(eq(notifications.user_id, user.id))
         .limit(1);
 
+      await client.setEx(
+        `${user.username}-notifications`,
+        10,
+        notification ? "true" : "false"
+      );
       return (
         <li class="md:transition md:hover:bg-zinc-200 md:hover:dark:bg-zinc-800 md:p-2.5 md:rounded-full">
           <a
@@ -302,7 +294,9 @@ export const user = (app: Elysia) =>
             hx-boost="true"
             hx-push-url
           >
-            <NotificationIcon notification_count={noti_count[0].count} />
+            <NotificationIcon
+              notification={notification[0].count >= 1 ? "true" : "false"}
+            />
           </a>
         </li>
       );
