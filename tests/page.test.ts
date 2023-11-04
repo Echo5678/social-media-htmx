@@ -160,4 +160,14 @@ describe("GET all pages signed in", () => {
     expect(req.status).toBe(200);
     expect(req.url).toBe(`${url}/notifications`);
   });
+  test("Project Page", async () => {
+    const req = await fetch(`${url}/project/25`, {
+      headers: {
+        Cookie: cookie,
+      },
+      credentials: "same-origin",
+    });
+    expect(req.status).toBe(200);
+    expect(req.url).toBe(`${url}/project/25`);
+  });
 });
