@@ -67,7 +67,7 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
           </li>
           <li class="md:transition md:hover:bg-zinc-200 md:hover:dark:bg-zinc-800 md:p-2.5 md:rounded-full">
             <a
-              href={username ? `/profile/${username}` : "/sign-in"}
+              href={username ? `/${username}` : "/sign-in"}
               aria-label={username ? "Profile Page" : "Sign In Page"}
             >
               {username ? (

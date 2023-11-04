@@ -23,6 +23,7 @@ import { ProfileLayout } from "../../pages/base/profile-layout";
 import NotificationIcon from "../../components/assets/notificationicon";
 import MessageUserList from "../../components/message-user-list";
 import ProfileIcon from "../../components/assets/profileicon";
+import client from "../../db/redis-client";
 
 const followingPrepared = db
   .select({ count: sql<number>`count(*)` })
@@ -134,6 +135,41 @@ export const user = (app: Elysia) =>
           set.redirect = "/sign-in";
         }
 
+        if (username === "favicon.ico") {
+          set.status = 304;
+          return;
+        }
+
+        let userInfoCached;
+
+        if (user?.username) {
+          userInfoCached = await client.get(
+            `${user?.username}${username}-info`
+          );
+        } else {
+          userInfoCached = await client.get(`${username}-info`);
+        }
+
+        if (userInfoCached) {
+          userInfoCached = JSON.parse(userInfoCached);
+
+          return (
+            <ProfileLayout>
+              <ProfilePage
+                user={userInfoCached.user}
+                followers={userInfoCached.followers}
+                following={userInfoCached.following}
+                isFollowing={userInfoCached.is_following}
+                isUserAccount={
+                  userInfoCached.user.id === user?.id ? true : false
+                }
+                username={user?.username}
+                image={user?.image}
+              />
+            </ProfileLayout>
+          );
+        }
+        let cache = {};
         const userPrepared = db
           .select()
           .from(users)
@@ -165,6 +201,20 @@ export const user = (app: Elysia) =>
         } else {
           is_following = false;
           isUserAccount = false;
+        }
+
+        cache.user = user1[0];
+        cache.followers = Followers[0].count;
+        cache.following = following[0].count;
+        cache.isfollowing = is_following ? true : false;
+
+        if (user?.username) {
+          await client.set(
+            `${user.username}${username}-info`,
+            JSON.stringify(cache)
+          );
+        } else {
+          await client.set(`${username}-info`, JSON.stringify(cache));
         }
 
         return (

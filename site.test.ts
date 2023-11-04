@@ -1,7 +1,7 @@
-import "../src";
+import "./src";
 import { expect, test, describe } from "bun:test";
-import { db } from "../src/db/client";
-import { users } from "../src/db/schema";
+import { db } from "./src/db/client";
+import { users } from "./src/db/schema";
 import { eq } from "drizzle-orm";
 
 let cookie: string = "";
