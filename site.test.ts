@@ -35,7 +35,7 @@ describe("POST auth", () => {
         cookie += n;
       }
     }
-    if (cookie) {
+    if (req.headers.get("Set-Cookie")) {
       await db.delete(users).where(eq(users.email, email));
     }
   });

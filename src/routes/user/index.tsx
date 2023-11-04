@@ -157,7 +157,7 @@ export const user = (app: Elysia) =>
             <ProfileLayout>
               <ProfilePage
                 user={userInfoCached}
-                isUserAccount={userInfoCached.id === user?.id ? true : false}
+                isUserAccount={userInfoCached.id == user?.id}
                 username={user?.username}
                 image={user?.image}
               />
@@ -177,18 +177,18 @@ export const user = (app: Elysia) =>
           if (user?.username) {
             await client.setEx(
               `${user.username}-${username}-info`,
-              12.5,
+              12,
               JSON.stringify(cache)
             );
           } else {
-            await client.setEx(`${username}-info`, 12.5, JSON.stringify(cache));
+            await client.setEx(`${username}-info`, 12, JSON.stringify(cache));
           }
 
           return (
             <ProfileLayout>
               <ProfilePage
                 user={user1[0]}
-                isUserAccount={user1[0].id === user?.id}
+                isUserAccount={user1[0].id == user?.id}
                 username={user?.username}
                 image={user?.image}
               />
