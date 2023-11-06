@@ -126,9 +126,10 @@ export const project = (app: Elysia) =>
             </p>
           );
         }
-        console.log(image);
 
-        await Bun.write("/capture.png", image as File);
+        const file = Bun.file("capture.png");
+
+        await Bun.write(file, image as File);
 
         set.status = 301;
         set.redirect = "/home";

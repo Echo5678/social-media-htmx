@@ -15,10 +15,6 @@ export const BaseHtml = ({
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-          http-equiv="Content-Security-Policy"
-          content="script-src https://unpkg.com/htmx.org@1.9.5 https://cdn.tailwindcss.com https://unpkg.com/htmx.org/dist/ext/response-targets.js https://unpkg.com/htmx.org/dist/ext/preload.js https://unpkg.com/hyperscript.org@0.9.11"
-        ></meta>
         <title>CoDev</title>
         <link
           rel="icon"
@@ -38,8 +34,24 @@ export const BaseHtml = ({
       <style type="text/tailwindcss">
         {`
         ${styles}
+        .selected {
+    background-color: rgb(212 212 216);
+  }
+  @media (prefers-color-scheme: dark) {
+    .selected  {
+      background-color: rgb(39 39 42);
+    }
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
         @layer utilities {
-            .selected {
+            .selected-home-tab {
                 border-bottom: 2px solid;
                 color: white;
             }
@@ -190,7 +202,9 @@ export const BaseHtml = ({
   </>
 );
 
-export const BlogEditorLayout = (children: {
+export const BlogEditorLayout = ({
+  children,
+}: {
   children: JSX.Element | JSX.Element[];
 }) => (
   <BaseHtml
@@ -204,8 +218,6 @@ export const BlogEditorLayout = (children: {
   <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>`}
     scripts={`<script>
   const stuff = document.querySelector("#blog");
-
-  const toString = ${toString}
   
   const editor = new EditorJS({
     holder: 'editor',
@@ -240,8 +252,8 @@ export const BlogEditorLayout = (children: {
     placeholder: "Write a blog post.", 
     onChange: (api, event) => {
       editor.save().then(output => {
-        console.log("{" + toString(output) + "}")
-        stuff.value = "{" + toString(output) + "}"
+        console.log(output)
+        stuff.value = JSON.stringify(output)
       }).catch(e => {
         console.log("Failed to save.", e);
       })
@@ -253,33 +265,21 @@ export const BlogEditorLayout = (children: {
   </BaseHtml>
 );
 
-export const MessageLayout = (children: {
+export const MessageLayout = ({
+  children,
+}: {
   children: JSX.Element | JSX.Element[];
 }) => (
   <BaseHtml
     links={`<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>`}
-    styles={`.selected {
-    background-color: rgb(212 212 216);
-  }
-  @media (prefers-color-scheme: dark) {
-    .selected  {
-      background-color: rgb(39 39 42);
-    }
-  }
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }`}
   >
     {children}
   </BaseHtml>
 );
 
-export const ProjectFormLayout = (children: {
+export const ProjectFormLayout = ({
+  children,
+}: {
   children: JSX.Element | JSX.Element[];
 }) => (
   <BaseHtml
@@ -313,7 +313,9 @@ export const ProjectFormLayout = (children: {
   </BaseHtml>
 );
 
-export const BlogLayout = (children: {
+export const BlogLayout = ({
+  children,
+}: {
   children: JSX.Element | JSX.Element[];
 }) => (
   <BaseHtml
