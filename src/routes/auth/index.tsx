@@ -7,7 +7,7 @@ import { db } from "../../db/client";
 import { users } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
-import { BaseHtml } from "../../pages/base/basehtml";
+import { BaseHtml } from "../../pages/basehtml";
 import SignUpPage from "../../pages/signuppage";
 import Signinpage from "../../pages/signinpage";
 import HomePage from "../../pages/homepage";

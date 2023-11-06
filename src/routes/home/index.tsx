@@ -6,11 +6,11 @@ import { projects, SelectProject } from "../../db/schema";
 
 import validator from "validator";
 
-import { BaseHtml } from "../../pages/base/basehtml";
+import { BaseHtml } from "../../pages/basehtml";
 import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
 import ProjectList from "../../components/projectlist";
-import { ProfileLayout } from "../../pages/base/profile-layout";
+import { BaseHtml as ProfileLayout } from "../../pages/basehtml";
 import { sql } from "drizzle-orm";
 
 export const home = (app: Elysia) =>

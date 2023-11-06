@@ -12,12 +12,12 @@ import {
 } from "../../db/schema";
 import { and, eq, ne, sql } from "drizzle-orm";
 
-import { BaseHtml } from "../../pages/base/basehtml";
+import { BaseHtml } from "../../pages/basehtml";
 import ProjectForm from "../../pages/project/projectform";
 import ProjectPage from "../../pages/project/projectpage";
 import StarIconFilled from "../../components/assets/stariconfilled";
 import HomePage from "../../pages/homepage";
-import { ProjectFormLayout } from "../../pages/base/project-form-layout";
+import { ProjectFormLayout } from "../../pages/basehtml";
 import ProjectList from "../../components/projectlist";
 import InvitePage from "../../pages/invitepage";
 

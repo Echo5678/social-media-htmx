@@ -1,6 +1,12 @@
 export const BaseHtml = ({
+  styles,
+  scripts,
+  links,
   children,
 }: {
+  styles?: string;
+  scripts?: string;
+  links?: string;
   children: JSX.Element | JSX.Element[];
 }) => (
   <>
@@ -23,14 +29,15 @@ export const BaseHtml = ({
           name="description"
           content="Social Media platform for finding developers interested in the same technologies as you"
         />
+        {}
         <script src="https://unpkg.com/htmx.org@1.9.5"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
-        <script src="https://unpkg.com/htmx.org/dist/ext/preload.js"></script>
       </head>
       <style type="text/tailwindcss">
         {`
+        ${styles}
         @layer utilities {
             .selected {
                 border-bottom: 2px solid;
@@ -178,6 +185,150 @@ export const BaseHtml = ({
       >
         {children}
       </body>
+      <script>{scripts}</script>
     </html>
   </>
+);
+
+export const BlogEditorLayout = (children: {
+  children: JSX.Element | JSX.Element[];
+}) => (
+  <BaseHtml
+    styles={`<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>`}
+    scripts={`<script>
+  const stuff = document.querySelector("#blog");
+
+  const toString = ${toString}
+  
+  const editor = new EditorJS({
+    holder: 'editor',
+
+    tools: {
+      header: {
+        class: Header,
+        inlineToolbar : true,
+      },
+      list: {
+        class: List,
+        inlineToolbar: true
+      },
+      image: {
+        class: SimpleImage,
+        inlineToolbar: ['link']
+      },
+      quote: {
+        class: Quote,
+        inlineToolbar: true
+      },
+      embed: {
+        class:  Embed,
+        inlineToolbar: true
+      },
+      checklist: {
+        class: Checklist,
+        inlineToolbar: true
+      },
+    },
+    
+    placeholder: "Write a blog post.", 
+    onChange: (api, event) => {
+      editor.save().then(output => {
+        console.log("{" + toString(output) + "}")
+        stuff.value = "{" + toString(output) + "}"
+      }).catch(e => {
+        console.log("Failed to save.", e);
+      })
+    },
+  });
+</script>`}
+  >
+    {children}
+  </BaseHtml>
+);
+
+export const MessageLayout = (children: {
+  children: JSX.Element | JSX.Element[];
+}) => (
+  <BaseHtml
+    links={`<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>`}
+    styles={`.selected {
+    background-color: rgb(212 212 216);
+  }
+  @media (prefers-color-scheme: dark) {
+    .selected  {
+      background-color: rgb(39 39 42);
+    }
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }`}
+  >
+    {children}
+  </BaseHtml>
+);
+
+export const ProjectFormLayout = (children: {
+  children: JSX.Element | JSX.Element[];
+}) => (
+  <BaseHtml
+    styles={`
+    input[type="radio"] + label span {
+      transition: background .2s,
+        transform .2s;
+    }
+  
+    input[type="radio"] + label span:hover,
+    input[type="radio"] + label:hover span{
+    transform: scale(1.2);
+    } 
+  
+    input[type="radio"]:checked + label span {
+    background-color: #3490DC; //bg-blue
+    box-shadow: 0px 0px 0px 2px white inset;
+    }
+  
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    `}
+  >
+    {children}
+  </BaseHtml>
+);
+
+export const BlogLayout = (children: {
+  children: JSX.Element | JSX.Element[];
+}) => (
+  <BaseHtml
+    links={`<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>`}
+    scripts={`
+  <script>
+  const quill = new Quill("#editor")
+  quill.enable(false);
+  const stuff = document.querySelector("#blog");
+  quill.setContents(JSON.parse(stuff.value).ops);
+  stuff.value = '';
+</script>
+`}
+  >
+    {children}
+  </BaseHtml>
 );

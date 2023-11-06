@@ -27,7 +27,7 @@ const BlogEditor = ({
             class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full block mb-6 p-3 focus:border-blue-500 mt-1.5"
             placeholder="Name your blog post"
           />
-          <input id="blog" name="blog" type="text" class="hidden" />
+          <input id="blog" name="blog" type="text" value=" " class="hidden" />
           <div
             id="editor"
             class="prose prose-stone dark:prose-invert sm:prose-lg lg:prose-xl max-w-none p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg h-full"

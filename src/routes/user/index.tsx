@@ -1,11 +1,11 @@
 import { Elysia, t } from "elysia";
 import jwt from "@elysiajs/jwt";
 
+import client from "../../db/redis-client";
 import { db } from "../../db/client";
+
 import {
-  InsertFollower,
   SelectNotification,
-  SelectUser,
   followers,
   messages,
   notifications,
@@ -13,17 +13,18 @@ import {
 } from "../../db/schema";
 import { sql, eq, and, asc, or } from "drizzle-orm";
 
-import { MessageLayout } from "../../pages/base/messagelayout";
+import { BaseHtml } from "../../pages/basehtml";
+import { MessageLayout } from "../../pages/basehtml";
+
 import MessagePage from "../../pages/message";
 import ProfilePage from "../../pages/profilepage";
-import { BaseHtml } from "../../pages/base/basehtml";
 import NotificationsPage from "../../pages/notificationspage";
+
 import NotificationsList from "../../components/notifications/notificationslist";
-import { ProfileLayout } from "../../pages/base/profile-layout";
 import NotificationIcon from "../../components/assets/notificationicon";
 import MessageUserList from "../../components/message-user-list";
+
 import ProfileIcon from "../../components/assets/profileicon";
-import client from "../../db/redis-client";
 
 const followingPrepared = db
   .select({ count: sql<number>`count(*)` })
@@ -154,14 +155,14 @@ export const user = (app: Elysia) =>
           userInfoCached = JSON.parse(userInfoCached);
 
           return (
-            <ProfileLayout>
+            <BaseHtml>
               <ProfilePage
                 user={userInfoCached}
                 isUserAccount={userInfoCached.id == user?.id}
                 username={user?.username}
                 image={user?.image}
               />
-            </ProfileLayout>
+            </BaseHtml>
           );
         }
 
@@ -185,14 +186,14 @@ export const user = (app: Elysia) =>
           }
 
           return (
-            <ProfileLayout>
+            <BaseHtml>
               <ProfilePage
                 user={user1[0]}
                 isUserAccount={user1[0].id == user?.id}
                 username={user?.username}
                 image={user?.image}
               />
-            </ProfileLayout>
+            </BaseHtml>
           );
         }
 
@@ -207,12 +208,12 @@ export const user = (app: Elysia) =>
         set.redirect = "/sign-in";
       }
 
-      const follow: InsertFollower[] = await db
+      await db
         .insert(followers)
-        .values({ user_id: Number(id), follower_id: user.id })
-        .returning();
+        .values({ user_id: Number(id), follower_id: user.id });
 
       const following = await followingPrepared.execute({ id: user.id });
+
       return (
         <div>
           <button
@@ -340,7 +341,7 @@ export const user = (app: Elysia) =>
           id: users.id,
           name: users.name,
           username: users.username,
-          profilePicture: users.profile_picture,
+          profile_picture: users.profile_picture,
         })
         .from(followers)
         .where(eq(followers.user_id, user.id))
@@ -393,7 +394,7 @@ export const user = (app: Elysia) =>
               href={`/profile/${message_info[0].user_info.username}`}
               aria-label={`${message_info[0].user_info.name} Profile`}
               hx-swap-oob="true"
-              class="flex space-x-2 items-center w-fit"
+              class="flex space-x-2 items-center w-fit pb-2"
             >
               {message_info[0].user_info.profile_picture ? (
                 <img
@@ -401,7 +402,7 @@ export const user = (app: Elysia) =>
                   height="35"
                   src={user.profilePicture}
                   alt="User Profile Picture"
-                  class="rounded-full-"
+                  class="rounded-full"
                 />
               ) : (
                 <ProfileIcon />

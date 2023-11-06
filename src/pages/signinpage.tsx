@@ -36,7 +36,6 @@ export default function SignInPage() {
           href="/sign-up"
           hx-push-url="true"
           class="text-blue-500 hover:underline"
-          preload="mouseover"
         >
           Sign up
         </a>

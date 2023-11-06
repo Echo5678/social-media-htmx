@@ -1,10 +1,10 @@
 import ProfileIcon from "./assets/profileicon";
 
 interface MessageUserListProps {
-  id: number;
+  id?: number;
   name?: string;
   username?: string;
-  profilePicture?: string;
+  profile_picture?: string;
 }
 
 const MessageUserList = ({ users }: { users: MessageUserListProps[] }) => {
@@ -28,12 +28,12 @@ const MessageUserList = ({ users }: { users: MessageUserListProps[] }) => {
               }
             >
               <div class="flex space-x-4 items-center">
-                {user.profilePicture ? (
+                {user.profile_picture ? (
                   <img
                     width="32"
                     height="32"
-                    src={user.profilePicture}
-                    alt="User Profile Picture"
+                    src={user.profile_picture}
+                    alt="User Profile _picture"
                     class="rounded-full-"
                   />
                 ) : (
