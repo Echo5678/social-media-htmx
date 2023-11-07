@@ -1,5 +1,7 @@
 import { SelectProject } from "../db/schema";
+
 import StarIconRegular from "../components/assets/stariconregular";
+import ProfilePlaceHolder from "./assets/profileplaceholder";
 
 export default function ProjectList({
   projects,
@@ -26,19 +28,25 @@ export default function ProjectList({
             class="flex flex-col flex-grow"
           >
             <div class="flex space-x-2">
-              <img
-                src="https://yt3.ggpht.com/dR6qqf39NiziFmXdMlYnRhVsrM2Qb0b9eQPNhoMICKvZ40Zdxb5zXkqKxX84k_yv7jXojhI1PQ=s108-c-k-c0x00ffffff-no-rj"
-                width="50"
-                height="50"
-                class=" rounded-full"
-                alt="Profile Picture"
-              />
+              {item?.profile_picture ? (
+                <img
+                  src={`https://d20yxzu0sm1upk.cloudfront.net/${item?.profile_picture}`}
+                  width="50"
+                  height="50"
+                  class="rounded-full"
+                  alt="Profile Picture"
+                />
+              ) : (
+                <div class="bg-[#fcfcfc] dark:bg-[#0e0e0e] rounded-full w-[50px] h-[50px] flex items-center justify-center">
+                  <ProfilePlaceHolder />
+                </div>
+              )}
               <div class="w-full">
                 <h2 class="text-lg font-medium  w-full line-clamp-1">
-                  {item.name}
+                  {item.project_name}
                 </h2>
                 <span class="text-[#444444] dark:text-[#B1B1B1] font-semibold tracking-wide hover:underline decoration-1 hover:text-wite">
-                  {item.username}
+                  {item.project_username}
                 </span>
               </div>
             </div>
@@ -52,7 +60,7 @@ export default function ProjectList({
             class="self-end flex space-x-1 items-center font-medium text-lg"
           >
             <StarIconRegular />
-            <span>{item?.stars_count ? item?.stars_count : 0}</span>
+            <span>{item?.stars_count}</span>
           </button>
         </li>
       ))}

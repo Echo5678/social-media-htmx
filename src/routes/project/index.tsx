@@ -56,7 +56,7 @@ export const project = (app: Elysia) =>
     })
     .get("/project-list", async () => {
       const Projects: SelectProject[] = await db.execute(
-        sql`SELECT id, name, description, username, languages, image, technologies, instagram_username, twitter_username,	youtube_username,	categories, count(project_id) as stars_count FROM projects FULL JOIN stars ON id = project_id GROUP BY id LIMIT 10`
+        sql`SELECT projects.id as project_id, projects.name as project_name, description, projects.username as project_username, projects.languages as project_languages, image, technologies, instagram_username, twitter_username,	youtube_username, categories, users.profile_picture, count(project_id) as stars_count FROM projects FULL JOIN stars ON projects.id = project_id FULL JOIN users ON users.username = projects.username GROUP BY projects.id, users.profile_picture LIMIT 10 `
       );
 
       if (Projects.length !== 0) {
@@ -70,7 +70,7 @@ export const project = (app: Elysia) =>
     })
     .get("/project-list/:username", async ({ params: { username } }) => {
       const Projects: SelectProject[] = await db.execute(
-        sql`SELECT id, name, description, username, languages, image, technologies, instagram_username, twitter_username,	youtube_username,	categories, count(project_id) as stars_count FROM projects FULL JOIN stars ON id = project_id WHERE username = ${username} GROUP BY id LIMIT 10`
+        sql`SELECT projects.id as project_id, projects.name as project_name, description, projects.username as project_username, projects.languages as project_languages, image, technologies, instagram_username, twitter_username,	youtube_username, categories, users.profile_picture, count(project_id) as stars_count FROM projects FULL JOIN stars ON projects.id = project_id FULL JOIN users ON users.username = projects.username WHERE users.username = ${username} GROUP BY projects.id, users.profile_picture LIMIT 10`
       );
 
       if (Projects.length !== 0) {
@@ -158,7 +158,9 @@ export const project = (app: Elysia) =>
         const buffer = await image?.arrayBuffer();
         const file = Buffer.from(buffer);
 
-        const uploadedImageName = `${randomBytes(32)}_${Date.now().toString()}`;
+        const uploadedImageName = `${randomBytes(32).toString(
+          "hex"
+        )}_${Date.now().toString()}`;
 
         fs.writeFile(image?.name as string, file, "binary", function (err) {
           if (err) console.error(err);
@@ -213,7 +215,6 @@ export const project = (app: Elysia) =>
           categories: t.Array(t.String()),
           brief_description: t.String(),
           image: t.Optional(t.File()),
-          collaborators: t.Optional(t.Any()),
           languages: t.Array(t.String()),
         }),
       }

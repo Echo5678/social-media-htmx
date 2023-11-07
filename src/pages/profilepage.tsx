@@ -30,27 +30,50 @@ export default function ProfilePage({
               <CloseIcon />
             </button>
           </div>
-          <form hx-patch="/user" class="pt-5 flex flex-col space-y-7">
+          <form
+            hx-patch="/user"
+            hx-trigger="submit"
+            hx-encoding="multipart/form-data"
+            class="pt-5 flex flex-col space-y-7"
+          >
             <div>
-              <label for="change-name" class="font-medium">
+              <label for="change_name" class="font-medium">
                 Change Name:
               </label>
               <input
                 aria-label="Change Username"
                 type="text"
+                id="change_name"
                 name="name"
                 class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
               />
             </div>
             <div>
-              <label for="username" class="font-medium">
+              <label for="change_username" class="font-medium">
                 Change Username:
               </label>
               <input
                 aria-label="Change Username"
                 type="text"
+                id="change_username"
                 name="username"
                 class="outline-none bg-transparent border-zinc-200 dark:border-zinc-800 border rounded-md w-full md:w-1/2 block mt-1.5 p-1 focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label
+                for="change_profile_picture"
+                class="font-medium bg-black text-white dark:bg-white dark:text-black py-1.5 px-2.5 rounded-md hover:cursor-pointer"
+              >
+                Change profile picture
+              </label>
+              <input
+                aria-label="Change Profile Picture"
+                type="file"
+                accept="image/png image/jpeg image/jpg image/webp"
+                id="change_profile_picture"
+                name="profile_picture"
+                class="hidden"
               />
             </div>
             <button
@@ -80,9 +103,9 @@ export default function ProfilePage({
               ) : (
                 <div class="w-full h-[20vw] sm:h-[15vw] lg:h-[12.5vw] xl:h-[7.5vw] bg-zinc-300 dark:bg-zinc-800"></div>
               )}
-              {user.profile_picture ? (
+              {user?.profile_picture ? (
                 <img
-                  src={user.profile_picture}
+                  src={`https://d20yxzu0sm1upk.cloudfront.net/${user.profile_picture}`}
                   width="75"
                   height="75"
                   class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full"

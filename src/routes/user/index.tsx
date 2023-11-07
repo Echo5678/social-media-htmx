@@ -13,6 +13,12 @@ import {
 } from "../../db/schema";
 import { sql, eq, and, asc, or } from "drizzle-orm";
 
+import fs from "fs";
+import { randomBytes } from "crypto";
+
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+const s3Client = new S3Client({ region: process.env.BUCKET_REGION });
+
 import { BaseHtml } from "../../pages/base/basehtml";
 import { MessageLayout } from "../../pages/base/basehtml";
 
@@ -59,15 +65,64 @@ export const user = (app: Elysia) =>
     })
     .patch(
       "/user",
-      async ({ userAuthorized, set, body: { username, name } }) => {
+      async ({
+        userAuthorized,
+        set,
+        body: { username, name, profile_picture },
+      }) => {
         if (!userAuthorized) {
           set.status = 307;
           set.redirect = "/sign-in";
         }
 
+        const profile_picture_name = `${randomBytes(32).toString(
+          "hex"
+        )}_${Date.now().toString()}`;
+
+        const userUpdates = {
+          ...(username && { username: username?.toLowerCase() }),
+          ...(name && { name }),
+          ...(profile_picture && { profile_picture: profile_picture_name }),
+        };
+
+        if (profile_picture) {
+          const buffer = await profile_picture?.arrayBuffer();
+          const file = Buffer.from(buffer);
+
+          fs.writeFile(
+            profile_picture?.name as string,
+            file,
+            "binary",
+            function (err) {
+              if (err) console.error(err);
+            }
+          );
+
+          fs.readFile(profile_picture?.name as string, function (err, data) {
+            const params = {
+              Bucket: process.env.BUCKET_NAME as string,
+              Key: profile_picture_name,
+              ContentType: profile_picture?.type,
+              Body: data,
+            };
+
+            s3Client.send(new PutObjectCommand(params), function (err, data) {
+              if (err) {
+                return console.error(err);
+              }
+              console.log("Successfully uploaded profile_picture");
+            });
+          });
+
+          fs.unlink(profile_picture?.name, function (err) {
+            if (err) return console.error(err);
+            console.log("File deleted successfully");
+          });
+        }
+
         const [user1] = await db
           .update(users)
-          .set({ username: username?.toLowerCase(), name })
+          .set(userUpdates)
           .where(eq(users.id, userAuthorized.id))
           .returning({
             updatedName: users.name,
@@ -98,6 +153,7 @@ export const user = (app: Elysia) =>
         body: t.Object({
           name: t.Optional(t.String()),
           username: t.Optional(t.String()),
+          profile_picture: t.Optional(t.File()),
         }),
       }
     )
@@ -160,7 +216,7 @@ export const user = (app: Elysia) =>
                 user={userInfoCached}
                 isUserAccount={userInfoCached.id == user?.id}
                 username={user?.username}
-                image={user?.image}
+                profile_picture={user?.profile_picture}
               />
             </BaseHtml>
           );
@@ -191,7 +247,7 @@ export const user = (app: Elysia) =>
                 user={user1[0]}
                 isUserAccount={user1[0].id == user?.id}
                 username={user?.username}
-                image={user?.image}
+                profile_picture={user?.profile_picture}
               />
             </BaseHtml>
           );
@@ -311,7 +367,10 @@ export const user = (app: Elysia) =>
       }
       return (
         <BaseHtml>
-          <NotificationsPage username={user?.username} image={user?.image} />
+          <NotificationsPage
+            username={user?.username}
+            profile_picture={user?.profile_picture}
+          />
         </BaseHtml>
       );
     })
@@ -325,7 +384,10 @@ export const user = (app: Elysia) =>
 
       return (
         <MessageLayout>
-          <MessagePage username={user.username} image={user?.image} />
+          <MessagePage
+            username={user.username}
+            profile_picture={user?.profile_picture}
+          />
         </MessageLayout>
       );
     })
