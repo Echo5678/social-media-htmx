@@ -3,15 +3,17 @@ import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
 import { projects, SelectProject } from "../../db/schema";
+import { sql } from "drizzle-orm";
 
 import validator from "validator";
 
 import { BaseHtml } from "../../pages/base/basehtml";
+import { BaseHtml as ProfileLayout } from "../../pages/base/basehtml";
+
 import LandingPage from "../../pages/landingpage";
 import HomePage from "../../pages/homepage";
+
 import ProjectList from "../../components/projectlist";
-import { BaseHtml as ProfileLayout } from "../../pages/base/basehtml";
-import { sql } from "drizzle-orm";
 
 export const home = (app: Elysia) =>
   app
@@ -60,7 +62,10 @@ export const home = (app: Elysia) =>
 
       return (
         <ProfileLayout>
-          <HomePage username={username} />
+          <HomePage
+            username={username}
+            image={userAuthorized?.profile_picture}
+          />
         </ProfileLayout>
       );
     })

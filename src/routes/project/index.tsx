@@ -92,7 +92,10 @@ export const project = (app: Elysia) =>
 
       return (
         <ProjectFormLayout>
-          <ProjectForm username={user?.username} image={user?.image} />
+          <ProjectForm
+            username={user?.username}
+            image={user?.profile_picture}
+          />
         </ProjectFormLayout>
       );
     })
@@ -115,6 +118,7 @@ export const project = (app: Elysia) =>
         if (!user) {
           set.status = 307;
           set.redirect = "/sign-in";
+          return;
         }
         if (
           !name ||
@@ -203,7 +207,7 @@ export const project = (app: Elysia) =>
 
         return (
           <BaseHtml>
-            <HomePage />
+            <HomePage username={user.username} image={user.profile_picture} />
           </BaseHtml>
         );
       },
@@ -255,7 +259,11 @@ export const project = (app: Elysia) =>
 
         return (
           <BaseHtml>
-            <ProjectPage project={project} username={username} />
+            <ProjectPage
+              project={project}
+              username={username}
+              image={userAuthorized?.profile_picture}
+            />
           </BaseHtml>
         );
       },
@@ -318,7 +326,7 @@ export const project = (app: Elysia) =>
             <InvitePage
               users={Users}
               username={username}
-              image={userAuthorized?.image}
+              image={userAuthorized?.profile_picture}
               project_id={id}
             />
           </BaseHtml>
@@ -424,7 +432,7 @@ export const project = (app: Elysia) =>
 
         return (
           <BaseHtml>
-            <HomePage />
+            <HomePage username={user.username} image={user?.profile_picture} />
           </BaseHtml>
         );
       }

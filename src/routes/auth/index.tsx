@@ -10,7 +10,6 @@ import { eq } from "drizzle-orm";
 import { BaseHtml } from "../../pages/base/basehtml";
 import SignUpPage from "../../pages/signuppage";
 import Signinpage from "../../pages/signinpage";
-import HomePage from "../../pages/homepage";
 
 export const auth = (app: Elysia) =>
   app
@@ -62,7 +61,12 @@ export const auth = (app: Elysia) =>
     )
     .post(
       "/sign-up",
-      async ({ body: { username, email, password }, cookie, set, jwt }) => {
+      async ({
+        body: { username, email, password },
+        cookie: { user },
+        set,
+        jwt,
+      }) => {
         if (!validator.isEmail(email)) {
           set.status = 400;
           return (
@@ -106,7 +110,7 @@ export const auth = (app: Elysia) =>
         }
         const hashedPassword = await Bun.password.hash(password);
 
-        const user = await db
+        const user1 = await db
           .insert(users)
           .values({
             username,
@@ -118,11 +122,16 @@ export const auth = (app: Elysia) =>
           })
           .returning();
 
-        if (user) {
-          const userId = String(user[0].id);
-          const JWT = await jwt.sign({ userId, username, email });
+        if (user1) {
+          const userId = String(user1[0].id);
+          const JWT = await jwt.sign({
+            id: userId,
+            username: user1[0].username,
+            email,
+            profile_picture: "",
+          });
 
-          cookie.user.value = JWT;
+          user.value = JWT;
           set.status = 307;
           set.redirect = "/home";
           return;
@@ -202,7 +211,13 @@ export const auth = (app: Elysia) =>
           );
         }
         const userDB = await db
-          .select()
+          .select({
+            id: users.id,
+            username: users.username,
+            password: users.password,
+            email: users.email,
+            profile_picture: users.profile_picture,
+          })
           .from(users)
           .where(eq(users.email, email))
           .limit(1);
@@ -234,6 +249,7 @@ export const auth = (app: Elysia) =>
           id: userId,
           username: userUsername,
           email,
+          profile_picture: userDB[0].profile_picture,
         });
 
         if (JWT) {

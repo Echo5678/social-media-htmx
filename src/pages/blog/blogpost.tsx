@@ -28,9 +28,19 @@ export default function BlogPost({
             />
             <h2 class="font-semibold">@{blog.owner}</h2>
           </div>
-          <div>
-            <span class="font-medium pr-1 text-white">Views:</span>
-            1,120,420
+          <div class="flex items-center space-x-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M12 9.005a4 4 0 1 1 0 8a4 4 0 0 1 0-8ZM12 5.5c4.613 0 8.596 3.15 9.701 7.564a.75.75 0 1 1-1.455.365a8.504 8.504 0 0 0-16.493.004a.75.75 0 0 1-1.456-.363A10.003 10.003 0 0 1 12 5.5Z"
+              />
+            </svg>
+            <span>1,120,420</span>
           </div>
         </div>
         <div class="w-full h-[1px] px-2 bg-zinc-200 dark:bg-zinc-700"></div>
@@ -42,7 +52,7 @@ export default function BlogPost({
         />
         <article
           id="editor"
-          class="prose prose-stone dark:prose-invert sm:prose-lg lg:prose-xl max-w-none prose-a:text-blue-500 hover:prose-a:text-blue-600"
+          class="prose prose-stone dark:prose-invert sm:prose-lg lg:prose-xl max-w-none prose-a:text-blue-500 hover:prose-a:text-blue-600 pt-8"
         ></article>
         <div class="w-full h-[1px] px-2 bg-zinc-200 dark:bg-zinc-700"></div>
         <footer class="pb-6">

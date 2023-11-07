@@ -75,7 +75,7 @@ const Navbar = ({ image, username }: { image?: string; username?: string }) => {
                   <img
                     width="32"
                     height="32"
-                    src={image ? image : ""}
+                    src={`https://d20yxzu0sm1upk.cloudfront.net/${image}`}
                     alt="User Profile Picture"
                     class="rounded-full"
                   />

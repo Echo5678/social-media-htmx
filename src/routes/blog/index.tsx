@@ -47,7 +47,7 @@ export const blog = (app: Elysia) =>
 
       return (
         <BlogEditorLayout>
-          <BlogEditor />
+          <BlogEditor username={user.username} image={user?.profile_picture} />
         </BlogEditorLayout>
       );
     })
@@ -89,7 +89,7 @@ export const blog = (app: Elysia) =>
           <BlogPost
             blog={Blog}
             username={userAuthorized?.username}
-            image={userAuthorized?.image}
+            image={userAuthorized?.profile_picture}
           />
         </BlogLayout>
       );
@@ -116,7 +116,7 @@ export const blog = (app: Elysia) =>
 
       return (
         <BlogEditorLayout>
-          <BlogEditor username={user?.username} image={user?.image} />
+          <BlogEditor username={user?.username} image={user?.profile_picture} />
         </BlogEditorLayout>
       );
     });

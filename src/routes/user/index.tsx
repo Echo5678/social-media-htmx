@@ -69,10 +69,13 @@ export const user = (app: Elysia) =>
         userAuthorized,
         set,
         body: { username, name, profile_picture },
+        jwt,
+        cookie: { user },
       }) => {
         if (!userAuthorized) {
           set.status = 307;
           set.redirect = "/sign-in";
+          return;
         }
 
         const profile_picture_name = `${randomBytes(32).toString(
@@ -127,7 +130,19 @@ export const user = (app: Elysia) =>
           .returning({
             updatedName: users.name,
             updatedUsername: users.username,
+            email: users.email,
+            id: users.id,
+            updatedProfilePicture: users.profile_picture,
           });
+
+        const JWT = await jwt.sign({
+          id: user1.id,
+          username: user1.updatedUsername,
+          email: user1.email,
+          profile_picture: user1.updatedProfilePicture,
+        });
+
+        user.value = JWT;
 
         return (
           <>
@@ -216,7 +231,7 @@ export const user = (app: Elysia) =>
                 user={userInfoCached}
                 isUserAccount={userInfoCached.id == user?.id}
                 username={user?.username}
-                profile_picture={user?.profile_picture}
+                image={user?.profile_picture}
               />
             </BaseHtml>
           );
@@ -247,7 +262,7 @@ export const user = (app: Elysia) =>
                 user={user1[0]}
                 isUserAccount={user1[0].id == user?.id}
                 username={user?.username}
-                profile_picture={user?.profile_picture}
+                image={user?.profile_picture}
               />
             </BaseHtml>
           );
@@ -369,7 +384,7 @@ export const user = (app: Elysia) =>
         <BaseHtml>
           <NotificationsPage
             username={user?.username}
-            profile_picture={user?.profile_picture}
+            image={user?.profile_picture}
           />
         </BaseHtml>
       );
@@ -384,10 +399,7 @@ export const user = (app: Elysia) =>
 
       return (
         <MessageLayout>
-          <MessagePage
-            username={user.username}
-            profile_picture={user?.profile_picture}
-          />
+          <MessagePage username={user.username} image={user?.profile_picture} />
         </MessageLayout>
       );
     })
