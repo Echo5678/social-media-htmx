@@ -2,7 +2,7 @@ import { Elysia, t } from "elysia";
 import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
-import { SelectBlog, blogs } from "../../db/schema";
+import { SelectBlog, blogs, users } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
 import { BlogLayout } from "../../pages/base/basehtml";
@@ -79,10 +79,19 @@ export const blog = (app: Elysia) =>
     )
     .get("/blog/:id", async ({ params: { id }, userAuthorized }) => {
       const [Blog] = await db
-        .select()
+        .select({
+          blog: blogs.blog,
+          posted: blogs.posted,
+          title: blogs.title,
+          profile_picture: users.profile_picture,
+          username: users.username,
+        })
         .from(blogs)
+        .innerJoin(users, eq(blogs.owner, users.username))
         .where(eq(blogs.id, Number(id)))
         .limit(1);
+
+      console.log(Blog);
 
       return (
         <BlogLayout>

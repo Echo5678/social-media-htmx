@@ -208,58 +208,41 @@ export const BlogEditorLayout = ({
   children: JSX.Element | JSX.Element[];
 }) => (
   <BaseHtml
-    styles={`<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>`}
-    scripts={`<script>
-  const stuff = document.querySelector("#blog");
-  
-  const editor = new EditorJS({
-    holder: 'editor',
-
-    tools: {
-      header: {
-        class: Header,
-        inlineToolbar : true,
-      },
-      list: {
-        class: List,
-        inlineToolbar: true
-      },
-      image: {
-        class: SimpleImage,
-        inlineToolbar: ['link']
-      },
-      quote: {
-        class: Quote,
-        inlineToolbar: true
-      },
-      embed: {
-        class:  Embed,
-        inlineToolbar: true
-      },
-      checklist: {
-        class: Checklist,
-        inlineToolbar: true
-      },
-    },
+    links={`
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+  <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    `}
+    scripts={`
+    var toolbarOptions = [
+      [{ 'header': [2, 3, 4, 5, 6, false] }],
+      ['bold', 'italic', 'underline', 'strike'],        
+      ['blockquote', 'code-block'],
     
-    placeholder: "Write a blog post.", 
-    onChange: (api, event) => {
-      editor.save().then(output => {
-        console.log(output)
-        stuff.value = JSON.stringify(output)
-      }).catch(e => {
-        console.log("Failed to save.", e);
-      })
-    },
-  });
-</script>`}
+      [{ 'header': 1 }, { 'header': 2 }],               
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],      
+      [{ 'indent': '-1'}, { 'indent': '+1' }],         
+
+      [{ 'align': [] }],
+    
+      ['clean']                                         
+    ];
+
+    var quill = new Quill('#editor', {
+      modules: {
+        toolbar: toolbarOptions
+      },
+      theme: 'snow'
+    });
+
+    quill.on('text-change', function(delta, oldDelta, source) {
+      const stuff = document.querySelector("#blog");
+      const stringified = JSON.stringify(delta);
+
+      stuff.value = stringified;
+    })
+  `}
   >
     {children}
   </BaseHtml>
@@ -290,7 +273,9 @@ export const BlogLayout = ({
 }) => (
   <BaseHtml
     links={`<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>`}
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  
+  `}
     scripts={`
   const quill = new Quill("#editor")
   quill.enable(false);
