@@ -158,6 +158,8 @@ export const project = (app: Elysia) =>
         const buffer = await image?.arrayBuffer();
         const file = Buffer.from(buffer);
 
+        const uploadedImageName = `${randomBytes(32)}_${Date.now().toString()}`;
+
         fs.writeFile(image?.name as string, file, "binary", function (err) {
           if (err) console.error(err);
         });
@@ -165,7 +167,7 @@ export const project = (app: Elysia) =>
         fs.readFile(image?.name as string, function (err, data) {
           const params = {
             Bucket: process.env.BUCKET_NAME as string,
-            Key: `${randomBytes(32)}_${Date.now().toString()}`,
+            Key: uploadedImageName,
             ContentType: image.type,
             Body: data,
           };
@@ -191,7 +193,7 @@ export const project = (app: Elysia) =>
           description,
           languages: [...languages],
           username: user.username,
-          image: "",
+          image: uploadedImageName,
           technologies: [...technologies],
           categories: [...categories],
           brief_description,
