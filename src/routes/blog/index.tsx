@@ -5,9 +5,9 @@ import { db } from "../../db/client";
 import { SelectBlog, blogs } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
-import { BlogLayout } from "../../pages/basehtml";
+import { BlogLayout } from "../../pages/base/basehtml";
 
-import { BlogEditorLayout } from "../../pages/basehtml";
+import { BlogEditorLayout } from "../../pages/base/basehtml";
 import BlogEditor from "../../pages/blog/blogeditor";
 
 import BlogPost from "../../pages/blog/blogpost";

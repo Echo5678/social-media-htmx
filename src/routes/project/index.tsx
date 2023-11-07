@@ -12,14 +12,22 @@ import {
 } from "../../db/schema";
 import { and, eq, ne, sql } from "drizzle-orm";
 
-import { BaseHtml } from "../../pages/basehtml";
+import fs from "fs";
+import { randomBytes } from "crypto";
+
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+const s3Client = new S3Client({ region: process.env.BUCKET_REGION });
+
+import { BaseHtml } from "../../pages/base/basehtml";
+import { ProjectFormLayout } from "../../pages/base/basehtml";
+
+import HomePage from "../../pages/homepage";
 import ProjectForm from "../../pages/project/projectform";
 import ProjectPage from "../../pages/project/projectpage";
-import StarIconFilled from "../../components/assets/stariconfilled";
-import HomePage from "../../pages/homepage";
-import { ProjectFormLayout } from "../../pages/basehtml";
-import ProjectList from "../../components/projectlist";
 import InvitePage from "../../pages/invitepage";
+
+import StarIconFilled from "../../components/assets/stariconfilled";
+import ProjectList from "../../components/projectlist";
 
 export const project = (app: Elysia) =>
   app
@@ -114,7 +122,8 @@ export const project = (app: Elysia) =>
           !languages ||
           !brief_description ||
           !technologies ||
-          !categories
+          !categories ||
+          !image
         ) {
           set.status = 400;
           return (
@@ -127,9 +136,52 @@ export const project = (app: Elysia) =>
           );
         }
 
-        const file = Bun.file("capture.png");
+        if (
+          image.type !== "image/png" &&
+          image.type !== "image/jpg" &&
+          image.type !== "image/jpeg" &&
+          image.type !== "image/webp"
+        ) {
+          set.status = 400;
+          console.error(image.type);
+          return (
+            <p
+              id="#error-message"
+              class="w-full px-3 py-2 text-red-500 dark:text-white dark:bg-red-500/30 border rounded-md border-red-700 mb-6"
+            >
+              Unaccepted File type please input .jpeg .jpg .png or .webp image
+              type.
+            </p>
+          );
+        }
 
-        await Bun.write(file, image as File);
+        const buffer = await image?.arrayBuffer();
+        const file = Buffer.from(buffer);
+
+        fs.writeFile(image?.name as string, file, "binary", function (err) {
+          if (err) console.error(err);
+        });
+
+        fs.readFile(image?.name as string, function (err, data) {
+          const params = {
+            Bucket: process.env.BUCKET_NAME as string,
+            Key: `${randomBytes(32)}_${Date.now().toString()}`,
+            ContentType: image.type,
+            Body: data,
+          };
+
+          s3Client.send(new PutObjectCommand(params), function (err, data) {
+            if (err) {
+              return console.error(err);
+            }
+            console.log("Successfully uploaded image");
+          });
+        });
+
+        fs.unlink(image?.name, function (err) {
+          if (err) return console.error(err);
+          console.log("File deleted successfully");
+        });
 
         set.status = 301;
         set.redirect = "/home";

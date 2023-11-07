@@ -2,10 +2,12 @@
   "name": "codev",
   "module": "index.ts",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.441.0",
     "@elysiajs/html": "^0.7.3",
     "@elysiajs/jwt": "^0.7.0",
     "drizzle-orm": "^0.28.6",
     "elysia": "^0.7.17",
+    "fs": "^0.0.1-security",
     "postgres": "3.3.5",
     "redis": "^4.6.10",
     "validator": "^13.11.0"

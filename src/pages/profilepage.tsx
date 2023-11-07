@@ -166,7 +166,7 @@ export default function ProfilePage({
               id="tabs"
               hx-target="#list"
               role="tablist"
-              _="on htmx:afterOnLoad set @aria-selected of <[aria-selected=true]/> to false tell the target take .selected set @aria-selected to true"
+              _="on htmx:afterOnLoad set @aria-selected of <[aria-selected=true]/> to false tell the target take .selected-home-tab set @aria-selected to true"
               class="text-[#444444] dark:text-[#B1B1B1] border-zinc-300 dark:border-[#222222] font-medium flex space-x-6 items-center border-b sm:border-x  sm:rounded-b-md justify-between pt-2 px-[25%] "
             >
               <button
@@ -176,7 +176,7 @@ export default function ProfilePage({
                 aria-selected="true"
                 hx-get={`/project-list/${user.username}`}
                 hx-swap="outerHTML"
-                class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer selected"
+                class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer selected-home-tab"
               >
                 Projects
               </button>

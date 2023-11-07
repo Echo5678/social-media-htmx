@@ -281,37 +281,7 @@ export const ProjectFormLayout = ({
   children,
 }: {
   children: JSX.Element | JSX.Element[];
-}) => (
-  <BaseHtml
-    styles={`
-    input[type="radio"] + label span {
-      transition: background .2s,
-        transform .2s;
-    }
-  
-    input[type="radio"] + label span:hover,
-    input[type="radio"] + label:hover span{
-    transform: scale(1.2);
-    } 
-  
-    input[type="radio"]:checked + label span {
-    background-color: #3490DC; //bg-blue
-    box-shadow: 0px 0px 0px 2px white inset;
-    }
-  
-    .hide-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    
-    .hide-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    `}
-  >
-    {children}
-  </BaseHtml>
-);
+}) => <BaseHtml>{children}</BaseHtml>;
 
 export const BlogLayout = ({
   children,

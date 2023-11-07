@@ -13,8 +13,8 @@ import {
 } from "../../db/schema";
 import { sql, eq, and, asc, or } from "drizzle-orm";
 
-import { BaseHtml } from "../../pages/basehtml";
-import { MessageLayout } from "../../pages/basehtml";
+import { BaseHtml } from "../../pages/base/basehtml";
+import { MessageLayout } from "../../pages/base/basehtml";
 
 import MessagePage from "../../pages/message";
 import ProfilePage from "../../pages/profilepage";

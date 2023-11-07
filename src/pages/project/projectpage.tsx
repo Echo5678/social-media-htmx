@@ -109,10 +109,10 @@ const ProjectPage = ({
           </div>
           <div class="flex items-center  bg-zinc-100 dark:bg-[#0a0a0a] border border-zinc-300 dark:border-zinc-800 rounded-lg w-full  mt-10">
             <div class="flex flex-col md:flex-row w-full py-4">
-              {image && (
+              {project?.image && (
                 <img
                   alt="Project Image"
-                  src={project.image}
+                  src={`https://d20yxzu0sm1upk.cloudfront.net/${project.image}`}
                   class="px-6 pb-4  md:w-1/2"
                 />
               )}

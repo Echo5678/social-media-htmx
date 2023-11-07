@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { html } from "@elysiajs/html";
 
-import { BaseHtml } from "./pages/basehtml";
+import { BaseHtml } from "./pages/base/basehtml";
 import { auth, home, project, blog, user } from "./routes";
 
 const WEEK = 60 * 60 * 24 * 7;
