@@ -18,6 +18,7 @@ export default function HomePage({
           <nav
             id="tabs"
             hx-target="#list"
+            hx-swap="outerHTML"
             role="tablist"
             _="on htmx:afterOnLoad set @aria-selected of <[aria-selected=true]/> to false tell the target take .selected-home-tab set @aria-selected to true"
             class="text-[#444444] dark:text-[#B1B1B1] font-medium flex space-x-6 items-center justify-between pt-2 px-[25%] mb-6"
@@ -26,9 +27,17 @@ export default function HomePage({
               role="tab"
               aria-controls="tab-content"
               aria-selected="true"
-              hx-get="/project-list"
-              hx-swap="outerHTML"
+              hx-get="/bleeps-list"
               class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer selected-home-tab"
+            >
+              Media
+            </button>
+            <button
+              role="tab"
+              aria-controls="tab-content"
+              aria-selected="false"
+              hx-get="/project-list"
+              class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer"
             >
               Projects
             </button>
@@ -37,17 +46,16 @@ export default function HomePage({
               aria-controls="tab-content"
               aria-selected="false"
               hx-get="/blog-list"
-              hx-swap="outerHTML"
               class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer"
             >
-              Media
+              Blogs
             </button>
           </nav>
           <div
-            hx-get="/project-list"
+            hx-get="/bleeps-list"
             hx-swap="outerHTML"
             hx-trigger="load"
-            class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"
+            class="grid grid-cols-1 gap-y-4 grid-flow-row pb-24 mx-auto max-w-[700px]"
           >
             <div class="p-5 rounded-lg w-full h-[250px] animate-pulse bg-zinc-300 dark:bg-zinc-700 flex flex-col  space-y-4">
               <div class="flex space-x-3 items-center">

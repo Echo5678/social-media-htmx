@@ -190,16 +190,27 @@ export default function ProfilePage({
               hx-target="#list"
               role="tablist"
               _="on htmx:afterOnLoad set @aria-selected of <[aria-selected=true]/> to false tell the target take .selected-home-tab set @aria-selected to true"
-              class="text-[#444444] dark:text-[#B1B1B1] border-zinc-300 dark:border-[#222222] font-medium flex space-x-6 items-center border-b sm:border-x  sm:rounded-b-md justify-between pt-2 px-[25%] "
+              class="text-[#444444] dark:text-[#B1B1B1] border-zinc-300 dark:border-[#222222] font-medium flex space-x-6 items-center border-b sm:border-x  sm:rounded-b-md justify-between pt-2 px-[12.5%] "
             >
               <button
                 role="tab"
                 aria-label="Projects"
                 aria-controls="tab-content"
                 aria-selected="true"
-                hx-get={`/project-list/${user.username}`}
+                hx-get={`/${user.username}/bleeps`}
                 hx-swap="outerHTML"
                 class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer selected-home-tab"
+              >
+                Bleeps
+              </button>
+              <button
+                role="tab"
+                aria-label="Projects"
+                aria-controls="tab-content"
+                aria-selected="false"
+                hx-get={`/project-list/${user.username}`}
+                hx-swap="outerHTML"
+                class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer"
               >
                 Projects
               </button>
@@ -231,7 +242,7 @@ export default function ProfilePage({
           <main class="w-full md:w-3/4 xl:w-1/2 mx-auto">
             <div class="w-full h-full px-3 md:px-0 py-6">
               <div
-                hx-get={`/project-list/${user.username}`}
+                hx-get={`/${user.username}/bleeps`}
                 hx-swap="outerHTML"
                 hx-trigger="load"
                 class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 grid-flow-row"

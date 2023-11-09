@@ -5,7 +5,9 @@ import client from "../../db/redis-client";
 import { db } from "../../db/client";
 
 import {
+  SelectBleep,
   SelectNotification,
+  bleeps,
   followers,
   messages,
   notifications,
@@ -31,6 +33,9 @@ import NotificationIcon from "../../components/assets/notificationicon";
 import MessageUserList from "../../components/message-user-list";
 
 import ProfileIcon from "../../components/assets/profileicon";
+import BleepList from "../../components/bleeplist";
+import BleepItem from "../../components/bleepitem";
+import BleepPage from "../../pages/bleeppage";
 
 const followingPrepared = db
   .select({ count: sql<number>`count(*)` })
@@ -527,6 +532,94 @@ export const user = (app: Elysia) =>
       {
         params: t.Object({
           id: t.String(),
+        }),
+      }
+    )
+    .get("/bleeps-list", async ({ userAuthorized }) => {
+      const bleep: SelectBleep[] = await db.execute(
+        sql`SELECT bleeps.id, text, image, posted, username, verified, profile_picture, name, count(post) as likes_count FROM bleeps FULL JOIN likes ON  id = post INNER JOIN users ON author = users.id GROUP BY users.id, bleeps.id, user_id, post LIMIT 10`
+      );
+
+      if (bleep.length !== 0) {
+        return <BleepList bleeps={bleep} user={userAuthorized} input={true} />;
+      }
+      return (
+        <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+          Sorry no bleep {":("}
+        </div>
+      );
+    })
+    .get(
+      "/bleep/:id",
+      async ({ userAuthorized, params: { id } }) => {
+        const bleep: SelectBleep[] = await db.execute(
+          sql`SELECT bleeps.id, text, image, posted, username, verified, profile_picture, name, count(post) as likes_count FROM bleeps FULL JOIN likes ON  id = post INNER JOIN users ON author = users.id WHERE bleeps.id = ${id} GROUP BY users.id, bleeps.id, user_id, post`
+        );
+
+        return (
+          <BaseHtml>
+            <BleepPage
+              bleep={bleep[0]}
+              username={userAuthorized?.username}
+              image={userAuthorized?.profile_picture}
+            />
+          </BaseHtml>
+        );
+      },
+      {
+        params: t.Object({
+          id: t.String(),
+        }),
+      }
+    )
+    .get(
+      "/:username/bleeps",
+      async ({ userAuthorized, params: { username } }) => {
+        const bleep: SelectBleep[] = await db.execute(
+          sql`WITH user_info AS (SELECT id, username, name, verified, profile_picture FROM users WHERE username = ${username} LIMIT 1),  bleeps_list AS (SELECT * FROM bleeps WHERE author = (SELECT id FROM user_info)), count AS (SELECT sum((post = (SELECT id FROM bleeps_list))::int) AS likes_count FROM likes) SELECT * FROM count, user_info, bleeps_list`
+        );
+
+        if (bleep.length !== 0) {
+          return <BleepList bleeps={bleep} user={userAuthorized} />;
+        }
+        return (
+          <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+            Sorry no bleeps {":("}
+          </div>
+        );
+      },
+      {
+        params: t.Object({
+          username: t.String(),
+        }),
+      }
+    )
+    .post(
+      "/bleep",
+      async ({ userAuthorized, body: { text, image }, set }) => {
+        const user = userAuthorized;
+        if (!user) {
+          set.status = 307;
+          set.redirect = "/sign-in";
+          return;
+        }
+
+        const bleep = await db
+          .insert(bleeps)
+          .values({ text, author: userAuthorized.id })
+          .returning();
+
+        bleep[0].name = userAuthorized?.name;
+        bleep[0].profile_picture = userAuthorized?.profile_picture;
+        bleep[0].username = userAuthorized?.username;
+        bleep[0].likes_count = "0";
+
+        return <BleepItem item={bleep[0]} />;
+      },
+      {
+        body: t.Object({
+          text: t.String(),
+          image: t.Optional(t.File()),
         }),
       }
     );

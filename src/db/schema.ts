@@ -120,6 +120,26 @@ export const blogs = pgTable("blogs", {
   posted: date("posted"),
 });
 
+export const likes = pgTable(
+  "likes",
+  {
+    user_id: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    post: integer("post")
+      .notNull()
+      .references(() => bleeps.id),
+  },
+  (table) => {
+    return {
+      pk: primaryKey(table.user_id, table.post),
+      unq: unique().on(table.post, table.user_id),
+      followedIndex: index("user_like_bleep_index").on(table.user_id),
+      followingIndex: index("bleep_like_index").on(table.post),
+    };
+  }
+);
+
 export const notifications = pgTable(
   "notifications",
   {
@@ -139,6 +159,14 @@ export const notifications = pgTable(
   }
 );
 
+export const bleeps = pgTable("bleeps", {
+  id: serial("id").primaryKey(),
+  author: integer("author").notNull(),
+  text: varchar("text", { length: 750 }).notNull(),
+  image: varchar("image", { length: 100 }),
+  posted: date("posted").defaultNow(),
+});
+
 export const messages = pgTable(
   "messages",
   {
@@ -153,6 +181,9 @@ export const messages = pgTable(
     };
   }
 );
+
+export type SelectBleep = InferSelectModel<typeof bleeps>;
+export type InsertBleep = InferSelectModel<typeof bleeps>;
 
 export type SelectNotification = InferSelectModel<typeof notifications>;
 export type InsertNotification = InferSelectModel<typeof notifications>;

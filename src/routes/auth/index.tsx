@@ -127,6 +127,7 @@ export const auth = (app: Elysia) =>
           const JWT = await jwt.sign({
             id: userId,
             username: user1[0].username,
+            name: user1[0].name,
             email,
             profile_picture: "",
           });
@@ -217,6 +218,7 @@ export const auth = (app: Elysia) =>
             password: users.password,
             email: users.email,
             profile_picture: users.profile_picture,
+            name: users.name,
           })
           .from(users)
           .where(eq(users.email, email))
@@ -248,6 +250,7 @@ export const auth = (app: Elysia) =>
         const JWT = await jwt.sign({
           id: userId,
           username: userUsername,
+          name: userDB[0].name,
           email,
           profile_picture: userDB[0].profile_picture,
         });

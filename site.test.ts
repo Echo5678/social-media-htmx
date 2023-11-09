@@ -35,9 +35,6 @@ describe("POST auth", () => {
         cookie += n;
       }
     }
-    if (req.headers.get("Set-Cookie")) {
-      await db.delete(users).where(eq(users.email, email));
-    }
   });
   test("Create User", async () => {
     const req = await fetch(`${url}/sign-up`, {
@@ -54,6 +51,10 @@ describe("POST auth", () => {
     expect(req.status).toBe(404);
     expect(req.url).toBe(`${url}/home`);
     expect(req.headers.get("Set-Cookie")).toBeDefined();
+
+    if (req.headers.get("Set-Cookie")) {
+      await db.delete(users).where(eq(users.email, email));
+    }
   });
 });
 
