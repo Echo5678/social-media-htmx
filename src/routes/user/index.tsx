@@ -218,17 +218,28 @@ export const user = (app: Elysia) =>
         }
 
         let userInfoCached;
+        let isFollowing;
 
-        if (user?.username) {
-          userInfoCached = await client.get(
-            `${user?.username}-${username}-info`
-          );
-        } else {
-          userInfoCached = await client.get(`${username}-info`);
-        }
+        userInfoCached = await client.get(`${username}-info`);
 
         if (userInfoCached) {
           userInfoCached = JSON.parse(userInfoCached);
+
+          if (user?.username && userInfoCached?.id == user?.id) {
+            isFollowing = await client.get(
+              `${user.username}-following-${username}`
+            );
+
+            if (!isFollowing) {
+              isFollowing = await db.execute(
+                sql`WITH userInfo AS (SELECT id FROM users WHERE username = ${username}) select exists(select 1 from followers where user_id = (SELECT id FROM userInfo) AND follower_id = ${
+                  user?.id ? user?.id : 0
+                })`
+              );
+            }
+          }
+
+          userInfoCached.exists = isFollowing == "true" ? true : false;
 
           return (
             <BaseHtml>
@@ -249,17 +260,19 @@ export const user = (app: Elysia) =>
         );
 
         if (user1) {
-          const cache = user1[0];
+          let cache = user1[0];
 
-          if (user?.username) {
+          if (username && user1[0] != user?.id) {
             await client.setEx(
-              `${user.username}-${username}-info`,
-              12,
-              JSON.stringify(cache)
+              `${user.username}-following-${username}`,
+              86400,
+              String(user1[0].exists)
             );
-          } else {
-            await client.setEx(`${username}-info`, 12, JSON.stringify(cache));
           }
+
+          delete cache.exists;
+
+          await client.setEx(`${username}-info`, 86400, JSON.stringify(cache));
 
           return (
             <BaseHtml>
