@@ -10,4 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
-      - run: bun build --target=bun ../../src/index.tsx --outdir ./build
+      - run: bun build --target=bun ./src/index.tsx --outdir ./build
+      - run: bun ./build/index.js
