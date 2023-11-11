@@ -10,9 +10,10 @@ const client = createClient({
   password: process.env.REDIS_PASSWORD,
 });
 
-client.on("error", (err: any) =>
-  console.error("Error connecting to Redis Client", err)
-);
+client.on("error", (err: any) => {
+  console.error("Error connecting to Redis Client", err);
+  return;
+});
 
 await client.connect();
 
