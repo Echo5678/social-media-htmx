@@ -29,5 +29,6 @@ jobs:
           version: 1.0.7
           cache: "bun"
       - run: bun i
-      - run: bun build --target=bun ./src/index.tsx --outdir ./build
-      - run: bun ./build/index.js
+      - run: bun run dev
+      # - run: bun build --target=bun ./src/index.tsx --outdir ./build
+      # - run: bun ./build/index.js
