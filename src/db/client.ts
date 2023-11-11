@@ -5,8 +5,6 @@ import * as schema from "./schema";
 const client = postgres(process.env.DATABASE_URL as string, {
   host: process.env.DATABASE_HOST,
   port: Number(process.env.DATABASE_PORT),
-  database: process.env.DATABASE,
-  password: process.env.DATABASE_PASSWORD,
   user: process.env.DATABASE_USER,
   max: 10,
 });
