@@ -12,6 +12,7 @@ jobs:
       - uses: oven-sh/setup-bun@v1
         with:
           version: 1.0.7
+      - run: echo "This is the variable ${{ env.REDIS_URL }}."
       - run: bun i
       - run: bun build --target=bun ./src/index.tsx --outdir ./build
       - run: bun ./build/index.js
