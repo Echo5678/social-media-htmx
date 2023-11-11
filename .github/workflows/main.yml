@@ -14,6 +14,8 @@ jobs:
       DATABASE: ${{ vars.DATABASE_URL }}
       DATABASE_PORT: ${{ vars.DATABASE_PORT }}
       DATABASE_HOST: ${{ vars.DATABASE_HOST }}
+      DATABASE_USER: ${{ vars.DATABASE_USER }}
+      DATABASE_PASSWORD: ${{ vars.DATABASE_PASSWORD}}
       REDIS_URL: ${{ vars.REDIS_URL }}
       JWT_SECRET: ${{ vars.JWT_SECRET }}
       COOKIE_SECRET: ${{ vars.COOKIE_SECRET }}
@@ -29,6 +31,5 @@ jobs:
           version: 1.0.7
           cache: "bun"
       - run: bun i
-      - run: bun run dev
-      # - run: bun build --target=bun ./src/index.tsx --outdir ./build
-      # - run: bun ./build/index.js
+      - run: bun build --target=bun ./src/index.tsx --outdir ./build
+      - run: bun ./build/index.js
