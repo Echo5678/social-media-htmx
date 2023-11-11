@@ -7,7 +7,7 @@ name: HTMX thing Workflow
 jobs:
   job:
     name: Run Server
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04.2
 
     steps:
       - uses: actions/checkout@v3
