@@ -8,11 +8,20 @@ jobs:
   job:
     name: Run Server
     runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ vars.DATABASE_URL }}
+      DATABASE: ${{ vars.DATABASE_URL }}
+      DATABASE_PORT: ${{ vars.DATABASE_PORT }}
+      DATABASE_HOST: ${{ vars.DATABASE_HOST }}
+      REDIS_URL: ${{ vars.REDIS_URL }}
+
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
         with:
           version: 1.0.7
+          cache: "bun"
       - run: echo "This is the variable ${{ vars.REDIS_URL }}."
       - run: bun i
       - run: bun build --target=bun ./src/index.tsx --outdir ./build
