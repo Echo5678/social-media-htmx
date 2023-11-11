@@ -4,17 +4,15 @@ on:
 
 name: HTMX thing Workflow
 
-env:
-  REDIS_URL: ${{vars.REDIS_URL}}
-  DATABASE_URL: ${{vars.DATABASE_URL}}
-  DATABASE: ${{vars.DATABASE}}
-  DATABASE_PORT: ${{vars.DATABASE_PORT}}
-
 jobs:
   job:
     name: Run Server
     runs-on: ubuntu-latest
     steps:
+      - uses: dotenv-actions/setup-dotenv@v2
+        with:
+          dotenv_path: .env
+
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
         with:
