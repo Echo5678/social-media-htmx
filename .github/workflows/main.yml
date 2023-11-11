@@ -4,6 +4,10 @@ on:
 
 name: HTMX thing Workflow
 jobs:
+  build:
+    runs-on: github
+    env:
+      REDIS_URL: ${{vars.REDIS_URL}}
   my-job:
     name: my-job
     runs-on: ubuntu-latest
