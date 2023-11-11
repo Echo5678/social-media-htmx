@@ -8,6 +8,7 @@
     "drizzle-orm": "^0.28.6",
     "elysia": "^0.7.17",
     "fs": "^0.0.1-security",
+    "pica": "^9.0.1",
     "postgres": "3.3.5",
     "redis": "^4.6.10",
     "validator": "^13.11.0"

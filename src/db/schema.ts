@@ -26,7 +26,7 @@ export const users = pgTable(
     verified: boolean("verified").default(false),
     joined: date("joined"),
     badges: text("badges").array().default([]),
-    profile_picture: varchar("profile_picture").notNull(),
+    profile_picture: varchar("profile_picture", { length: 100 }).notNull(),
     roles: varchar("roles", { length: 30 }).array().notNull(),
     languages: varchar("languages", { length: 30 }).array().notNull(),
   },

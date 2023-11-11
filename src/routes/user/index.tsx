@@ -82,10 +82,20 @@ export const user = (app: Elysia) =>
           set.redirect = "/sign-in";
           return;
         }
+        let profile_picture_name: string = "";
 
-        const profile_picture_name = `${randomBytes(32).toString(
-          "hex"
-        )}_${Date.now().toString()}`;
+        if (profile_picture) {
+          const db_profile = await db
+            .select({ profile_picture: users.profile_picture })
+            .from(users)
+            .where(eq(users.username, userAuthorized.username));
+
+          profile_picture_name = db_profile
+            ? db_profile[0].profile_picture
+            : `${randomBytes(32).toString("hex")}_${Date.now().toString()}`;
+
+          console.log(profile_picture);
+        }
 
         const userUpdates = {
           ...(username && { username: username?.toLowerCase() }),
@@ -225,9 +235,9 @@ export const user = (app: Elysia) =>
         if (userInfoCached) {
           userInfoCached = JSON.parse(userInfoCached);
 
-          if (user?.username && userInfoCached?.id == user?.id) {
+          if (user?.username && userInfoCached?.id != user?.id) {
             isFollowing = await client.get(
-              `${user.username}-following-${username}`
+              `${user?.username}-following-${username}`
             );
 
             if (!isFollowing) {
@@ -262,9 +272,9 @@ export const user = (app: Elysia) =>
         if (user1) {
           let cache = user1[0];
 
-          if (username && user1[0] != user?.id) {
+          if (user?.username && user1[0] != user?.id) {
             await client.setEx(
-              `${user.username}-following-${username}`,
+              `${user?.username}-following-${username}`,
               86400,
               String(user1[0].exists)
             );
