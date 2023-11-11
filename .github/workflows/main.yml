@@ -9,15 +9,11 @@ jobs:
     name: Run Server
     runs-on: ubuntu-latest
     steps:
-      - uses: dotenv-actions/setup-dotenv@v2
-        with:
-          dotenv_path: .env
-
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
         with:
           version: 1.0.7
-      - run: echo "This is the variable ${{ env.REDIS_URL }}."
+      - run: echo "This is the variable ${{ vars.REDIS_URL }}."
       - run: bun i
       - run: bun build --target=bun ./src/index.tsx --outdir ./build
       - run: bun ./build/index.js
