@@ -4,13 +4,12 @@ on:
 
 name: HTMX thing Workflow
 jobs:
-  build:
-    runs-on: github
-    env:
-      REDIS_URL: ${{vars.REDIS_URL}}
   my-job:
     name: my-job
     runs-on: ubuntu-latest
+    env:
+      REDIS_URL: ${{vars.REDIS_URL}}
+      DATABASE_URL: ${{vars.DATABASE_URL}}
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
