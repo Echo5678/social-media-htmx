@@ -9,21 +9,6 @@ jobs:
     name: Run Server
     runs-on: ubuntu-latest
 
-    env:
-      DATABASE_URL: ${{ vars.DATABASE_URL }}
-      DATABASE: ${{ vars.DATABASE }}
-      DATABASE_PORT: ${{ vars.DATABASE_PORT }}
-      DATABASE_HOST: ${{ vars.DATABASE_HOST }}
-      DATABASE_USER: ${{ vars.DATABASE_USER }}
-      DATABASE_PASSWORD: ${{ vars.DATABASE_PASSWORD}}
-      REDIS_URL: ${{ vars.REDIS_URL }}
-      JWT_SECRET: ${{ vars.JWT_SECRET }}
-      COOKIE_SECRET: ${{ vars.COOKIE_SECRET }}
-      BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
-      BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
