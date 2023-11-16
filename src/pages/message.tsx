@@ -57,7 +57,6 @@ const MessagePage = ({
           >
             <div class="flex space-x-1.5 border border-zinc-200 dark:border-zinc-800 focus:border-blue-500 rounded-3xl w-full  p-1.5 px-3 bg-[#fcfcfc] dark:bg-[#0e0e0e]">
               <input
-                _="on htmx:afterRequest set my.value to ''"
                 id="message"
                 spellcheck="true"
                 autocomplete="on"

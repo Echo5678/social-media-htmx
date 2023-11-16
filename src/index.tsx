@@ -23,11 +23,13 @@ const app = new Elysia({
   .use(user)
   .ws("/messages-ws", {
     open(ws) {
-      ws.subscribe(ws.data?.userAuthorized.id);
+      console.log("Connected to Websocket");
+      ws.subscribe("meow");
     },
     message(ws, message: any) {
+      console.log(message);
       ws.publish(
-        ws.data?.userAuthorized.id,
+        "meow",
         <>
           <div id="chat" hx-swap-oob="beforeend">
             <p class="py-2 px-3.5 rounded-3xl bg-zinc-100 text-black dark:bg-zinc-800 dark:text-white self-start max-w-[85%]">
@@ -69,7 +71,10 @@ const app = new Elysia({
       </div>
     );
   })
-  .listen(3000);
+  .listen({
+    port: 3000,
+    hostname: "0.0.0.0",
+  });
 
 console.log(
   `🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}/`
