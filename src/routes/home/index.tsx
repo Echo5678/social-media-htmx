@@ -40,8 +40,19 @@ export const home = (app: Elysia) =>
         userAuthorized,
       };
     })
+    .get("/favicon.ico", ({ set }) => {
+      set.headers = {
+        "Content-Type": "image/x-icon",
+        "Cache-Control": "max-age=31536000",
+      };
+      const path = import.meta.dir + "/favicon.ico";
+      return Bun.file(path);
+    })
     .get("/output.css", ({ set }) => {
-      set.headers = { "Content-Type": "text/css" };
+      set.headers = {
+        "Content-Type": "text/css",
+        "Cache-Control": "max-age=31536000",
+      };
       const path = import.meta.dir + "/output.css";
       return Bun.file(path);
     })
@@ -51,7 +62,7 @@ export const home = (app: Elysia) =>
         set.redirect = "/home";
         return;
       }
-
+      TTL;
       return (
         <BaseHtml>
           <LandingPage />

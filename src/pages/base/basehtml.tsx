@@ -16,11 +16,7 @@ export const BaseHtml = ({
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>CoDev</title>
-        <link
-          rel="icon"
-          type="image/x-icon"
-          href="https://d20yxzu0sm1upk.cloudfront.net/logo-min_65x65.png"
-        />
+        <link rel="icon" type="image/x-icon" href="./favicon.ico" />
         <link rel="stylesheet" type="text/css" href="./output.css" />
         <meta
           name="description"
@@ -29,17 +25,17 @@ export const BaseHtml = ({
         <script src="https://unpkg.com/htmx.org@1.9.5"></script>
         <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
-        {links}
+        {links && links}
       </head>
       <style>
         {`
-        ${styles}
+        ${styles && styles}
         .selected {
     background-color: rgb(212 212 216);
   }
   @media (prefers-color-scheme: dark) {
     .selected  {
-      background-color: rgb(39 39 42);
+      background-color: rgb(39 39 42);./src/index.tsx
     }
   }
   .hide-scrollbar::-webkit-scrollbar {
@@ -50,11 +46,10 @@ export const BaseHtml = ({
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-        @layer utilities {
             .selected-home-tab {
                 border-bottom: 2px solid;
                 color: white;
-            }
+            
             :root {
     --plus-color: black; 
     --plus-icon-size: 40px;
@@ -65,6 +60,7 @@ export const BaseHtml = ({
     border-radius: 10px;
     background-color: #2e2e2e;
   }
+  @layer utilities {
   
   .custom-scrollbar::-webkit-scrollbar
   {
@@ -197,7 +193,7 @@ export const BaseHtml = ({
       >
         {children}
       </body>
-      <script>{scripts}</script>
+      <script>{scripts && scripts}</script>
     </html>
   </>
 );
@@ -209,7 +205,6 @@ export const BlogEditorLayout = ({
 }) => (
   <BaseHtml
     links={`
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
   <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     `}
