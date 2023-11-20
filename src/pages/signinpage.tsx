@@ -34,6 +34,7 @@ export default function SignInPage() {
         Never used CoDev?{" "}
         <a
           href="/sign-up"
+          hx-boost="true"
           hx-push-url="true"
           class="text-blue-500 hover:underline"
         >

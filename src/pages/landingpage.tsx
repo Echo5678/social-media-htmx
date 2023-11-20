@@ -4,7 +4,7 @@ export default function LandingPage() {
   return (
     <main class="px-8 pb-10">
       <Header />
-      <h1 class="text-7xl sm:text-8xl md:text-9xl text-center font-bold mt-12">
+      <h1 class="text-7xl lg:text-8xl xl:text-9xl text-center font-bold mt-12">
         <span class="block bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
           Brainstorm.
         </span>
@@ -13,7 +13,7 @@ export default function LandingPage() {
       </h1>
       <div
         hx-boost="true"
-        class="flex items-center justify-center my-6 space-x-6 font-semibold"
+        class="flex items-center justify-center my-12 space-x-6 font-semibold"
       >
         <a
           href="/login"
