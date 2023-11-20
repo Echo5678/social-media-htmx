@@ -10,7 +10,7 @@ const app = new Elysia({
   cookie: {
     httpOnly: true,
     maxAge: WEEK,
-    secure: process.env?.NODE_ENV === "production" ? true : false,
+    secure: process.env?.NODE_ENV === "production",
     sameSite: "strict",
   },
 })

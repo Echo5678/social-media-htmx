@@ -9,4 +9,7 @@ const client = postgres(process.env.DATABASE_URL as string, {
   max: 10,
 });
 
-export const db = drizzle(client, { schema, logger: true });
+export const db = drizzle(client, {
+  schema,
+  logger: process.env.NODE_ENV === "production",
+});

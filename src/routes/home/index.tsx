@@ -40,6 +40,11 @@ export const home = (app: Elysia) =>
         userAuthorized,
       };
     })
+    .get("/output.css", ({ set }) => {
+      set.headers = { "Content-Type": "text/css" };
+      const path = import.meta.dir + "/output.css";
+      return Bun.file(path);
+    })
     .get("/", ({ userAuthorized, set }) => {
       if (userAuthorized) {
         set.status = 307;

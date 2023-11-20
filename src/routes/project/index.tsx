@@ -58,7 +58,7 @@ export const project = (app: Elysia) =>
       const Projects: SelectProject[] = await db.execute(
         sql`SELECT projects.id as project_id, projects.name as project_name, description, projects.username as project_username, projects.languages as project_languages, image, technologies, instagram_username, twitter_username,	youtube_username, categories, users.profile_picture, count(project_id) as stars_count FROM projects FULL JOIN stars ON projects.id = project_id FULL JOIN users ON users.username = projects.username GROUP BY projects.id, users.profile_picture LIMIT 10 `
       );
-
+      console.log(Projects);
       if (Projects.length !== 0) {
         return <ProjectList projects={Projects} />;
       }

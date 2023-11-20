@@ -34,6 +34,10 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
+RUN bunx tailwindcss -i ./src/pages/base/styles.css -o ./src/routes/home/output.css --watch
+RUN bun build ./src/index.tsx --outfile cli --compile
+
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD [ "bun", "./src/index.tsx" ]
+
+CMD ["./cli"]

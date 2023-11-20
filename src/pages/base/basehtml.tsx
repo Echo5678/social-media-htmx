@@ -21,17 +21,17 @@ export const BaseHtml = ({
           type="image/x-icon"
           href="https://d20yxzu0sm1upk.cloudfront.net/logo-min_65x65.png"
         />
+        <link rel="stylesheet" type="text/css" href="./output.css" />
         <meta
           name="description"
           content="Social Media platform for finding developers interested in the same technologies as you"
         />
         <script src="https://unpkg.com/htmx.org@1.9.5"></script>
-        <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/htmx.org/dist/ext/response-targets.js"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.11"></script>
         {links}
       </head>
-      <style type="text/tailwindcss">
+      <style>
         {`
         ${styles}
         .selected {
