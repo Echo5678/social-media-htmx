@@ -35,8 +35,9 @@ FROM base
 COPY --from=build /app /app
 
 RUN bunx tailwindcss -i ./src/pages/base/styles.css -o ./routes/output.css
+RUN bun build ./src/index.tsx --outdir ./out --loader .css:css --target bun
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 
-CMD ["bun", "./src/index.tsx"]
+CMD ["bun", "./out/index"]

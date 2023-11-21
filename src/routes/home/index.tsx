@@ -43,7 +43,7 @@ export const home = (app: Elysia) =>
     .get("/favicon.ico", ({ set }) => {
       set.headers = {
         "Content-Type": "image/x-icon",
-        "Cache-Control": "max-age=31536000",
+        "Cache-Control": "public, max-age=604800",
       };
       const path = import.meta.dir + "/favicon.ico";
       return Bun.file(path);
@@ -51,9 +51,9 @@ export const home = (app: Elysia) =>
     .get("/output.css", ({ set }) => {
       set.headers = {
         "Content-Type": "text/css",
-        "Cache-Control": "max-age=31536000",
+        "Cache-Control": "public, max-age=604800",
       };
-      const path = import.meta.dir + "/output.css";
+      const path  = import.meta.dir + "/output.css";
       return Bun.file(path);
     })
     .get("/", ({ userAuthorized, set }) => {
@@ -62,7 +62,7 @@ export const home = (app: Elysia) =>
         set.redirect = "/home";
         return;
       }
-      TTL;
+
       return (
         <BaseHtml>
           <LandingPage />
