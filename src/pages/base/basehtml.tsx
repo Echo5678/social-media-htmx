@@ -28,8 +28,8 @@ export const BaseHtml = ({
         {links && links}
       </head>
       <style>
+        {styles}
         {`
-        ${styles && styles}
         .selected {
     background-color: rgb(212 212 216);
   }

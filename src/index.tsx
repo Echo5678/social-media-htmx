@@ -26,13 +26,13 @@ const app = new Elysia({
       ws.subscribe("meow");
     },
     message(ws, message: any) {
-      console.log(message);
+      console.log(message.message);
       ws.publish(
         "meow",
         <>
           <div id="chat" hx-swap-oob="beforeend">
             <p class="py-2 px-3.5 rounded-3xl bg-zinc-100 text-black dark:bg-zinc-800 dark:text-white self-start max-w-[85%]">
-              {`${message.chat_message}${" "}`}
+              {`${message.message}${" "}`}
             </p>
           </div>
         </>
