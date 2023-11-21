@@ -69,7 +69,7 @@ export default function BlogPost({
         />
         <article
           id="editor"
-          class="prose prose-stone dark:prose-invert sm:prose-lg lg:prose-xl max-w-none prose-a:text-blue-500 hover:prose-a:text-blue-600 pt-8"
+          class="prose-sm prose-stone dark:prose-invert md:prose-base lg:prose-lg max-w-none prose-a:text-blue-500 hover:prose-a:text-blue-600 pt-8"
         ></article>
         <div class="w-full h-[1px] px-2 bg-zinc-200 dark:bg-zinc-700"></div>
         <footer class="pb-6">
