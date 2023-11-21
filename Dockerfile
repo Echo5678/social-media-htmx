@@ -24,7 +24,7 @@ RUN apt-get update -qq && \
 COPY --link bun.lockb package.json ./
 RUN bun install --ci
 
-# Copy application code
+# Copy application codebug: fixed css import
 COPY --link . .
 
 
@@ -34,7 +34,7 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
-RUN bunx tailwindcss -i ./src/pages/base/styles.css -o ./routes/output.css
+RUN bunx tailwindcss -i ./src/pages/base/styles.css -o ./src/routes/home/output.css
 RUN bun build ./src/index.tsx --outdir ./out --loader .css:css --target bun
 
 # Start the server by default, this can be overwritten at runtime
