@@ -209,33 +209,25 @@ export const BlogEditorLayout = ({
   <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     `}
     scripts={`
-    var toolbarOptions = [
-      [{ 'header': [2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline', 'strike'],        
+    const toolbarOptions  = [
+      [{'header': [2, 3, 4, 5, 6, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote', 'code-block'],
-    
-      [{ 'header': 1 }, { 'header': 2 }],               
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'script': 'sub'}, { 'script': 'super' }],      
-      [{ 'indent': '-1'}, { 'indent': '+1' }],         
-
-      [{ 'align': [] }],
-    
-      ['clean']                                         
-    ];
-
-    var quill = new Quill('#editor', {
+      [{'list': 'ordered'}, {'list': 'bullet'}],
+      [{ 'script': 'sub'}, { 'script': 'super'}],
+      [{ 'indent': '-1'}, { 'indent': '+1'}],
+      ['link', 'image', 'video'],
+    ]
+    const quill = new Quill("#editor", {
       modules: {
         toolbar: toolbarOptions
       },
-      theme: 'snow'
-    });
+      theme: 'snow',
+    })
+    const stuff = document.querySelector("#blog");
 
-    quill.on('text-change', function(delta, oldDelta, source) {
-      const stuff = document.querySelector("#blog");
-      const stringified = JSON.stringify(delta);
-
-      stuff.value = stringified;
+    quill.on("text-change", function(delta, oldDelta, source) {
+      stuff.value = JSON.stringify(quill.getContents());
     })
   `}
   >
