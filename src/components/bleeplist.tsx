@@ -9,11 +9,13 @@ export default function BleepList({
   user,
   input,
   skipAmount,
+  username,
 }: {
   user: any;
   bleeps: SelectBleep[];
   input?: boolean;
   skipAmount: number;
+  username: string;
 }) {
   return (
     <div id="list" class="max-w-[700px] mx-auto">
@@ -86,6 +88,7 @@ export default function BleepList({
             item={item}
             skip={index === bleeps.length - 1}
             skipAmount={skipAmount && skipAmount}
+            username={username}
           />
         ))}
       </ul>

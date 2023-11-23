@@ -650,13 +650,34 @@ export const user = (app: Elysia) =>
     )
     .get(
       "/:username/bleeps",
-      async ({ userAuthorized, params: { username } }) => {
+      async ({ userAuthorized, params: { username }, query: { skip } }) => {
         const bleep: SelectBleep[] = await db.execute(
-          sql`WITH user_info AS (SELECT id, username, name, verified, profile_picture FROM users WHERE username = ${username} LIMIT 1),  bleeps_list AS (SELECT * FROM bleeps WHERE author = (SELECT id FROM user_info)), count AS (SELECT sum((post = (SELECT id FROM bleeps_list))::int) AS likes_count FROM likes) SELECT * FROM count, user_info, bleeps_list`
+          sql`WITH user_info AS (SELECT id, username, name, verified, profile_picture FROM users WHERE username = ${username} LIMIT 1),  bleeps_list AS (SELECT * FROM bleeps WHERE author = (SELECT id FROM user_info) LIMIT 10 OFFSET ${
+            skip ? skip : 0
+          }), count AS (SELECT sum((post = (SELECT id FROM bleeps_list))::int) AS likes_count FROM likes) SELECT * FROM count, user_info, bleeps_list`
         );
 
-        if (bleep.length !== 0) {
-          return <BleepList bleeps={bleep} user={userAuthorized} />;
+        if (bleep.length !== 0 && !skip) {
+          return (
+            <BleepList
+              bleeps={bleep}
+              user={userAuthorized}
+              username={username}
+            />
+          );
+        } else if (bleep.length !== 0) {
+          return (
+            <>
+              {bleep.map((item, index) => (
+                <BleepItem
+                  item={item}
+                  skip={index === bleep.length - 1}
+                  skipAmount={Number(skip) + 10}
+                  username={username}
+                />
+              ))}
+            </>
+          );
         }
         return (
           <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
@@ -667,6 +688,9 @@ export const user = (app: Elysia) =>
       {
         params: t.Object({
           username: t.String(),
+        }),
+        query: t.Object({
+          skip: t.Optional(t.String()),
         }),
       }
     )

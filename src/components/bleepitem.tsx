@@ -15,7 +15,9 @@ function BleepItem({
   item,
   skip,
   skipAmount,
+  username,
 }: {
+  username?: string;
   item: Item;
   skip: boolean;
   skipAmount?: number;
@@ -24,7 +26,9 @@ function BleepItem({
     <li
       {...(skip
         ? {
-            "hx-get": `/bleeps-list/?skip=${skipAmount ? skipAmount : 10}`,
+            "hx-get": username
+              ? `/${username}/bleeps/?skip=${skipAmount ? skipAmount : 10}`
+              : `/bleeps-list/?skip=${skipAmount ? skipAmount : 10}`,
             "hx-trigger": "revealed",
             "hx-swap": "afterend",
           }

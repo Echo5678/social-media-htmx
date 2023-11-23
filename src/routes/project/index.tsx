@@ -91,21 +91,50 @@ export const project = (app: Elysia) =>
         }),
       }
     )
-    .get("/project-list/:username", async ({ params: { username } }) => {
-      const Projects: SelectProject[] = await db.execute(
-        sql`SELECT projects.id as project_id, projects.name as project_name, description, projects.username as project_username, projects.languages as project_languages, image, technologies, instagram_username, twitter_username,	youtube_username, categories, users.profile_picture, count(project_id) as stars_count FROM projects FULL JOIN stars ON projects.id = project_id FULL JOIN users ON users.username = projects.username WHERE users.username = ${username} GROUP BY projects.id, users.profile_picture LIMIT 10`
-      );
+    .get(
+      "/project-list/:username",
+      async ({ params: { username }, query: { skip } }) => {
+        const Projects: SelectProject[] = await db.execute(
+          sql`SELECT projects.id as project_id, projects.name as project_name, description, projects.username as project_username, projects.languages as project_languages, image, technologies, instagram_username, twitter_username,	youtube_username, categories, users.profile_picture, count(project_id) as stars_count FROM projects FULL JOIN stars ON projects.id = project_id FULL JOIN users ON users.username = projects.username WHERE users.username = ${username} GROUP BY projects.id, users.profile_picture LIMIT 10 OFFSET ${
+            skip ? skip : 0
+          }`
+        );
 
-      if (Projects.length !== 0) {
-        return <ProjectList projects={Projects} type="single" />;
+        if (Projects.length !== 0 && !skip) {
+          return (
+            <ProjectList
+              projects={Projects}
+              type="single"
+              username={username}
+            />
+          );
+        } else if (Projects.length !== 0) {
+          return (
+            <>
+              {Projects.map((item, index) => (
+                <ProjectItem
+                  item={item}
+                  skipAmount={Number(skip) + 10}
+                  skip={index === Projects.length - 1}
+                  username={username}
+                />
+              ))}
+            </>
+          );
+        }
+
+        return (
+          <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+            Sorry no projects {":("}
+          </div>
+        );
+      },
+      {
+        query: t.Object({
+          skip: t.Optional(t.String()),
+        }),
       }
-
-      return (
-        <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
-          Sorry no projects {":("}
-        </div>
-      );
-    })
+    )
     .get("/project/form", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {

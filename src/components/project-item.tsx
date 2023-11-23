@@ -7,7 +7,9 @@ function ProjectItem({
   item,
   skip,
   skipAmount,
+  username,
 }: {
+  username: string;
   item: SelectProject;
   skip: boolean;
   skipAmount: number;
@@ -16,7 +18,11 @@ function ProjectItem({
     <li
       {...(skip
         ? {
-            "hx-get": `/project-list/?skip=${skipAmount ? skipAmount : 10}`,
+            "hx-get": username
+              ? `/project-list/${username}/?skip=${
+                  skipAmount ? skipAmount : 10
+                }`
+              : `/project-list/?skip=${skipAmount ? skipAmount : 10}`,
             "hx-trigger": "revealed",
             "hx-swap": "afterend",
           }

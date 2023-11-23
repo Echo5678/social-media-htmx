@@ -12,6 +12,7 @@ import BlogEditor from "../../pages/blog/blogeditor";
 
 import BlogPost from "../../pages/blog/blogpost";
 import BlogList from "../../components/bloglist";
+import BlogItem from "../../components/blogitem";
 
 export const blog = (app: Elysia) =>
   app
@@ -103,19 +104,92 @@ export const blog = (app: Elysia) =>
         </BlogLayout>
       );
     })
-    .get("/blog-list", async () => {
-      const Blogs: SelectBlog[] = await db.select().from(blogs).limit(10);
+    .get(
+      "/blog-list",
+      async ({ query: { skip } }) => {
+        const Blogs: SelectBlog[] = await db
+          .select()
+          .from(blogs)
+          .limit(10)
+          .offset(skip ? Number(skip) : 0);
 
-      return <BlogList blogs={Blogs} />;
-    })
-    .get("/blog-list/:username", async ({ params: { username } }) => {
-      const Blogs = await db
-        .select()
-        .from(blogs)
-        .where(eq(blogs.owner, String(username)));
+        if (Blogs.length !== 0 && !skip) {
+          return <BlogList blogs={Blogs} skipAmount={10} />;
+        } else if (Blogs.length !== 0) {
+          return (
+            <>
+              {Blogs.map((blog, index) => (
+                <BlogItem
+                  skip={index === Blogs.length - 1}
+                  skipAmount={Number(skip) + 10}
+                  blog={blog}
+                />
+              ))}
+            </>
+          );
+        }
 
-      return <BlogList blogs={Blogs} type="single" />;
-    })
+        return (
+          <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+            No more blogs {":("}
+          </div>
+        );
+      },
+      {
+        query: t.Object({
+          skip: t.Optional(t.String()),
+        }),
+      }
+    )
+    .get(
+      "/blog-list/:username",
+      async ({ params: { username }, query: { skip } }) => {
+        const Blogs = await db
+          .select()
+          .from(blogs)
+          .where(eq(blogs.owner, String(username)))
+          .limit(10)
+          .offset(skip ? Number(skip) : 0);
+
+        if (Blogs.length !== 0 && !skip) {
+          return (
+            <BlogList
+              blogs={Blogs}
+              skipAmount={10}
+              username={username}
+              type={"single"}
+            />
+          );
+        } else if (Blogs.length !== 0) {
+          return (
+            <>
+              {Blogs.map((blog, index) => (
+                <BlogItem
+                  skip={index === Blogs.length - 1}
+                  skipAmount={Number(skip) + 10}
+                  username={username}
+                  blog={blog}
+                />
+              ))}
+            </>
+          );
+        }
+
+        return (
+          <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+            No more blogs {":("}
+          </div>
+        );
+      },
+      {
+        params: t.Object({
+          username: t.String(),
+        }),
+        query: t.Object({
+          skip: t.Optional(t.String()),
+        }),
+      }
+    )
     .get("/blog/editor", async ({ userAuthorized, set }) => {
       const user = userAuthorized;
       if (!user) {

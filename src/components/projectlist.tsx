@@ -5,9 +5,11 @@ import ProjectItem from "./project-item";
 export default function ProjectList({
   projects,
   type,
+  username,
 }: {
   projects: SelectProject[];
   type?: string;
+  username: string;
 }) {
   return (
     <ul
@@ -23,6 +25,7 @@ export default function ProjectList({
           item={item}
           skipAmount={10}
           skip={index === projects.length - 1}
+          username={username}
         />
       ))}
     </ul>
