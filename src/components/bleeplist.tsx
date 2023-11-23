@@ -8,10 +8,12 @@ export default function BleepList({
   bleeps,
   user,
   input,
+  skipAmount,
 }: {
   user: any;
   bleeps: SelectBleep[];
   input?: boolean;
+  skipAmount: number;
 }) {
   return (
     <div id="list" class="max-w-[700px] mx-auto">
@@ -79,8 +81,12 @@ export default function BleepList({
       )}
 
       <ul id="bleeps_list" class="grid grid-cols-1 gap-y-4 grid-flow-row pb-24">
-        {bleeps.map((item) => (
-          <BleepItem item={item} />
+        {bleeps.map((item, index) => (
+          <BleepItem
+            item={item}
+            skip={index === bleeps.length - 1}
+            skipAmount={skipAmount && skipAmount}
+          />
         ))}
       </ul>
     </div>

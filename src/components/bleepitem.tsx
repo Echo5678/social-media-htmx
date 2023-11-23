@@ -11,9 +11,26 @@ interface Item {
   likes_count: string | number;
 }
 
-function BleepItem({ item }: { profile_picture: string; item: Item }) {
+function BleepItem({
+  item,
+  skip,
+  skipAmount,
+}: {
+  item: Item;
+  skip: boolean;
+  skipAmount?: number;
+}) {
   return (
-    <li class="border-b border-zinc-300 dark:border-zinc-800 w-full hover:cursor-pointer flex  flex-col">
+    <li
+      {...(skip
+        ? {
+            "hx-get": `/bleeps-list/?skip=${skipAmount ? skipAmount : 10}`,
+            "hx-trigger": "revealed",
+            "hx-swap": "afterend",
+          }
+        : {})}
+      class="border-b border-zinc-300 dark:border-zinc-800 w-full hover:cursor-pointer flex  flex-col"
+    >
       <a href={`/${item.username}`} hx-boost="true" hx-push-url class="flex">
         <div class="flex space-x-2">
           {item?.profile_picture ? (

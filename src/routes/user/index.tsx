@@ -582,20 +582,49 @@ export const user = (app: Elysia) =>
         }),
       }
     )
-    .get("/bleeps-list", async ({ userAuthorized }) => {
-      const bleep: SelectBleep[] = await db.execute(
-        sql`SELECT bleeps.id, text, image, posted, username, verified, profile_picture, name, count(post) as likes_count FROM bleeps FULL JOIN likes ON  id = post INNER JOIN users ON author = users.id GROUP BY users.id, bleeps.id, user_id, post LIMIT 10`
-      );
+    .get(
+      "/bleeps-list",
+      async ({ userAuthorized, query: { skip } }) => {
+        const bleep: SelectBleep[] = await db.execute(
+          sql`SELECT bleeps.id, text, image, posted, username, verified, profile_picture, name, count(post) as likes_count FROM bleeps FULL JOIN likes ON  id = post INNER JOIN users ON author = users.id GROUP BY users.id, bleeps.id, user_id, post LIMIT 10 OFFSET ${
+            skip ? skip : 0
+          }`
+        );
 
-      if (bleep.length !== 0) {
-        return <BleepList bleeps={bleep} user={userAuthorized} input={true} />;
+        if (bleep.length !== 0 && !skip) {
+          return (
+            <BleepList
+              bleeps={bleep}
+              user={userAuthorized}
+              input={!skip}
+              skipAmount={10}
+            />
+          );
+        } else if (bleep.length !== 0) {
+          return (
+            <>
+              {bleep.map((item, index) => (
+                <BleepItem
+                  item={item}
+                  skip={index === bleep.length - 1}
+                  skipAmount={Number(skip) + 10}
+                />
+              ))}
+            </>
+          );
+        }
+        return (
+          <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
+            Sorry no bleep {":("}
+          </div>
+        );
+      },
+      {
+        query: t.Object({
+          skip: t.Optional(t.String()),
+        }),
       }
-      return (
-        <div class="text-[#444444] dark:text-[#B1B1B1] text-center">
-          Sorry no bleep {":("}
-        </div>
-      );
-    })
+    )
     .get(
       "/bleep/:id",
       async ({ userAuthorized, params: { id } }) => {
