@@ -1,19 +1,15 @@
-import Calendar from "../components/assets/calendar";
 import CloseIcon from "../components/assets/closeicon";
-import ProfilePlaceHolder from "../components/assets/profileplaceholder";
 import SettingsIcon from "../components/assets/settings";
-import Verified from "../components/assets/verified";
 import Navbar from "../components/navbar";
-import { SelectUser } from "../db/schema";
 
 export default function ProfilePage({
-  user,
   isUserAccount,
+  searchUser,
   username,
   image,
 }: {
-  user: SelectUser;
   isUserAccount: boolean;
+  searchUser: string;
   username?: string;
   image?: string;
 }) {
@@ -90,99 +86,45 @@ export default function ProfilePage({
       <div class="flex">
         <Navbar username={username} image={image && image} />
         <div class="w-full h-full">
-          <header class="w-full md:w-3/4 xl:w-1/2 mx-auto">
+          <header
+            hx-get={`/${searchUser}/info`}
+            hx-trigger="load"
+            hx-swap="none"
+            class="w-full md:w-3/4 xl:w-1/2 mx-auto"
+          >
             <div class="relative">
-              {user?.backgroundImage ? (
-                <img
-                  src={user?.backgroundImage}
-                  alt="Profile Banner Image"
-                  width="750"
-                  height="200"
-                  class="w-full h-[20vw] sm:h-[15vw] lg:h-[12.5vw] xl:h-[7.5vw] bg-black dark:bg-white"
-                ></img>
-              ) : (
-                <div class="w-full h-[20vw] sm:h-[15vw] lg:h-[12.5vw] xl:h-[7.5vw] bg-zinc-300 dark:bg-zinc-800"></div>
-              )}
-              {user?.profile_picture ? (
-                <img
-                  src={`https://d20yxzu0sm1upk.cloudfront.net/${user.profile_picture}`}
-                  width="75"
-                  height="75"
-                  class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full"
-                  alt="Profile Picture"
-                />
-              ) : (
-                <div class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full w-[75px] h-[75px] flex items-center justify-center">
-                  <ProfilePlaceHolder />
-                </div>
-              )}
+              <div
+                id="user_background"
+                class="w-full h-[20vw] sm:h-[15vw] lg:h-[12.5vw] xl:h-[7.5vw] bg-zinc-300 dark:bg-zinc-800"
+              ></div>
+              <div
+                id="profile_picture"
+                class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full w-[75px] h-[75px] flex items-center justify-center animate-pulse"
+              ></div>
             </div>
             <article class="text-sm border-x border-zinc-300 dark:border-[#222222] pt-6 xl:pt-8  pl-2.5 items-center">
               <section class=" text-black dark:text-white">
                 <div class="flex justify-between pr-4">
                   <div class="flex items-center space-x-3">
-                    <h1 id="name" class="text-2xl md:text-3xl font-bold">
-                      {user.name}
-                    </h1>
-                    {user.verified && (
-                      <span class="text-black dark:text-white">
-                        <Verified />
-                      </span>
-                    )}
+                    <div
+                      id="name"
+                      class="h-[125px] w-[40px] bg-zinc-300 dark:bg-zinc-800 animate-pulse rounded-md"
+                    ></div>
+                    <div id="verified"></div>
                   </div>
-
-                  {!isUserAccount &&
-                    (user?.exists ? (
-                      <button
-                        hx-delete={`/unfollow/${user.id}`}
-                        hx-swap="outerHTML"
-                        hx-target="#follow"
-                        id="follow"
-                        class=" px-4 py-2 border rounded-md bg-black text-white dark:bg-white dark:text-black font-medium"
-                      >
-                        Following
-                      </button>
-                    ) : (
-                      <button
-                        hx-target="#follow"
-                        hx-post={`/follow/${user.id}`}
-                        hx-swap="outerHTML"
-                        id="follow"
-                        class=" px-4 py-2 border rounded-md bg-black text-white dark:bg-white dark:text-black font-medium"
-                      >
-                        Follow
-                      </button>
-                    ))}
+                  <div id="follow"></div>
                 </div>
-
-                <h2 id="username" class="text-[#444444] dark:text-[#B1B1B1]">
-                  @{user.username}
-                </h2>
+                <div
+                  id="username"
+                  class="h-[20px] w-[100px] bg-zinc-300 dark:bg-zinc-800 animate-pulse rounded-md"
+                ></div>
               </section>
-              <section class="pr-2 py-1 w-full xl:w-[75%]">{user.bio}</section>
+
+              <div id="user_bio"></div>
+
               <section class="flex flex-col text-[#444444] dark:text-[#B1B1B1]">
-                <span class="mt-1">
-                  <Calendar className="inline" /> Joined{" "}
-                  {new Date(String(user.joined)).toLocaleDateString("en-us", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-                <ul class="flex space-x-3  mt-3">
-                  <li id="follower-count">
-                    <span class="dark:text-white text-black mr-1 font-medium">
-                      {user.follower_count}
-                    </span>
-                    Followers
-                  </li>
-                  <li>
-                    <span class="dark:text-white text-black mr-1 font-medium">
-                      {user.following_count}
-                    </span>
-                    Following
-                  </li>
-                </ul>
+                <div id="joined"></div>
+                <div id="following_info"></div>
               </section>
             </article>
             <div
@@ -197,7 +139,7 @@ export default function ProfilePage({
                 aria-label="Projects"
                 aria-controls="tab-content"
                 aria-selected="true"
-                hx-get={`/${user.username}/bleeps`}
+                hx-get={`/${searchUser}/bleeps`}
                 hx-swap="outerHTML"
                 class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer selected-home-tab"
               >
@@ -208,7 +150,7 @@ export default function ProfilePage({
                 aria-label="Projects"
                 aria-controls="tab-content"
                 aria-selected="false"
-                hx-get={`/project-list/${user.username}`}
+                hx-get={`/project-list/${searchUser}`}
                 hx-swap="outerHTML"
                 class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer"
               >
@@ -219,7 +161,7 @@ export default function ProfilePage({
                 aria-label="Media"
                 aria-controls="tab-content"
                 aria-selected="false"
-                hx-get={`/blog-list/${user.username}`}
+                hx-get={`/blog-list/${searchUser}`}
                 hx-swap="outerHTML"
                 class="hover:dark:text-white  hover:text-black hover:border-black hover:dark:border-white border-transparent border-b-2 py-3 hover:cursor-pointer"
               >
@@ -242,7 +184,7 @@ export default function ProfilePage({
           <main class="w-full md:w-3/4 xl:w-1/2 mx-auto">
             <div class="w-full h-full px-3 md:px-0 py-6">
               <div
-                hx-get={`/${user.username}/bleeps`}
+                hx-get={`/${searchUser}/bleeps`}
                 hx-swap="outerHTML"
                 hx-trigger="load"
                 class="grid grid-cols-1 gap-4 grid-flow-row"

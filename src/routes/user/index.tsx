@@ -36,6 +36,7 @@ import ProfileIcon from "../../components/assets/profileicon";
 import BleepList from "../../components/bleeplist";
 import BleepItem from "../../components/bleepitem";
 import BleepPage from "../../pages/bleeppage";
+import ProfileInfo from "../../components/profile-info";
 
 const followingPrepared = db
   .select({ count: sql<number>`count(*)` })
@@ -222,82 +223,105 @@ export const user = (app: Elysia) =>
           set.redirect = "/sign-in";
         }
 
-        if (username === "favicon.ico") {
-          set.status = 304;
-          return;
-        }
+        return (
+          <BaseHtml>
+            <ProfilePage
+              isUserAccount={user?.username == username}
+              searchUser={username}
+              username={user?.username}
+              image={user?.profile_picture}
+            />
+          </BaseHtml>
+        );
+      }
+    )
+    .get(
+      "/:username/info",
+      async ({ userAuthorized, set, params: { username } }) => {
+        {
+          const user = userAuthorized;
+          if (!user) {
+            set.status = 307;
+            set.redirect = "/sign-in";
+          }
 
-        let userInfoCached;
-        let isFollowing;
+          if (username === "favicon.ico") {
+            set.status = 304;
+            return;
+          }
 
-        userInfoCached = await client.get(`${username}-info`);
+          let userInfoCached;
+          let isFollowing;
 
-        if (userInfoCached) {
-          userInfoCached = JSON.parse(userInfoCached);
+          userInfoCached = await client.get(`${username}-info`);
 
-          if (user?.username && userInfoCached?.id != user?.id) {
-            isFollowing = await client.get(
-              `${user?.username}-following-${username}`
+          if (userInfoCached) {
+            userInfoCached = JSON.parse(userInfoCached);
+
+            if (user?.username && userInfoCached?.id != user?.id) {
+              isFollowing = await client.get(
+                `${user?.username}-following-${username}`
+              );
+
+              if (!isFollowing) {
+                isFollowing = await db.execute(
+                  sql`WITH userInfo AS (SELECT id FROM users WHERE username = ${username}) select exists(select 1 from followers where user_id = (SELECT id FROM userInfo) AND follower_id = ${
+                    user?.id ? user?.id : 0
+                  })`
+                );
+              }
+            }
+
+            userInfoCached.exists = isFollowing == "true" ? true : false;
+
+            return (
+              <>
+                <ProfileInfo
+                  user={userInfoCached}
+                  isUserAccount={userInfoCached.id == user?.id}
+                />
+              </>
             );
+          }
 
-            if (!isFollowing) {
-              isFollowing = await db.execute(
-                sql`WITH userInfo AS (SELECT id FROM users WHERE username = ${username}) select exists(select 1 from followers where user_id = (SELECT id FROM userInfo) AND follower_id = ${
-                  user?.id ? user?.id : 0
-                })`
+          const user1 = await db.execute(
+            sql`WITH userInfo AS (SELECT * FROM users WHERE username = ${username}), followerInfo AS (SELECT sum((user_id = (SELECT id FROM userInfo))::int) as follower_count, sum((follower_id = (SELECT id FROM userInfo))::int) as following_count, sum((follower_id = (SELECT id FROM userInfo))::int) as following_count  FROM followers), isFollowing AS (select exists(select 1 from followers where user_id = (SELECT id FROM userInfo) AND follower_id = ${
+              user?.id ? user?.id : 0
+            })) SELECT * FROM userInfo, followerInfo, isFollowing`
+          );
+
+          if (user1) {
+            let cache = user1[0];
+
+            if (user?.username && user1[0] != user?.id) {
+              await client.setEx(
+                `${user?.username}-following-${username}`,
+                86400,
+                String(user1[0].exists)
               );
             }
-          }
 
-          userInfoCached.exists = isFollowing == "true" ? true : false;
+            delete cache.exists;
 
-          return (
-            <BaseHtml>
-              <ProfilePage
-                user={userInfoCached}
-                isUserAccount={userInfoCached.id == user?.id}
-                username={user?.username}
-                image={user?.profile_picture}
-              />
-            </BaseHtml>
-          );
-        }
-
-        const user1 = await db.execute(
-          sql`WITH userInfo AS (SELECT * FROM users WHERE username = ${username}), followerInfo AS (SELECT sum((user_id = (SELECT id FROM userInfo))::int) as follower_count, sum((follower_id = (SELECT id FROM userInfo))::int) as following_count, sum((follower_id = (SELECT id FROM userInfo))::int) as following_count  FROM followers), isFollowing AS (select exists(select 1 from followers where user_id = (SELECT id FROM userInfo) AND follower_id = ${
-            user?.id ? user?.id : 0
-          })) SELECT * FROM userInfo, followerInfo, isFollowing`
-        );
-
-        if (user1) {
-          let cache = user1[0];
-
-          if (user?.username && user1[0] != user?.id) {
             await client.setEx(
-              `${user?.username}-following-${username}`,
+              `${username}-info`,
               86400,
-              String(user1[0].exists)
+              JSON.stringify(cache)
+            );
+
+            return (
+              <>
+                <ProfileInfo
+                  user={user1[0]}
+                  isUserAccount={user1[0].id == user?.id}
+                />
+              </>
             );
           }
 
-          delete cache.exists;
-
-          await client.setEx(`${username}-info`, 86400, JSON.stringify(cache));
-
-          return (
-            <BaseHtml>
-              <ProfilePage
-                user={user1[0]}
-                isUserAccount={user1[0].id == user?.id}
-                username={user?.username}
-                image={user?.profile_picture}
-              />
-            </BaseHtml>
-          );
+          set.status = 404;
+          return;
         }
-
-        set.status = 404;
-        return;
       }
     )
     .post("/follow/:id", async ({ userAuthorized, set, params: { id } }) => {

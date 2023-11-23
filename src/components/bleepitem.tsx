@@ -50,7 +50,9 @@ function BleepItem({ item }: { profile_picture: string; item: Item }) {
         hx-push-url
         class="flex flex-col space-y-2 pt-2"
       >
-        <span class="pl-[59.02px]">{item.text}</span>
+        <span class="pl-[59.02px]" safe>
+          {item.text}
+        </span>
 
         {item.image && (
           <div class="w-full h-full sm:h-[45vw] md:h-[37.5vw]  lg:[32.5vw] xl:[22.5vw] py-1.5">
