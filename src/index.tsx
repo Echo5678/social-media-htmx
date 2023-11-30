@@ -26,7 +26,6 @@ const app = new Elysia({
       ws.subscribe("meow");
     },
     message(ws, message: any) {
-      console.log(message.message);
       ws.publish(
         "meow",
         <>
