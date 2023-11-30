@@ -29,45 +29,53 @@ function BleepItem({
             "hx-get": username
               ? `/${username}/bleeps/?skip=${skipAmount ? skipAmount : 10}`
               : `/bleeps-list/?skip=${skipAmount ? skipAmount : 10}`,
-            "hx-trigger": "revealed",
+            "hx-trigger": "intersect once",
             "hx-swap": "afterend",
           }
         : {})}
       class="border-b border-zinc-300 dark:border-zinc-800 w-full hover:cursor-pointer flex  flex-col"
     >
-      <a href={`/${item.username}`} hx-boost="true" hx-push-url class="flex">
+      <div class="flex">
         <div class="flex space-x-2">
-          {item?.profile_picture ? (
-            <img
-              src={`https://d20yxzu0sm1upk.cloudfront.net/${item?.profile_picture}`}
-              width="50"
-              height="50"
-              class="rounded-full"
-              alt="Profile Picture"
-            />
-          ) : (
-            <div class="bg-[#fcfcfc] dark:bg-[#0e0e0e] rounded-full w-[50px] h-[50px] flex items-center justify-center">
-              <ProfilePlaceHolder />
-            </div>
-          )}
+          <a href={`/${item.username}`}>
+            {item?.profile_picture ? (
+              <img
+                src={`https://d20yxzu0sm1upk.cloudfront.net/${item?.profile_picture}`}
+                width="50"
+                height="50"
+                class="rounded-full"
+                alt="Profile Picture"
+              />
+            ) : (
+              <div class="bg-[#fcfcfc] dark:bg-[#0e0e0e] rounded-full w-[50px] h-[50px] flex items-center justify-center">
+                <ProfilePlaceHolder />
+              </div>
+            )}
+          </a>
+
           <div class="flex  flex-col">
             <span class="font-semibold hover:underline flex items-center space-x-2.5">
-              {item.name}
+              <a href={`/${item.username}`}>{item.name}</a>
               {item.verified && (
                 <span class="text-black dark:text-white">
                   <Verified />
                 </span>
               )}
             </span>
-            <span class="text-[#444444] dark:text-[#B1B1B1] hover:underline decoration-1 hover:text-wite">
+            <a
+              href={`/${item.username}`}
+              hx-boost
+              hx-push-url
+              class="text-[#444444] dark:text-[#B1B1B1] hover:underline decoration-1 hover:text-wite"
+            >
               {item.username}
-            </span>
+            </a>
           </div>
         </div>
-      </a>
+      </div>
       <a
         href={`/bleep/${item.id}`}
-        hx-boost="true"
+        hx-boost
         hx-push-url
         class="flex flex-col space-y-2 pt-2"
       >
