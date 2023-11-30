@@ -39,12 +39,10 @@ const ProfileInfo = ({
           hx-swap-oob="true"
         />
       ) : (
-        <div
-          class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full w-[75px] h-[75px] flex items-center justify-center"
-          id="profile_picture"
-          hx-swap-oob="true"
-        >
-          <ProfilePlaceHolder />
+        <div id="profile_picture" hx-swap-oob="true">
+          <div class="bg-[#fcfcfc] dark:bg-[#0e0e0e] p-1 absolute -bottom-7 left-5 rounded-full w-[75px] h-[75px] flex items-center justify-center">
+            <ProfilePlaceHolder />
+          </div>
         </div>
       )}
       <h1 id="name" hx-swap-oob="true" class="text-2xl md:text-3xl font-bold">
