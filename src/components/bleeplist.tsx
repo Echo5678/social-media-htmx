@@ -26,9 +26,9 @@ export default function BleepList({
           hx-swap="afterbegin"
           hx-encoding="multipart/form-data"
           hx-trigger="submit"
-          class="flex flex-col w-fit space-y-1 pb-6"
+          class="flex flex-col w-fit space-y-1 pb-6 w-full"
         >
-          <div class="flex items-center space-x-2">
+          <div class="flex items-center space-x-2 w-full">
             {user?.profile_picture ? (
               <img
                 src={`https://d20yxzu0sm1upk.cloudfront.net/${user?.profile_picture}`}
@@ -42,7 +42,7 @@ export default function BleepList({
                 <ProfilePlaceHolder />
               </div>
             )}
-            <div>
+            <div class="w-full">
               <input
                 type="text"
                 id="post_text"
@@ -51,7 +51,7 @@ export default function BleepList({
                 autofocus="true"
                 aria-label="Post text"
                 placeholder="Wsg?"
-                class="outline-none bg-transparent border-b border-zinc-300 dark:border-zinc-800 text-[#444444] dark:text-[#B1B1B1] placeholder:text-[#444444] placeholder:dark:text-[#B1B1B1] text-xl pb-1 min-w-[242px] max-w-[642px] w-[100vw]"
+                class="outline-none bg-transparent border-b border-zinc-300 dark:border-zinc-800 text-[#444444] dark:text-[#B1B1B1] placeholder:text-[#444444] placeholder:dark:text-[#B1B1B1] text-xl pb-1 w-full"
               />
             </div>
           </div>
