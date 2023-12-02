@@ -98,12 +98,13 @@ function BleepItem({
       </a>
       <div class="flex justify-between px-[10vw] py-3.5 text-[#444444] dark:text-[#B1B1B1]">
         <button
+          id="like_button"
           onclick="this.stopPropagation()"
           hx-post={`/like/${item.id}`}
           hx-swap="outerHTML"
           class="flex space-x-1 items-center font-medium text-lg"
         >
-        	<Like />
+          <Like />
           <span id="like_count">
             {item?.likes_count ? item.likes_count : 0}
           </span>

@@ -5,15 +5,12 @@ import client from "../../db/redis-client";
 import { db } from "../../db/client";
 
 import {
-  SelectBleep,
   SelectNotification,
-  bleeps,
   followers,
-  messages,
   notifications,
   users,
 } from "../../db/schema";
-import { sql, eq, and, asc, or } from "drizzle-orm";
+import { sql, eq } from "drizzle-orm";
 
 import fs from "fs";
 import { randomBytes } from "crypto";
@@ -22,21 +19,14 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 const s3Client = new S3Client({ region: process.env.BUCKET_REGION });
 
 import { BaseHtml } from "../../pages/base/basehtml";
-import { MessageLayout } from "../../pages/base/basehtml";
 
-import MessagePage from "../../pages/message";
 import ProfilePage from "../../pages/profilepage";
 import NotificationsPage from "../../pages/notificationspage";
 
 import NotificationsList from "../../components/notifications/notificationslist";
-import NotificationIcon from "../../components/assets/notificationicon";
-import MessageUserList from "../../components/message-user-list";
-
-import ProfileIcon from "../../components/assets/profileicon";
-import BleepList from "../../components/bleeplist";
-import BleepItem from "../../components/bleepitem";
-import BleepPage from "../../pages/bleeppage";
 import ProfileInfo from "../../components/profile-info";
+
+import NotificationIcon from "../../components/assets/notificationicon";
 
 const followingPrepared = db
   .select({ count: sql<number>`count(*)` })
@@ -101,7 +91,9 @@ export const user = (app: Elysia) =>
         const userUpdates = {
           ...(username && { username: username?.toLowerCase() }),
           ...(name && { name }),
-          ...(profile_picture && { profile_picture: profile_picture_name }),
+          ...(profile_picture && {
+            profile_piisFollowingcture: profile_picture_name,
+          }),
         };
 
         if (profile_picture) {

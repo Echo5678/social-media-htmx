@@ -3,7 +3,7 @@ import jwt from "@elysiajs/jwt";
 
 import { db } from "../../db/client";
 
-import { SelectBleep, bleeps, followers } from "../../db/schema";
+import { SelectBleep, bleeps, followers, likes } from "../../db/schema";
 import { sql, eq } from "drizzle-orm";
 
 import { BaseHtml } from "../../pages/base/basehtml";
@@ -11,6 +11,7 @@ import { BaseHtml } from "../../pages/base/basehtml";
 import BleepList from "../../components/bleeplist";
 import BleepItem from "../../components/bleepitem";
 import BleepPage from "../../pages/bleeppage";
+import Like from "../../components/assets/like";
 
 export const bleep = (app: Elysia) =>
   app
@@ -177,4 +178,31 @@ export const bleep = (app: Elysia) =>
           image: t.Optional(t.File()),
         }),
       }
-    );
+    )
+    .post("/like/:id", async ({ userAuthorized, params: { id }, set }) => {
+      if (!userAuthorized) {
+        set.status = 307;
+        set.redirect = "/sign-in";
+        return;
+      }
+
+      const like = await db.execute(
+        sql`WITH post_like AS (INSERT INTO likes(user_id, post) VALUES(${userAuthorized?.id}, ${id}) RETURNING post) SELECT count(*) FROM likes WHERE post = (SELECT post FROM post_like)`
+      );
+
+      if (like) {
+        return (
+          <button
+            id="like_button"
+            onclick="this.stopPropagation()"
+            hx-delete={`/like/${id}`}
+            class="flex space-x-1 items-center font-medium text-lg"
+          >
+            <div class="text-red-500">
+              <Like />
+            </div>
+            <span id="like_count">{Number(like[0]?.count) + 1}</span>
+          </button>
+        );
+      }
+    });
