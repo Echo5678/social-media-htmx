@@ -46,21 +46,20 @@ export const BaseHtml = ({
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-            .selected-home-tab {
-                border-bottom: 2px solid;
-                color: white;
-            
-            :root {
+  .selected-home-tab {
+    border-bottom: 2px solid;
+    color: white;
+   } 
+   :root {
     --plus-color: black; 
     --plus-icon-size: 40px;
-}
+   }
 .custom-scrollbar::-webkit-scrollbar-track
   {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     border-radius: 10px;
     background-color: #2e2e2e;
   }
-  @layer utilities {
   
   .custom-scrollbar::-webkit-scrollbar
   {
@@ -182,7 +181,6 @@ export const BaseHtml = ({
   transform: scale3d(1, 1, 1);
   }
   }
-        }
         `}
       </style>
       <body
