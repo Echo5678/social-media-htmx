@@ -1,5 +1,7 @@
+import Like from "./assets/like";
 import ProfilePlaceHolder from "./assets/profileplaceholder";
 import Verified from "./assets/verified";
+import Comment from "./assets/comment";
 
 interface Item {
   id: string | number;
@@ -101,17 +103,7 @@ function BleepItem({
           hx-swap="outerHTML"
           class="flex space-x-1 items-center font-medium text-lg"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="m12.82 5.58l-.82.822l-.824-.824a5.375 5.375 0 1 0-7.601 7.602l7.895 7.895a.75.75 0 0 0 1.06 0l7.902-7.897a5.376 5.376 0 0 0-.001-7.599a5.38 5.38 0 0 0-7.611 0Z"
-            />
-          </svg>
+        	<Like />
           <span id="like_count">
             {item?.likes_count ? item.likes_count : 0}
           </span>
@@ -122,17 +114,7 @@ function BleepItem({
           hx-swap="outerHTML"
           class="flex space-x-1 items-center font-medium text-lg"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 1.643.397 3.23 1.145 4.65l-1.116 4.29a.85.85 0 0 0 1.036 1.036l4.29-1.117A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10Z"
-            />
-          </svg>
+          <Comment />
           <span>{item?.likes_count ? item.likes_count : 0}</span>
         </button>
       </div>
