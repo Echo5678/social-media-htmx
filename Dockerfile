@@ -34,7 +34,7 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
-RUN bunx tailwindcss -i ./src/styles.css -o ./out/output.css
+RUN postcss src/styles.css -o out/output.css
 RUN bun build ./src/index.tsx --outdir ./out --loader .css:css --loader .ico:file --target bun
 
 # Start the server by default, this can be overwritten at runtime
