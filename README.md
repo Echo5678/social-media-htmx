@@ -13,7 +13,7 @@ bun install
 To run:
 
 ```bash
-bunx tailwindcss -i ./src/styles.css -o ./src/routes/home/output.css
+bunx postcss src/styles.css -o src/routes/home
 
 bun run dev
 ```
