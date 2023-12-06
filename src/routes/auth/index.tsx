@@ -132,9 +132,10 @@ export const auth = (app: Elysia) =>
             profile_picture: "",
           });
 
+          set.headers['HX-Redirect'] = '/home';
           user.value = JWT;
           set.status = 307;
-          set.redirect = "/home";
+
           return;
         }
 
@@ -173,7 +174,6 @@ export const auth = (app: Elysia) =>
           set.redirect = "/home";
           return;
         }
-
         return (
           <BaseHtml>
             <Signinpage />
@@ -258,6 +258,8 @@ export const auth = (app: Elysia) =>
         if (JWT) {
           user.value = JWT;
           set.status = 307;
+	  set.headers['HX-Redirect'] = "/home";
+
           return;
         }
 

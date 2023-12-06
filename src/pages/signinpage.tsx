@@ -3,10 +3,7 @@ export default function SignInPage() {
     <form
       class="flex justify-center items-center flex-col space-y-4 min-h-screen px-4"
       hx-post="/sign-in"
-      hx-replace-url="/home"
       hx-trigger="submit"
-      hx-target="#main"
-      hx-swap="outerHTML"
       hx-target-400="#error-message"
       hx-target-500="#error-message"
     >
