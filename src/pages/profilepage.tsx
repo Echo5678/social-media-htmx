@@ -103,12 +103,12 @@ export default function ProfilePage({
               ></div>
             </div>
             <article class="text-sm border-x border-zinc-300 dark:border-[#222222] pt-6 xl:pt-8  pl-2.5 items-center">
-              <section class=" text-black dark:text-white">
+              <section class=" text-black dark:text-white flex flex-col space-y-2">
                 <div class="flex justify-between pr-4">
                   <div class="flex items-center space-x-3">
                     <div
                       id="name"
-                      class="h-[125px] w-[40px] bg-zinc-300 dark:bg-zinc-800 animate-pulse rounded-md"
+                      class="w-[125px] h-[40px] bg-zinc-300 dark:bg-zinc-800 animate-pulse rounded-md"
                     ></div>
                     <div id="verified"></div>
                   </div>
