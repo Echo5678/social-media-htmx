@@ -108,11 +108,10 @@ export const bleep = (app: Elysia) =>
       "/:username/bleeps",
       async ({ userAuthorized, params: { username }, query: { skip } }) => {
         const bleep: SelectBleep[] = await db.execute(
-          sql`WITH user_info AS (SELECT id, username, name, verified, profile_picture FROM users WHERE username = ${username} LIMIT 1),  bleeps_list AS (SELECT * FROM bleeps WHERE author = (SELECT id FROM user_info) LIMIT 10 OFFSET ${
+          sql`SELECT bleeps.id, text, image, posted, username, verified, profile_picture, name, count(post) as likes_count FROM bleeps FULL JOIN likes ON  id = post INNER JOIN users ON author = users.id WHERE username=${username} GROUP BY users.id, bleeps.id, user_id, post LIMIT 10 OFFSET ${
             skip ? skip : 0
-          }), count AS (SELECT sum((post = (SELECT id FROM bleeps_list))::int) AS likes_count FROM likes) SELECT * FROM count, user_info, bleeps_list`
+          }`
         );
-
         if (bleep.length !== 0 && !skip) {
           return (
             <BleepList
